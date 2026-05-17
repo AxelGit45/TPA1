@@ -1,0 +1,11 @@
+package Modelos;
+
+public enum EstadoDonacion {
+  ENDEPOSITO,
+  ASIGNACIONREALIZADA,
+  LISTAPARAENTREGAR,
+  ENTRASLADO,
+  ENTREGADA,
+  ENTREGAFALLIDA,
+  VENCIDA
+}
