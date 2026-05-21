@@ -1,8 +1,8 @@
-package Modelos;
+package Enums;
 
 public enum TipoCategoria {
   ALIMENTO,
   VESTIMENTA,
   MOBILIARIO
-  //algo mas??
+
 }

@@ -1,4 +1,4 @@
-package Modelos;
+package Enums;
 
 public enum TipoOrganizacion {
   GUBERNAMENTAL,
