@@ -1,5 +1,6 @@
 package Modelos;
 
+import Errors.ErrorParametrosConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ public class NecesidadRecurrente extends Necesidad {
 
   public NecesidadRecurrente(Bien categoria, String descripcion, int cantidadRequerida, ComprobarFechaEstablecida periodo) {
     super(categoria, descripcion);
+    validarConstructor(cantidadRequerida,periodo);
     this.cantidadRequerida = cantidadRequerida;
     this.cantidadRecibidad = 0;
     this.fechaInicioPedido = LocalDate.now();
@@ -44,5 +46,15 @@ public class NecesidadRecurrente extends Necesidad {
   @Override
   public boolean necesidadSatisfecha() {
     return  verificarCantiadadNecesaria() && verificarPeriodo();
+  }
+
+  private void validarConstructor( int cantidadRequerida, ComprobarFechaEstablecida periodo) {
+    if ( periodo == null){
+      throw new ErrorParametrosConstructor("Se necesita un periodo establecido");
+    }
+
+    if(cantidadRequerida <= 0 ){
+      throw new ErrorParametrosConstructor("CantidadRequerida debe ser un numero positivo");
+    }
   }
 }

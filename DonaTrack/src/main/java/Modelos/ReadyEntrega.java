@@ -1,5 +1,6 @@
 package Modelos;
 
+import Errors.ErrorParametrosConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ public class ReadyEntrega extends EstadoDeLaDonacion{
   private Boolean camionAsignado;
 
   public ReadyEntrega(EntidadBeneficiaria entidadAsignada, LocalDate fechaLimiteDeEntrega) {
+    validarConstructor(entidadAsignada, fechaLimiteDeEntrega);
     this.entidadAsignada = entidadAsignada;
     this.fechaLimiteDeEntrega = fechaLimiteDeEntrega;
     this.camionAsignado  = false;
@@ -26,5 +28,11 @@ public class ReadyEntrega extends EstadoDeLaDonacion{
   @Override
   public boolean cumpleCondicion() {
     return getCamionAsignado();
+  }
+
+  private void validarConstructor (EntidadBeneficiaria entidadAsignada, LocalDate fechaLimiteDeEntrega) {
+    if(entidadAsignada ==null|| fechaLimiteDeEntrega == null ){
+    throw  new ErrorParametrosConstructor("Faltan parametro en el constructor");
+    }
   }
 }

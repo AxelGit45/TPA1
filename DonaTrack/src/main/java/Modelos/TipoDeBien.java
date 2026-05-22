@@ -2,11 +2,19 @@ package Modelos;
 
 import Enums.EstadoDelBien;
 import Enums.TipoCategoria;
+import Errors.ErrorParametrosConstructor;
 
 public class TipoDeBien  {
   private EstadoDelBien estado;
 
-  public TipoDeBien(String descripcion, String stringFoto, int cantidad, TipoCategoria categoria, String subcategoria) {
+  public TipoDeBien(EstadoDelBien estado) {
+    validarConstructor(estado);
+    this.estado = estado;
   }
 
+  private void validarConstructor(EstadoDelBien estado){
+    if(estado == null){
+      throw new ErrorParametrosConstructor("Faltan parámetros en el constructor.");
+    }
+  }
 }

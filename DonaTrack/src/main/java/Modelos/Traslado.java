@@ -1,11 +1,14 @@
 package Modelos;
 
+import Errors.ErrorParametrosConstructor;
+
 import java.time.LocalDate;
 
 public class Traslado extends EstadoDeLaDonacion {
   private boolean entregado;
 
   public Traslado(EntidadBeneficiaria entidadAsignada, LocalDate fechaLimiteDeEntrega) {
+    validarConstructor(entidadAsignada, fechaLimiteDeEntrega);
     this.entidadAsignada = entidadAsignada;
     this.fechaLimiteDeEntrega = fechaLimiteDeEntrega;
     this.entregado = false;
@@ -34,5 +37,10 @@ public class Traslado extends EstadoDeLaDonacion {
 
   private boolean getEntregado() {
     return entregado;
+  }
+  private void validarConstructor(EntidadBeneficiaria entidadBeneficiaria, LocalDate fecha){
+    if(entidadBeneficiaria == null || fecha == null){
+      throw  new ErrorParametrosConstructor("Parametros nulos en el contructor");
+    }
   }
 }

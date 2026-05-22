@@ -2,13 +2,14 @@
 
 class PersonaJuridica{
 
-- razonSocial:String
-- rubro: String
-- tipo: String
-- email: String
-- user:UsuarioDonante
-- representantes : List<PersonaFisica>
+    - razonSocial:String
+    - rubro: String
+    - tipo: String
+    - email: String
+    - user:UsuarioDonante
+    - representantes : List<PersonaFisica>
 }
+
 PersonaJuridica --> UsuarioDonante
 PersonaJuridica --> TipoOrganizacion
 PersonaJuridica --> "*" PersonaFisica
@@ -21,17 +22,17 @@ enum TipoOrganizacion {
 }
 
 class PersonaFisica{
-- nombre : String
-- apellido : String
-- edad : int
-- nroDocumento: int
-- genero: String
-- direccion: String
-- email: String
-- user:UsuarioDonante
-- medioDeContacto: List<MedioDeContacto>
+    - nombre : String
+    - apellido : String
+    - edad : int
+    - nroDocumento: int
+    - genero: String
+    - direccion: String
+    - email: String
+    - user:UsuarioDonante
+    - medioDeContacto: List<MedioDeContacto>
 
-+ validarConstructor()
+    + validarConstructor()
 }
 
 PersonaFisica --> UsuarioDonante
@@ -44,20 +45,22 @@ enum MedioDeContacto {
 }
 
 class PeriodoSemanal {
-cumplePeriodo()
+    + cumplePeriodo()
 }
 
 class Perecedero{
-- fechaDeVencimiento: String
-- unidad: int
+    - fechaDeVencimiento: String
+    - unidad: Unidad
 }
+Perecedero --> Unidad
 
 class Notificacion{
--destinatario: UsuarioDonante
--mensaje:String
--medioDeNotificacion: MedioDeNotificacion
--completada:Boolean
-+enviarMensaje()
+    - destinatario: UsuarioDonante
+    - mensaje:String
+    - medioDeNotificacion: MedioDeNotificacion
+    - completada:Boolean
+
+    + enviarMensaje()
 }
 
 Notificacion --> UsuarioDonante
@@ -80,16 +83,18 @@ ReadyEntrega --|> EstadoDeLaDonacion
 class SMS {
     + EnviarMensaje(UsuarioDonante destinatario, String mensaje)
 }
+
 SMS ..|> MedioDeNotificacion
 
 class TipoDeBien {
-- estado: EstadoDelBien
+    - estado: EstadoDelBien
 }
 
 TipoDeBien --> EstadoDelBien
 
 class Traslado {
     - entregado: boolean
+
     + cambiarEstado()
     + cumpleFecha()
     + cumpleCondicion()
@@ -119,15 +124,16 @@ class WhatsApp{
 WhatsApp ..|> MedioDeNotificacion
 
 class Donacion{
--nombreDonante :String
--bienes[]:Bien
--id : int
--decripcionGeneral:String
--estado: EstadoDeLaDonacion
--historialDeEstados[]: EstadoDeLaDonacion
--realizada : Boolean
--estadoDonacion EstadoDonacion
-+agregarEstadoAHistorial():void
+    - nombreDonante :String
+    - bienes[]:Bien
+    - id : int
+    - decripcionGeneral:String
+    - estado: EstadoDeLaDonacion
+    - historialDeEstados[]: EstadoDeLaDonacion
+    - realizada : Boolean
+    - estadoDonacion EstadoDonacion
+
+    + agregarEstadoAHistorial():void
 }
 
 Donacion --> Bien
@@ -135,11 +141,11 @@ Donacion --> "*" EstadoDeLaDonacion
 
 class Asignada {
     - ruta[]: String
-    cambiarEstado(donacion: Donacion): void
-    cumpleCondicion(): boolean
+    + cambiarEstado(donacion: Donacion): void
+    + cumpleCondicion(): boolean
 }
-Asignada --|> EstadoDeLaDonacion
 
+Asignada --|> EstadoDeLaDonacion
 
 class Bien {
     - descripcion: String
@@ -154,21 +160,20 @@ Bien --> TipoCategoria
 Bien --> TipoDeBien
 
 interface ComprobarFechaEstablecida {
-
-    cumplePeriodo(inicio: LocalDate, diaActual: LocalDate): boolean
+    + cumplePeriodo(inicio: LocalDate, diaActual: LocalDate): boolean
 }
 
 class Deposito {
 
-    cambiarEstado(donacion: Donacion): void
-    cumpleCondicion(): boolean
+    + cambiarEstado(donacion: Donacion): void
+    + cumpleCondicion(): boolean
 }
 
 Deposito --|> EstadoDeLaDonacion
 
 
 interface MedioDeNotificacion{
-+EnviarMensaje(UsuarioDonante destinatario, String mensaje)
+    + EnviarMensaje(UsuarioDonante destinatario, String mensaje)
 }
 
 MedioDeNotificacion ..> UsuarioDonante
@@ -177,9 +182,9 @@ MedioDeNotificacion ..> UsuarioDonante
 class EntregaFallida {
     - justificacion: String
 
-    cambiarEstado(donacion: Donacion): void
-    cumpleCondicion(): boolean
-    registrarJustificacion(justificacion: String): String
+    + cambiarEstado(donacion: Donacion): void
+    + cumpleCondicion(): boolean
+    + registrarJustificacion(justificacion: String): String
 }
 
 EntregaFallida --|> EstadoDeLaDonacion
@@ -188,8 +193,8 @@ abstract EstadoDeLaDonacion {
     - entidadAsignada: EntidadBeneficiaria
     - fechaLimiteDeEntrega: LocalDate
 
-    cambiarEstado(donacion: Donacion): void
-    cumpleCondicion(): boolean
+    + cambiarEstado(donacion: Donacion): void
+    + cumpleCondicion(): boolean
 }
 
 EstadoDeLaDonacion ..> Donacion
@@ -200,27 +205,28 @@ class Importacion {
     - personaFisicas[]: PersonaFisica
     - personaJuridicas[]: PersonaJuridica
 
-    Importacion()
+    + Importacion()
 }
 
 class Email{
-+EnviarMensaje(UsuarioDonante usuarioDonante, String mensaje)
+    + EnviarMensaje(UsuarioDonante usuarioDonante, String mensaje)
 }
+
 Email ..|> MedioDeNotificacion
 
 class EntidadBeneficiaria{
- -razonSocial: String
- -direccionCompleta: String
- -telefono:Int
- -correoDeRepresentantes:String
- -necesidadesMateriales[]:Necesidad
+    - razonSocial: String
+    - direccionCompleta: String
+    - telefono:Int
+    - correoDeRepresentantes:String
+    - necesidadesMateriales[]:Necesidad
 }
 
 EntidadBeneficiaria -->"*" Necesidad
 
 class Entregada {
- +cambiarEstado():Void
- +cumpleCondicion():Boolean
+    + cambiarEstado():Void
+    + cumpleCondicion():Boolean
 }
 
 Entregada --|> EstadoDeLaDonacion
@@ -229,7 +235,7 @@ abstract Necesidad {
     - categoria: Bien
     - descripcion: String
 
-    necesidadSatisfecha(): boolean
+    + necesidadSatisfecha(): boolean
 }
 
 Necesidad --> Bien
@@ -270,6 +276,50 @@ NoPerecedero --> EstadoDeUso
 enum EstadoDeUso{
     USADO,
     NUEVO
+}
+
+enum EstadoDelBien {
+    PERECEDERO,
+    NOPERECEDERO
+}
+
+enum EstadoDonacion {
+    ENDEPOSITO,
+    ASIGNACIONREALIZADA,
+    LISTAPARAENTREGAR,
+    ENTRASLADO,
+    ENTREGADA,
+    ENTREGAFALLIDA,
+    VENCIDA
+}
+
+enum EstadoNotificacion{
+    COMPLETADA,
+    NOCOMPLETADA
+}
+
+enum TipoCategoria{
+   ALIMENTO,
+   VESTIMENTA,
+   MOBILIARIO
+}
+
+enum TipoDocumento{
+    DNI,
+    CUIT
+}
+
+enum TipoOrganizacion{
+    GUBERNAMENTAL,
+    ONG,
+    EMPRESA,
+    INSTITUCION
+}
+
+enum Unidad{
+    KILOGRAMOS,
+    GRAMOS,
+    UNIDADES
 }
 
 @enduml

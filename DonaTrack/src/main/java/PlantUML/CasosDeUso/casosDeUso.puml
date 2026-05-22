@@ -1,16 +1,24 @@
 @startuml
-'FALTA TERMINAR'
 
 actor Donante
 actor EntidadBeneficiaria
+actor Administrador
 
-(Realizar donación)
+(Donar)
+(Registrar usuario)
+(Registrar necesidades)
+(Registrar donación)
 (Registrarse)
-(Recibir donación)
+(Iniciar sesión)
+(Gestionar donación)
 
-Donante -- (Realizar donación)
-Donante -- (Registrarse)
-EntidadBeneficiaria -- (Registrarse)
-EntidadBeneficiaria -- (Recibir donación)
+Donante -- (Donar)
+EntidadBeneficiaria -- (Registrar necesidades)
+EntidadBeneficiaria -- (Iniciar sesión)
+Administrador -- (Registrar usuario)
+Administrador -- (Registrar donación)
+Administrador -- (Gestionar donación)
+
+(Iniciar sesión) ..> (Registrarse): <include>
 
 @enduml

@@ -19,7 +19,7 @@ public class Deposito extends EstadoDeLaDonacion{
     return this.entidadAsignada != null;
   }
 
-  public  void cambiarEstadoDonacion(Donacion donacion){
+  public void cambiarEstadoDonacion(Donacion donacion){
     donacion.setEstado(new Vencida());
   }
 

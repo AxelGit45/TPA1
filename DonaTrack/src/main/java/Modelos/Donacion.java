@@ -2,6 +2,7 @@ package Modelos;
 
 import Enums.EstadoDelBien;
 import Enums.EstadoDonacion;
+import Errors.ErrorParametrosConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,7 @@ public class Donacion {
   private EstadoDonacion estadoDonacion;
 
   public Donacion(String nombreDonante, List<Bien> bienes, int id,String descripcionGeneral, EstadoDonacion estadoDonacion) {
+    validarConstructor(nombreDonante, bienes, id, descripcionGeneral, estadoDonacion);
     this.descripcionGeneral = descripcionGeneral;
     this.nombreDonante = nombreDonante;
     this.bienes = bienes;
@@ -36,4 +38,9 @@ public class Donacion {
     historialDeEstados.add(estadoParaAgregar);
   }
 
+  private void validarConstructor(String nombreDonante, List<Bien> bienes, int id,String descripcionGeneral, EstadoDonacion estadoDonacion) {
+    if(nombreDonante == null || bienes == null || id <= 0 || descripcionGeneral == null || estadoDonacion == null){
+      throw new ErrorParametrosConstructor("Faltan parámetros en el constructor.");
+    }
+  }
 }

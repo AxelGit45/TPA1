@@ -1,5 +1,6 @@
 package Modelos;
 
+import Errors.ErrorParametrosConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ public class Notificacion {
   @Getter
   private Boolean completada;
   public Notificacion(UsuarioDonante destinatario, String mensaje,MedioDeNotificacion medioDeNotificacion) {
+    validarConstructor(destinatario, mensaje, medioDeNotificacion);
     this.destinatario = destinatario;
     this.mensaje = mensaje;
     this.medioDeNotificacion = medioDeNotificacion;
@@ -23,5 +25,9 @@ public class Notificacion {
     //// supongo que fue  realizada con exito
     setCompletada(true);
   }
-
+  private void validarConstructor(UsuarioDonante destinatario, String mensaje, MedioDeNotificacion medioDeNotificacion) {
+    if (destinatario == null || mensaje == null || medioDeNotificacion == null) {
+      throw new ErrorParametrosConstructor("Faltan parámetros en el constructor.");
+    }
+  }
 }

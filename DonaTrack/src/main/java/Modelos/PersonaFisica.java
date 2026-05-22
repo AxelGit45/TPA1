@@ -1,9 +1,9 @@
 package Modelos;
 import Enums.MedioDeContacto;
+import Errors.ErrorParametrosConstructor;
 import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.IllegalArgumentException;
 
 @Getter
 public class PersonaFisica {
@@ -30,9 +30,9 @@ public class PersonaFisica {
     this.medioDeContactos = (medioDeContactos != null) ? medioDeContactos : new ArrayList<MedioDeContacto>();
   }
 
-  public void validarConstructor(String nombre, String apellido, int edad, int nroDocumento, String genero, String direccion, String email){
-    if (nombre == null || apellido == null || edad < 0 || nroDocumento == 0 || genero == null || direccion == null || email == null) {
-      throw new IllegalArgumentException("Faltan datos o son inválidos.");
+  private void validarConstructor(String nombre, String apellido, int edad, int nroDocumento, String genero, String direccion, String email){
+    if (nombre == null || apellido == null || edad <= 0 || nroDocumento == 0 || genero == null || direccion == null || email == null) {
+      throw new ErrorParametrosConstructor("Faltan parámetros en el constructor.");
     }
   }
 }
