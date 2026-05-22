@@ -23,13 +23,19 @@ class DonacionTest {
     donacionService = new DonacionService();  // sin Spring, a mano
 
     Bien arroz1 = new Bien("GalloOro - 1kg", "foto.jpg", 5, TipoCategoria.ALIMENTO, "arroz");
-    arroz1.setTipo(new Perecedero("GalloOro - 1 kg", "foto.jpg", 5, TipoCategoria.ALIMENTO, "arroz", "2025-12-01", Unidad.KILOGRAMOS));
+    arroz1.setTipo(new Perecedero("2025-12-01", Unidad.KILOGRAMOS));
+    //Bien arroz1 = new Bien("GalloOro - 1kg", "foto.jpg", 5, TipoCategoria.ALIMENTO, "arroz");
+    //arroz1.setTipo(new Perecedero("GalloOro - 1 kg", "foto.jpg", 5, TipoCategoria.ALIMENTO, "arroz", "2025-12-01", Unidad.KILOGRAMOS));
 
     Bien arroz2 = new Bien("Dos hermanos - 500g", "foto.jpg", 3, TipoCategoria.ALIMENTO, "arroz");
-    arroz2.setTipo(new Perecedero("Arroz 500g", "foto.jpg", 3, TipoCategoria.ALIMENTO, "arroz", "2025-12-01", Unidad.GRAMOS));
+    arroz2.setTipo(new Perecedero("2025-12-01", Unidad.GRAMOS));
+    //Bien arroz2 = new Bien("Dos hermanos - 500g", "foto.jpg", 3, TipoCategoria.ALIMENTO, "arroz");
+    //arroz2.setTipo(new Perecedero("Arroz 500g", "foto.jpg", 3, TipoCategoria.ALIMENTO, "arroz", "2025-12-01", Unidad.GRAMOS));
 
     Bien arroz3 = new Bien("Dos hermanos - 1kg", "foto.jpg", 2, TipoCategoria.ALIMENTO, "arroz");
-    arroz3.setTipo(new Perecedero("Dos hermanos - 1kg", "foto.jpg", 2, TipoCategoria.ALIMENTO, "arroz", "2026-06-01", Unidad.KILOGRAMOS));
+    arroz3.setTipo(new Perecedero("2026-06-01", Unidad.KILOGRAMOS));
+    //Bien arroz3 = new Bien("Dos hermanos - 1kg", "foto.jpg", 2, TipoCategoria.ALIMENTO, "arroz");
+    //arroz3.setTipo(new Perecedero("Dos hermanos - 1kg", "foto.jpg", 2, TipoCategoria.ALIMENTO, "arroz", "2026-06-01", Unidad.KILOGRAMOS));
 
     donacionOriginal = new Donacion("Juan", List.of(arroz1, arroz2, arroz3), 1, "", EstadoDonacion.ENDEPOSITO);
   }

@@ -86,7 +86,7 @@ class SMS {
 
 SMS ..|> MedioDeNotificacion
 
-class TipoDeBien {
+interface TipoDeBien {
     - estado: EstadoDelBien
 }
 

@@ -4,9 +4,9 @@ import Enums.EstadoDelBien;
 import Enums.TipoCategoria;
 import Errors.ErrorParametrosConstructor;
 
-public class TipoDeBien  {
-  private EstadoDelBien estado;
-
+public interface TipoDeBien  {
+  // private EstadoDelBien estado;
+  /*
   public TipoDeBien(EstadoDelBien estado) {
     validarConstructor(estado);
     this.estado = estado;
@@ -16,5 +16,5 @@ public class TipoDeBien  {
     if(estado == null){
       throw new ErrorParametrosConstructor("Faltan parámetros en el constructor.");
     }
-  }
+  }*/
 }
