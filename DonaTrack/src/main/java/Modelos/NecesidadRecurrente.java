@@ -13,7 +13,7 @@ public class NecesidadRecurrente extends Necesidad {
   private int cantidadRecibidad;
   private ComprobarFechaEstablecida periodoEstablecido;
 
-  public NecesidadRecurrente(SubCategoria categoria, String descripcion, int cantidadRequerida, ComprobarFechaEstablecida periodo) {
+  public NecesidadRecurrente(Bien categoria, String descripcion, int cantidadRequerida, ComprobarFechaEstablecida periodo) {
     super(categoria, descripcion);
     this.cantidadRequerida = cantidadRequerida;
     this.cantidadRecibidad = 0;

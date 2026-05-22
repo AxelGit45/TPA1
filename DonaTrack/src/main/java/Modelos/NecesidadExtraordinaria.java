@@ -3,7 +3,7 @@ package Modelos;
 public class NecesidadExtraordinaria extends Necesidad {
   private int cantidadRequeridad;
   private  int cantidadRecbidad;
-  public NecesidadExtraordinaria(int cantidadRequeridad, SubCategoria categoria, String descripcion) {
+  public NecesidadExtraordinaria(int cantidadRequeridad, Bien categoria, String descripcion) {
     super( categoria, descripcion);
     this.cantidadRecbidad =0;
     this.cantidadRequeridad = cantidadRequeridad;

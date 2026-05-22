@@ -226,13 +226,13 @@ class Entregada {
 Entregada --|> EstadoDeLaDonacion
 
 abstract Necesidad {
-    - categoria: SubCategoria
+    - categoria: Bien
     - descripcion: String
 
     necesidadSatisfecha(): boolean
 }
 
-Necesidad --> SubCategoria
+Necesidad --> Bien
 
 class NecesidadExtraordinaria {
     - cantidadRequerida: int
