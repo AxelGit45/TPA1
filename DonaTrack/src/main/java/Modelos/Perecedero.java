@@ -13,15 +13,7 @@ public class Perecedero implements TipoDeBien{
     this.fechaVencimiento = fechaVencimiento;
     this.unidad = unidad;
   }
-
-  /*
-  public Perecedero(String descripcion, String stringFoto, int cantidad, TipoCategoria categoria, String subcategoria, String fechaVencimiento, Unidad unidad) {
-    super(descripcion, stringFoto, cantidad, categoria, subcategoria);
-    validarConstructor(fechaVencimiento, unidad);
-    this.fechaVencimiento = fechaVencimiento;
-    this.unidad = unidad;
-  }*/
-
+  
   public String getFechaVencimiento() {
     return fechaVencimiento;
   }
