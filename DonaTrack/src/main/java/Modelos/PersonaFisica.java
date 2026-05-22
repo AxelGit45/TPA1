@@ -15,6 +15,7 @@ public class PersonaFisica {
   private String genero;
   private String direccion;
   private String email;
+  private  UsuarioDonante user;
   private List<MedioDeContacto> medioDeContactos;
 
   public PersonaFisica(String nombre, String apellido, int edad, int nroDocumento, String genero, String direccion, String email, List<MedioDeContacto> medioDeContactos) {

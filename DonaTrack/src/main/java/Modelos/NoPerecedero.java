@@ -11,8 +11,4 @@ public class NoPerecedero extends TipoDeBien{
     this.estado = estado;
   }
 
-  public EstadoDeUso getEstado() {
-    return estado;
-  }
-
 }

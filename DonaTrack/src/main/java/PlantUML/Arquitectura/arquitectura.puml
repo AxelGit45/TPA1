@@ -1,0 +1,37 @@
+@startuml
+title Diagrama de Despliegue - Sistema de Donaciones
+
+node "Computadora Personal" {
+    node "Navegador Web"
+}
+node "FrontEnd Presentacion" {
+    node "Servidor Frontend" {
+        component "App Frontend"
+    }
+}
+node "Dominio" {
+    node "Servidor Gestión de Donantes, Donaciones y Entidades Beneficiarias" {
+        component "Servicio de Gestión de Donantes, Donaciones y Entidades Beneficiarias"
+    }
+    node "Servidor Estados de las donaciones trazabilidad" {
+        component "Servicio de Logística y Gestión de Camiones y Entregas"
+    }
+    node "Servidor de Notificaciones" {
+        component "Servicio de Notificaciones"
+    }
+}
+node "Persistencia" {
+    node "Servidor de Base de Datos" {
+        database "Motor de Base de Datos (PostgresSQL)"
+    }
+}
+"Computadora Personal" --> "Servidor Frontend" : HTTPS
+"Servidor Frontend" --> "Servidor Gestión de Donantes, Donaciones y Entidades Beneficiarias" : HTTP - API REST
+"Servidor Frontend" --> "Servidor Estados de las donaciones trazabilidad" : HTTP - API REST
+"Servidor Frontend" --> "Servidor de Notificaciones" : HTTP - API REST
+
+"Servidor Gestión de Donantes, Donaciones y Entidades Beneficiarias" --> "Servidor de Base de Datos" : Conexion URL
+"Servidor Estados de las donaciones trazabilidad" --> "Servidor de Base de Datos" : Conexion URL
+"Servidor de Notificaciones" --> "Servidor de Base de Datos" : Conexion URL
+
+@enduml

@@ -1,0 +1,275 @@
+@startuml
+
+class PersonaJuridica{
+
+- razonSocial:String
+- rubro: String
+- tipo: String
+- email: String
+- user:UsuarioDonante
+- representantes : List<PersonaFisica>
+}
+PersonaJuridica --> UsuarioDonante
+PersonaJuridica --> TipoOrganizacion
+PersonaJuridica --> "*" PersonaFisica
+
+enum TipoOrganizacion {
+    GUBERNAMENTAL,
+    ONG,
+    EMPRESA,
+    INSTITUCION
+}
+
+class PersonaFisica{
+- nombre : String
+- apellido : String
+- edad : int
+- nroDocumento: int
+- genero: String
+- direccion: String
+- email: String
+- user:UsuarioDonante
+- medioDeContacto: List<MedioDeContacto>
+
++ validarConstructor()
+}
+
+PersonaFisica --> UsuarioDonante
+PersonaFisica --> "*" MedioDeContacto
+
+enum MedioDeContacto {
+    TELEFONO,
+    EMAIL,
+    WHATSAPP
+}
+
+class PeriodoSemanal {
+cumplePeriodo()
+}
+
+class Perecedero{
+- fechaDeVencimiento: String
+- unidad: int
+}
+
+class Notificacion{
+-destinatario: UsuarioDonante
+-mensaje:String
+-medioDeNotificacion: MedioDeNotificacion
+-completada:Boolean
++enviarMensaje()
+}
+
+Notificacion --> UsuarioDonante
+Notificacion --> MedioDeNotificacion
+
+TipoDeBien <|-- Perecedero
+
+ComprobarFechaEstablecida <|.. PeriodoSemanal
+
+class ReadyEntrega {
+    - camionAsignado: boolean
+
+    + ReadyEntrega(EntidadBeneficiaria entidadAsignada, LocalDate fechaLimiteDeEntrega)
+    + public void cambiarEstado(Donacion donacion)
+    + cumpleCondicion()
+}
+
+ReadyEntrega --|> EstadoDeLaDonacion
+
+class SMS {
+    + EnviarMensaje(UsuarioDonante destinatario, String mensaje)
+}
+SMS ..|> MedioDeNotificacion
+
+class TipoDeBien {
+- estado: EstadoDelBien
+}
+
+TipoDeBien --> EstadoDelBien
+
+class Traslado {
+    - entregado: boolean
+    + cambiarEstado()
+    + cumpleFecha()
+    + cumpleCondicion()
+}
+
+Traslado --|> EstadoDeLaDonacion
+
+class UsuarioDonante{
+    -id: int
+    -nombreDeUsuario: String
+    -donaciones: List<Donacion>
+}
+
+UsuarioDonante --> "*" Donacion
+
+class Vencida {
+    + cambiarEstado(Donacion donacion)
+    + cumpleCondicion()
+}
+
+Vencida --|> EstadoDeLaDonacion
+
+class WhatsApp{
+    + EnviarMensaje(UsuarioDonante destinatario, String mensaje)
+}
+
+WhatsApp ..|> MedioDeNotificacion
+
+class Donacion{
+-nombreDonante :String
+-bienes[]:Bien
+-id : int
+-decripcionGeneral:String
+-estado: EstadoDeLaDonacion
+-historialDeEstados[]: EstadoDeLaDonacion
+-realizada : Boolean
+-estadoDonacion EstadoDonacion
++agregarEstadoAHistorial():void
+}
+
+Donacion --> Bien
+Donacion --> "*" EstadoDeLaDonacion
+
+class Asignada {
+    - ruta[]: String
+    cambiarEstado(donacion: Donacion): void
+    cumpleCondicion(): boolean
+}
+Asignada --|> EstadoDeLaDonacion
+
+
+class Bien {
+    - descripcion: String
+    - stringFoto: String
+    - cantidad: int
+    - categoria: TipoCategoria
+    - subcategoria String
+    - tipo TipoDeBien
+}
+
+Bien --> TipoCategoria
+Bien --> TipoDeBien
+
+interface ComprobarFechaEstablecida {
+
+    cumplePeriodo(inicio: LocalDate, diaActual: LocalDate): boolean
+}
+
+class Deposito {
+
+    cambiarEstado(donacion: Donacion): void
+    cumpleCondicion(): boolean
+}
+
+Deposito --|> EstadoDeLaDonacion
+
+
+interface MedioDeNotificacion{
++EnviarMensaje(UsuarioDonante destinatario, String mensaje)
+}
+
+MedioDeNotificacion ..> UsuarioDonante
+
+
+class EntregaFallida {
+    - justificacion: String
+
+    cambiarEstado(donacion: Donacion): void
+    cumpleCondicion(): boolean
+    registrarJustificacion(justificacion: String): String
+}
+
+EntregaFallida --|> EstadoDeLaDonacion
+
+abstract EstadoDeLaDonacion {
+    - entidadAsignada: EntidadBeneficiaria
+    - fechaLimiteDeEntrega: LocalDate
+
+    cambiarEstado(donacion: Donacion): void
+    cumpleCondicion(): boolean
+}
+
+EstadoDeLaDonacion ..> Donacion
+EstadoDeLaDonacion --> EntidadBeneficiaria
+
+class Importacion {
+    - usuariosSistema[]: UsuarioDonante
+    - personaFisicas[]: PersonaFisica
+    - personaJuridicas[]: PersonaJuridica
+
+    Importacion()
+}
+
+class Email{
++EnviarMensaje(UsuarioDonante usuarioDonante, String mensaje)
+}
+Email ..|> MedioDeNotificacion
+
+class EntidadBeneficiaria{
+ -razonSocial: String
+ -direccionCompleta: String
+ -telefono:Int
+ -correoDeRepresentantes:String
+ -necesidadesMateriales[]:Necesidad
+}
+
+EntidadBeneficiaria -->"*" Necesidad
+
+class Entregada {
+ +cambiarEstado():Void
+ +cumpleCondicion():Boolean
+}
+
+Entregada --|> EstadoDeLaDonacion
+
+abstract Necesidad {
+    - categoria: SubCategoria
+    - descripcion: String
+
+    necesidadSatisfecha(): boolean
+}
+
+Necesidad --> SubCategoria
+
+class NecesidadExtraordinaria {
+    - cantidadRequerida: int
+    - cantidadRecibida: int
+
+    + registrarItems(cantidad: int): void
+    + necesidadSatisfecha(): boolean
+}
+
+NecesidadExtraordinaria --|> Necesidad
+
+class NecesidadRecurrente {
+    - fechaInicioPedido: LocalDate
+    - cantidadRequerida: int
+    - cantidadRecibida: int
+    - periodoEstablecido: ComprobarFechaEstablecida
+
+    + registrarItems(cantidad: int): void
+    + verificarCantidadNecesaria(): boolean
+    + renovarPeriodo(): void
+    + verificarPeriodo(): boolean
+    + necesidadSatisfecha(): boolean
+}
+
+NecesidadRecurrente --|> Necesidad
+NecesidadRecurrente --> ComprobarFechaEstablecida
+
+class NoPerecedero {
+    - estado: EstadoDeUso
+}
+
+NoPerecedero --|> TipoDeBien
+NoPerecedero --> EstadoDeUso
+
+enum EstadoDeUso{
+    USADO,
+    NUEVO
+}
+
+@enduml

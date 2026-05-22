@@ -12,7 +12,6 @@ public class Perecedero extends TipoDeBien{
     this.unidad = unidad;
   }
 
-
   public String getFechaVencimiento() {
     return fechaVencimiento;
   }
@@ -28,4 +27,5 @@ public class Perecedero extends TipoDeBien{
   public void setUnidad(int unidad) {
     this.unidad = unidad;
   }
+  
 }

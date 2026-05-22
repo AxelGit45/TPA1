@@ -12,20 +12,5 @@ public class UsuarioDonante {
     this.nombreDeUsuario = nombreDeUsuario;
     this.donaciones = donaciones;
   }
-
-  public String getNombreDeUsuario() {
-    return nombreDeUsuario;
-  }
-
-  public void setNombreDeUsuario(String nombreDeUsuario) {
-    this.nombreDeUsuario = nombreDeUsuario;
-  }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
+  
 }

@@ -1,0 +1,16 @@
+@startuml
+'FALTA TERMINAR'
+
+actor Donante
+actor EntidadBeneficiaria
+
+(Realizar donación)
+(Registrarse)
+(Recibir donación)
+
+Donante -- (Realizar donación)
+Donante -- (Registrarse)
+EntidadBeneficiaria -- (Registrarse)
+EntidadBeneficiaria -- (Recibir donación)
+
+@enduml

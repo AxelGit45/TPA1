@@ -1,11 +1,12 @@
 package Modelos;
 
 import Enums.EstadoDelBien;
+import Enums.TipoCategoria;
 
 public class TipoDeBien  {
   private EstadoDelBien estado;
 
-  private EstadoDelBien getEstadoDelBien(){
-    return this.estado;
+  public TipoDeBien(String descripcion, String stringFoto, int cantidad, TipoCategoria categoria, String subcategoria) {
   }
+
 }
