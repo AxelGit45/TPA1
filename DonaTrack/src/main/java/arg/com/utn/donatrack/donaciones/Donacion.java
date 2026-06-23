@@ -2,6 +2,8 @@ package arg.com.utn.donatrack.donaciones;
 
 import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.estados.EstadoDonacion;
+import arg.com.utn.donatrack.logistica.Camion;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class Donacion {
     this.cambiarEstado(estadoInicial);
   }
 
-  void cambiarEstado(EstadoDonacion nuevoEstado){
+  public void cambiarEstado(EstadoDonacion nuevoEstado){
 
     this.estadoDonacion = nuevoEstado;
     this.historialDeCambiosDeEstado.add(nuevoEstado);
