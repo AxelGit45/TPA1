@@ -27,6 +27,11 @@ public class EntidadBeneficiaria {
     this.necesidades = necesidades;
 
   }
+  public List<Necesidad> getNecesidades(){
+    return necesidades;
+  }
+
+  public
 
   public void confirmarRecepcionDeEntrega(Entrega entrega, Camion camionEntregador){
     entrega.getDonaciones().forEach(donacion -> donacion.cambiarEstado(new Entregada()));

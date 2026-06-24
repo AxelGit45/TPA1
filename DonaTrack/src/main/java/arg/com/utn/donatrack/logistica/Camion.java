@@ -19,6 +19,10 @@ public class Camion {
     this.capacidadDeCarga = capacidadDeCarga;
   }
 
-
-
+  /*
+  {
+    camion,
+    la lista de destinos
+  }
+  */
 }

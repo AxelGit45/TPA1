@@ -12,9 +12,10 @@ public class Bien {
   private Unidad unidad;
   private Date fechaVencimiento;
   private EstadoUso estadoUso;
+  private boolean perecedero;
 
   public Bien(String descripcion, String foto, Subcategoria subcategoria, Integer cantidad, Unidad unidad,
-              Date fechaVencimiento, EstadoUso estadoUso){
+              Date fechaVencimiento, EstadoUso estadoUso, boolean perecedero){
 
     this.descripcion = descripcion;
     this.foto = foto;
@@ -23,7 +24,11 @@ public class Bien {
     this.unidad = unidad;
     this.fechaVencimiento = fechaVencimiento;
     this.estadoUso = estadoUso;
+    this.perecedero= perecedero;
 
+  }
+  public boolean esPerecedero(){
+    return perecedero;
   }
 
 }
