@@ -1,5 +1,7 @@
 package arg.com.utn.donatrack.personas.contactos;
 
+import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
+
 public class Mail extends Contacto{
 
   private String direccion;
@@ -13,7 +15,7 @@ public class Mail extends Contacto{
   @Override
   public void contactar(String mensaje){
 
-    //mailAPI.contactar(direccion, mensaje);
+    EmailAdapter.getInstancia().enviarCorreo(this.direccion, "Notificación de DonaTrack", mensaje);
 
   }
 

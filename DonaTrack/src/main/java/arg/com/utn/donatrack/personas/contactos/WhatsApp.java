@@ -1,10 +1,12 @@
 package arg.com.utn.donatrack.personas.contactos;
 
+import arg.com.utn.donatrack.notificaciones.adapters.TwilioAdapter;
+
 public class WhatsApp extends Contacto{
 
-  private Integer numero;
+  private String numero;
 
-  public WhatsApp(Integer numero){
+  public WhatsApp(String numero){
 
     this.numero = numero;
 
@@ -13,7 +15,7 @@ public class WhatsApp extends Contacto{
   @Override
   public void contactar(String mensaje){
 
-    //whatsAppAPI.contactar(numero, mensaje);
+    TwilioAdapter.getInstancia().enviarWhatsApp(this.numero, mensaje);
 
   }
 

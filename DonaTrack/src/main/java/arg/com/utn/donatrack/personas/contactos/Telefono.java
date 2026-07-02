@@ -1,10 +1,12 @@
 package arg.com.utn.donatrack.personas.contactos;
 
+import arg.com.utn.donatrack.notificaciones.adapters.TwilioAdapter;
+
 public class Telefono extends Contacto{
 
-  private Integer numero;
+  private String numero;
 
-  public Telefono(Integer numero){
+  public Telefono(String numero){
 
     this.numero = numero;
 
@@ -13,7 +15,7 @@ public class Telefono extends Contacto{
   @Override
   public void contactar(String mensaje){
 
-    //telefonoAPI.contactar(numero, mensaje);
+    TwilioAdapter.getInstancia().enviarSms(this.numero, mensaje);
 
   }
 
