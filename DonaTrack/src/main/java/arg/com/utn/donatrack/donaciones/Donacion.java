@@ -29,6 +29,13 @@ public class Donacion {
 
   }
 
+  /*
+  method cambiarEstadoAFallida(String justificacion){
+    cambiarEstado(enum Fallida),
+    this.justificacion = justificacion
+  }
+  */
+
   public List<Bien> getBienes(){
     return bienes;
   }
@@ -56,4 +63,7 @@ public class Donacion {
     //return lista de listas (de EntidadBeneficiaria);
   }
 
+  public Estados getEstado() {
+    return estadoDonacion;
+  }
 }
