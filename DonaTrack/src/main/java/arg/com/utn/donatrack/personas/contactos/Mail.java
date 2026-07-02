@@ -13,7 +13,7 @@ public class Mail extends Contacto{
   @Override
   public void contactar(String mensaje){
 
-    mailAPI.contactar(direccion, mensaje);
+    //mailAPI.contactar(direccion, mensaje);
 
   }
 

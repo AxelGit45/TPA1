@@ -13,7 +13,7 @@ public class Telefono extends Contacto{
   @Override
   public void contactar(String mensaje){
 
-    telefonoAPI.contactar(numero, mensaje);
+    //telefonoAPI.contactar(numero, mensaje);
 
   }
 

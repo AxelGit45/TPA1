@@ -13,7 +13,7 @@ public class WhatsApp extends Contacto{
   @Override
   public void contactar(String mensaje){
 
-    whatsAppAPI.contactar(numero, mensaje);
+    //whatsAppAPI.contactar(numero, mensaje);
 
   }
 

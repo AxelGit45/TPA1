@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack.entidadesBeneficiarias;
 
+import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import java.util.List;
 
@@ -17,6 +18,10 @@ public abstract class Necesidad {
     this.descripcion = descripcion;
     this.satisfecha = satisfecha;
 
+  }
+
+  public boolean esSatisfechaPor(Bien bien){
+    return necesidad == bien.getSubcategoria();
   }
 
 

@@ -14,6 +14,9 @@ public class NecesidadExtraordinaria extends Necesidad{
     this.recibidos = recibidos;
 
   }
+  public Subcategoria getSubcategoria(){
+    return necesidad;
+  }
 
   public void recibir(Integer recibido){
 

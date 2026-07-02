@@ -16,6 +16,11 @@ public class EntidadBeneficiaria {
   private List<Mail> correos;
   private List<Necesidad> necesidades;
   private List<Camion> historialDeCamiones;
+  private int donacionesRecibidasUltimoTrimestre; //POR AHORA ES ASI
+  //SERIA MEJOR CREAR UN OBJETO QUE CUENTE LAS DONACIONES Y
+  //AL OBJETO PREGUNTARLE LAS DONACIONES DEL ULTIMO TRIMESTRE, OTRA CLASE.
+  //INDEPENDIENTEMENTE DE CON QUE METODO OBTENGA ESA CANTIDAD LA ESTRUCTURA DEL ALGORITMO ES LA MISMA
+  //SE DELEGA TODO EN EL METODO DE LA ENTIDAD
 
   public EntidadBeneficiaria(String razonSocial, String direccion, Integer telefono,
                              List<Mail> correos, List<Necesidad> necesidades){
@@ -31,13 +36,22 @@ public class EntidadBeneficiaria {
     return necesidades;
   }
 
-  public
+  public int getDonacionesRecibidasUltimoTrimestre(){return donacionesRecibidasUltimoTrimestre;}
 
+  public int cuantoNecesita(Donacion donacion){
+
+    int puntaje = necesidades.stream().filter(necesidad -> donacion.contieneBienPara(necesidad)).toList().size();
+
+    return puntaje;
+  }
+
+  //public
+/*
   public void confirmarRecepcionDeEntrega(Entrega entrega, Camion camionEntregador){
     entrega.getDonaciones().forEach(donacion -> donacion.cambiarEstado(new Entregada()));
     historialDeCamiones.add(camionEntregador); // REVISAR !!!!!!!
   }
-
+*/
   public void cargarFotosDeEntrega(List<String> urlFotos){
     // TO DO
   }

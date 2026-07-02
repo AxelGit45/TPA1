@@ -31,4 +31,6 @@ public class Bien {
     return perecedero;
   }
 
+  public Subcategoria getSubcategoria(){return subcategoria;}
+
 }

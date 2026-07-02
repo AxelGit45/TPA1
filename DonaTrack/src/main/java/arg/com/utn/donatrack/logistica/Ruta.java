@@ -13,13 +13,13 @@ public class Ruta {
       this.camion = camion;
       this.entregas = entregas;
     }
-
+/*
     public void Iniciarse(){
       entregas.stream()
           .flatMap(entrega -> entrega.getDonaciones().stream())
           .forEach(donacion -> donacion.cambiarEstado(new EnTraslado(this.getCamion())));
     }
-
+*/
   private Camion getCamion() {
       return camion;
   }

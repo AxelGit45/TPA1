@@ -18,6 +18,9 @@ public class NecesidadRecurrente extends Necesidad{
     this.fechaLimite = fechaLimite;
 
   }
+  public Subcategoria getSubcategoria(){
+    return necesidad;
+  }
 
   public void recibir(Integer recibido){
 
