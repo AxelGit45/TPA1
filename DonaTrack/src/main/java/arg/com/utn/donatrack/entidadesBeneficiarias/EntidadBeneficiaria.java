@@ -1,11 +1,15 @@
 package arg.com.utn.donatrack.entidadesBeneficiarias;
 
 import arg.com.utn.donatrack.donaciones.Donacion;
+import arg.com.utn.donatrack.donaciones.Estados;
 import arg.com.utn.donatrack.estados.EntregaFallida;
 import arg.com.utn.donatrack.estados.Entregada;
 import arg.com.utn.donatrack.logistica.Camion;
 import arg.com.utn.donatrack.logistica.Entrega;
+import arg.com.utn.donatrack.logistica.EstadoEntrega;
 import arg.com.utn.donatrack.personas.contactos.Mail;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public class EntidadBeneficiaria {
@@ -15,7 +19,8 @@ public class EntidadBeneficiaria {
   private Integer telefono;
   private List<Mail> correos;
   private List<Necesidad> necesidades;
-  private List<Camion> historialDeCamiones;
+  // private List<Camion> historialDeCamiones;
+  private List<Entrega> peticionesEntregadas;
   private int donacionesRecibidasUltimoTrimestre; //POR AHORA ES ASI
   //SERIA MEJOR CREAR UN OBJETO QUE CUENTE LAS DONACIONES Y
   //AL OBJETO PREGUNTARLE LAS DONACIONES DEL ULTIMO TRIMESTRE, OTRA CLASE.
@@ -45,19 +50,27 @@ public class EntidadBeneficiaria {
     return puntaje;
   }
 
-  //public
-/*
   public void confirmarRecepcionDeEntrega(Entrega entrega, Camion camionEntregador){
-    entrega.getDonaciones().forEach(donacion -> donacion.cambiarEstado(new Entregada()));
-    historialDeCamiones.add(camionEntregador); // REVISAR !!!!!!!
-  }
-*/
-  public void cargarFotosDeEntrega(List<String> urlFotos){
-    // TO DO
+    entrega.cambiarEstado(EstadoEntrega.ENTREGADA);
+    // historialDeCamiones.add(camionEntregador); // REVISAR !!!!!!!
+    entrega.registrarCamion(camionEntregador);
   }
 
-  public void informarNoRecepcion(Entrega entrega){
-    // entrega.getDonaciones().forEach(donacion -> donacion.cambiarEstado(new EntregaFallida(justificacion)));
-    // FALTA DE DÓNDE SACAR LA JUSTIFICACIÓN
+  public void cargarFotosDeEntrega(List<String> urlFotos) {
+    // TODO
+  }
+
+  public void informarNoRecepcion(Entrega entrega) {
+    if(this.entregaTardia(entrega)) {
+      entrega.cambiarEstado(EstadoEntrega.NORECIBIDA);
+      entrega.getDonaciones().forEach(donacion -> donacion.cambiarEstado(Estados.ENTREGAFALLIDA));
+    } // Si no se cumple debería lanzar un error porque la fecha de hoy
+    // aún no es posterior a la fecha de entrega esperada.
+    // "EL CASO SERÁ REVISADO POR LAS PERSONAS ADMINISTRADORAS"
+  }
+
+  public boolean entregaTardia(Entrega entrega) {
+    LocalDate fechaDeHoy = LocalDate.now();
+    return entrega.getFechaDeEntregaEsperada().isAfter(fechaDeHoy);
   }
 }
