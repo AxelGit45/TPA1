@@ -15,7 +15,7 @@ public class Mail extends Contacto{
   @Override
   public void contactar(String mensaje){
 
-    EmailAdapter.getInstancia().enviarCorreo(this.direccion, "Notificación de DonaTrack", mensaje);
+    //EmailAdapter.getInstancia().enviarCorreo(this.direccion, "Notificación de DonaTrack", mensaje);
 
   }
 
