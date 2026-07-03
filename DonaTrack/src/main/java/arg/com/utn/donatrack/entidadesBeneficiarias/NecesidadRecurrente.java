@@ -10,7 +10,7 @@ public class NecesidadRecurrente extends Necesidad{
   private ChronoLocalDate fechaLimite;
 
   public NecesidadRecurrente(Long id, Subcategoria necesidad, Integer cantidadNecesitada, String descripcion,
-                             Boolean satisfecha, Integer recibidos, ChronoLocalDate fechaLimite){
+                             Boolean satisfecha, Integer recibidos, LocalDate fechaLimite){
 
     super(id,necesidad, cantidadNecesitada, descripcion, satisfecha);
     this.recibidos = recibidos;

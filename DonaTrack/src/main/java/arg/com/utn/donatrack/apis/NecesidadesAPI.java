@@ -190,7 +190,7 @@ public class NecesidadesAPI {
     return Response.status(Response.Status.NOT_FOUND).entity(error).build();
   }
 
-  // ==================== DTOs DE REQUEST ====================
+  // Request
 
   public static class NecesidadRecurrenteRequest {
     public Subcategoria necesidad;
@@ -198,7 +198,7 @@ public class NecesidadesAPI {
     public String descripcion;
     public Boolean satisfecha;
     public Integer recibidos;
-    public ChronoLocalDate fechaLimite;
+    public java.time.LocalDate fechaLimite;
   }
 
   public static class NecesidadExtraordinariaRequest {
@@ -238,9 +238,26 @@ public class NecesidadesAPI {
   o GET http://localhost:8080/necesidades/extraordinarias/1
   o DELETE http://localhost:8080/necesidades/extraordinarias/1
 
-  o POST
-  o GET
-  o GET
-  o DELETE
+  o POST http://localhost:8080/necesidades/recurrentes
+
+{
+  "necesidad": {
+    "nombre": "ALIMENTOS_NO_PERECEDEROS",
+    "categoriaPadre": {
+      "nombre": "ALIMENTOS"
+    },
+    "exigeFechaVencimiento": true,
+    "exigeEstadoUso": false
+  },
+  "cantidadNecesitada": 20,
+  "descripcion": "Reposición mensual de conservas",
+  "recibidos": 0,
+  "fechaLimite": "2026-12-31"
+}
+
+
+  o GET http://localhost:8080/necesidades/recurrentes
+  o GET http://localhost:8080/necesidades/recurrentes/1
+  o DELETE http://localhost:8080/necesidades/recurrentes/1
 
  */
