@@ -1,6 +1,5 @@
 package arg.com.utn.donatrack.donaciones;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Bien {
@@ -13,6 +12,8 @@ public class Bien {
   private Date fechaVencimiento;
   private EstadoUso estadoUso;
   private boolean perecedero;
+
+  public Bien(){}
 
   public Bien(String descripcion, String foto, Subcategoria subcategoria, Integer cantidad, Unidad unidad,
               Date fechaVencimiento, EstadoUso estadoUso, boolean perecedero){
@@ -33,4 +34,64 @@ public class Bien {
 
   public Subcategoria getSubcategoria(){return subcategoria;}
 
+
+  public boolean isPerecedero() {
+    return perecedero;
+  }
+
+  public void setPerecedero(boolean perecedero) {
+    this.perecedero = perecedero;
+  }
+
+  public String getDescripcion() {
+    return descripcion;
+  }
+
+  public void setDescripcion(String descripcion) {
+    this.descripcion = descripcion;
+  }
+
+  public String getFoto() {
+    return foto;
+  }
+
+  public void setFoto(String foto) {
+    this.foto = foto;
+  }
+
+  public void setSubcategoria(Subcategoria subcategoria) {
+    this.subcategoria = subcategoria;
+  }
+
+  public Integer getCantidad() {
+    return cantidad;
+  }
+
+  public void setCantidad(Integer cantidad) {
+    this.cantidad = cantidad;
+  }
+
+  public Unidad getUnidad() {
+    return unidad;
+  }
+
+  public void setUnidad(Unidad unidad) {
+    this.unidad = unidad;
+  }
+
+  public Date getFechaVencimiento() {
+    return fechaVencimiento;
+  }
+
+  public void setFechaVencimiento(Date fechaVencimiento) {
+    this.fechaVencimiento = fechaVencimiento;
+  }
+
+  public EstadoUso getEstadoUso() {
+    return estadoUso;
+  }
+
+  public void setEstadoUso(EstadoUso estadoUso) {
+    this.estadoUso = estadoUso;
+  }
 }

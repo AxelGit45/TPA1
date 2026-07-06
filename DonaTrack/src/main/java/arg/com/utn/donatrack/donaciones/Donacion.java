@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Donacion {
 
-
+  private Long id;
   private List<Bien> bienes;
   private Estados estadoDonacion;
   private List<Estados> historialDeCambiosDeEstado;
@@ -15,6 +15,16 @@ public class Donacion {
 
   public Donacion(Bien bien /*List<Bien> bienes*/){
     //this.bienes = bienes;
+    this.historialDeCambiosDeEstado = new ArrayList<>();
+
+    Estados estadoInicial = Estados.ENDEPOSITO;
+
+    this.cambiarEstado(estadoInicial);
+  }
+
+
+  public Donacion(List<Bien> bienes){
+    this.bienes = bienes;
     this.historialDeCambiosDeEstado = new ArrayList<>();
 
     Estados estadoInicial = Estados.ENDEPOSITO;
@@ -44,7 +54,7 @@ public class Donacion {
     return bienes.stream().anyMatch(necesidad::esSatisfechaPor);
   }
 
-//METODO PARA QUE UNA DONACION REALICE EL PROCESO DE MATCHMAKING
+  //METODO PARA QUE UNA DONACION REALICE EL PROCESO DE MATCHMAKING
   public void matchmakin(List<EntidadBeneficiaria> entidades){  //BIEN
     if (estadoDonacion == Estados.ENDEPOSITO){
       //ACA SE CREA EL RESULTADO DEL MATCHMAKING
@@ -65,5 +75,18 @@ public class Donacion {
 
   public Estados getEstado() {
     return estadoDonacion;
+  }
+
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public List<Estados> getHistorialDeCambiosDeEstado() {
+    return historialDeCambiosDeEstado;
   }
 }

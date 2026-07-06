@@ -19,4 +19,11 @@ public class WhatsApp extends Contacto{
 
   }
 
+  public String getNumero() {
+    return numero;
+  }
+
+  public void setNumero(String numero) {
+    this.numero = numero;
+  }
 }

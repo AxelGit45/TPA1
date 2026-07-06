@@ -14,6 +14,7 @@ import java.util.List;
 
 public class EntidadBeneficiaria {
 
+  private Long id;
   private String razonSocial;
   private String direccion;
   private Integer telefono;
@@ -26,6 +27,8 @@ public class EntidadBeneficiaria {
   //AL OBJETO PREGUNTARLE LAS DONACIONES DEL ULTIMO TRIMESTRE, OTRA CLASE.
   //INDEPENDIENTEMENTE DE CON QUE METODO OBTENGA ESA CANTIDAD LA ESTRUCTURA DEL ALGORITMO ES LA MISMA
   //SE DELEGA TODO EN EL METODO DE LA ENTIDAD
+
+  public EntidadBeneficiaria(){}
 
   public EntidadBeneficiaria(String razonSocial, String direccion, Integer telefono,
                              List<Mail> correos, List<Necesidad> necesidades){
@@ -42,6 +45,32 @@ public class EntidadBeneficiaria {
   }
 
   public int getDonacionesRecibidasUltimoTrimestre(){return donacionesRecibidasUltimoTrimestre;}
+
+  // TODO: agregados id + getters para exponer esta clase por la API REST
+  // (Jackson no serializa sin getters, y necesitamos id para las rutas /{id})
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getRazonSocial() {
+    return razonSocial;
+  }
+
+  public String getDireccion() {
+    return direccion;
+  }
+
+  public Integer getTelefono() {
+    return telefono;
+  }
+
+  public List<Mail> getCorreos() {
+    return correos;
+  }
 
   public int cuantoNecesita(Donacion donacion){
 

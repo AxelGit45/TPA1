@@ -5,17 +5,27 @@ import java.util.List;
 
 public abstract class Persona {
 
+  protected Long id;
   protected List<Contacto> contactos;
 
   public void ingresarDonacion(){}
 
   public Contacto obtenerMedio(Contacto contactoAObtener){
-
     return this.contactos.stream()
         .filter(contacto -> contacto.equals(contactoAObtener))
         .findFirst()
         .orElse(null);
-
   }
 
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public List<Contacto> getContactos() {
+    return contactos;
+  }
 }

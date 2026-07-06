@@ -6,4 +6,5 @@ public abstract class Contacto {
 
   public abstract void contactar(String mensaje);
 
+
 }
