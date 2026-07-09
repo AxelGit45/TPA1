@@ -7,12 +7,22 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Entrega {
+  private Long id;
   private String direccionEntidadBeneficiaria;
   private List<Donacion> donacionesAEntregar;
   private EstadoEntrega estadoEntrega;
   private Camion camionQueLaEntrego;
   private LocalDate fechaDeEntregaEsperada;
 
+  public Entrega() {
+  }
+  public Entrega(Long id, String direccionEntidadBeneficiaria, LocalDate fechaDeEntregaEsperada) {
+    this.id = id;
+    this.direccionEntidadBeneficiaria = direccionEntidadBeneficiaria;
+    this.fechaDeEntregaEsperada = fechaDeEntregaEsperada;
+    this.estadoEntrega = EstadoEntrega.PENDIENTE;
+  }
+  public Long getId() { return id; }
   public List<Donacion> getDonaciones() {
     return this.donacionesAEntregar;
   }
@@ -43,4 +53,14 @@ public class Entrega {
   public boolean lasDonacionesEstanEnDeposito(){ // ¿Esta validación va? o, como lo hace un administrador, ¿ya se da por hecho?
     return donacionesAEntregar.stream().allMatch(donacion -> donacion.getEstado() == Estados.ENDEPOSITO);
   }
+  public String getDireccionEntidadBeneficiaria() {return direccionEntidadBeneficiaria;}
+  public List<Donacion> getDonacionesAEntregar() {return donacionesAEntregar;}
+  public EstadoEntrega getEstadoEntrega() {return estadoEntrega;}
+  public Camion getCamionQueLaEntrego() {return camionQueLaEntrego;}
+
+  public void setDireccionEntidadBeneficiaria(String direccionEntidadBeneficiaria) { this.direccionEntidadBeneficiaria = direccionEntidadBeneficiaria; }
+  public void setDonacionesAEntregar(List<Donacion> donacionesAEntregar) { this.donacionesAEntregar = donacionesAEntregar; }
+  public void setEstadoEntrega(EstadoEntrega estadoEntrega) { this.estadoEntrega = estadoEntrega; }
+  public void setCamionQueLaEntrego(Camion camionQueLaEntrego) { this.camionQueLaEntrego = camionQueLaEntrego; }
+  public void setFechaDeEntregaEsperada(LocalDate fechaDeEntregaEsperada) { this.fechaDeEntregaEsperada = fechaDeEntregaEsperada; }
 }

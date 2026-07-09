@@ -11,7 +11,8 @@ public class Camion {
     private Integer altura;
     private Integer capacidadDeCarga;
     private List<Bien> bienesTransportados;
-
+  public Camion() {
+  }
   public Camion(String patente, Integer volumen, Integer altura, Integer capacidadDeCarga) {
     this.patente = patente;
     this.volumen = volumen;
@@ -25,4 +26,15 @@ public class Camion {
     la lista de destinos
   }
   */
+  public String getPatente() {return patente;}
+  public Integer getVolumen() {return volumen;}
+  public Integer getAltura() {return altura;}
+  public Integer getCapacidadDeCarga() {return capacidadDeCarga;}
+  public List<Bien> getBienesTransportados() {return bienesTransportados;}
+
+  public void setPatente(String patente) { this.patente = patente; }
+  public void setVolumen(Integer volumen) { this.volumen = volumen; }
+  public void setAltura(Integer altura) { this.altura = altura; }
+  public void setCapacidadDeCarga(Integer capacidadDeCarga) { this.capacidadDeCarga = capacidadDeCarga; }
+  public void setBienesTransportados(List<Bien> bienesTransportados) { this.bienesTransportados = bienesTransportados; }
 }

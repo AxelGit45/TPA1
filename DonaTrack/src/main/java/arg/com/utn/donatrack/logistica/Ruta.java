@@ -7,10 +7,12 @@ import java.util.List;
 
 public class Ruta {
 
+    private Long Id;
     private Camion camion;
     private List<Entrega> entregas;
 
-    public Ruta(Camion camion, List<Entrega> entregas) {
+    public Ruta(Long Id, Camion camion, List<Entrega> entregas) {
+      this.Id = Id;
       this.camion = camion;
       this.entregas = entregas;
     }
@@ -41,7 +43,9 @@ public class Ruta {
     entregas.forEach(entrega -> entrega.cambiarEstado(EstadoEntrega.ENTRASLADO));
   }
 
-  private Camion getCamion() {
-      return camion;
-  }
+  public Camion getCamion() {return camion;}
+  public Long getId() { return Id; }
+  public List<Entrega> getEntregas() {return entregas;}
+  public void setCamion(Camion camion) { this.camion = camion; }
+  public void setEntregas(List<Entrega> entregas) { this.entregas = entregas; }
 }
