@@ -1,4 +1,29 @@
 package arg.com.utn.donatrack.estados;
 
+//import arg.com.utn.donatrack.donaciones.Algoritmo;
+import arg.com.utn.donatrack.donaciones.*;
+import arg.com.utn.donatrack.entidadesBeneficiarias.*;
+import java.util.List;
+
 public class EnDeposito extends EstadoDonacion{
+
+  /*public EnDeposito (List<Algoritmo> algoritmos){
+    this.algoritmos = algoritmos;
+  }*/
+
+  private List<Algoritmo> algoritmos;
+
+  @Override
+  public void matchmaking(List<EntidadBeneficiaria> entidades, Donacion donacion){  //BIEN
+
+      //ACA SE CREA EL RESULTADO DEL MATCHMAKING
+      //new ResultadoMatchmaking(this, resultadosDeAlgoritmos);
+      List<ResultadoAlgoritmo> resultadosDeAlgoritmos = algoritmos.stream().map(algoritmo -> algoritmo.ejecutar(donacion,entidades)).toList();
+
+      ResultadoMatchmaking ranking = new ResultadoMatchmaking(donacion, resultadosDeAlgoritmos);
+
+      //MANEJO DE ERROR
+      //RUNTIMEEXCEPTION
+
+  }
 }

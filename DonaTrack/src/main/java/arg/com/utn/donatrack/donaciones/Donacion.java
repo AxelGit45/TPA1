@@ -27,6 +27,7 @@ public class Donacion {
   }
 
 
+
   public Donacion(List<Bien> bienes){
     this.bienes = bienes;
     this.historialDeCambiosDeEstado = new ArrayList<>();
@@ -70,6 +71,10 @@ public class Donacion {
 
   public boolean contieneBienPara(Necesidad necesidad){ //una necesidad representa un Bien
     return bienes.stream().anyMatch(necesidad::esSatisfechaPor);
+  }
+
+  public void realizarProcesoDeMtachmaking(List<EntidadBeneficiaria> entidades){
+    this.estadoDonacion.matchmaking(entidades, this);
   }
 
   /* //METODO PARA QUE UNA DONACION REALICE EL PROCESO DE MATCHMAKING

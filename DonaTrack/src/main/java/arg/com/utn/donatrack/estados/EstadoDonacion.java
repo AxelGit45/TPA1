@@ -1,8 +1,11 @@
 package arg.com.utn.donatrack.estados;
 
+import arg.com.utn.donatrack.donaciones.Donacion;
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import java.time.LocalDate;
+import java.util.List;
 
 // Discriminador "tipo" en el JSON para que Jackson sepa a qué subclase deserializar
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "tipo")
@@ -24,4 +27,6 @@ public abstract class EstadoDonacion {
   public LocalDate getFechaDeAsignacion() {
     return fechaDeAsignacion;
   }
+
+  public void matchmaking(List<EntidadBeneficiaria> entidades, Donacion donacion){}
 }
