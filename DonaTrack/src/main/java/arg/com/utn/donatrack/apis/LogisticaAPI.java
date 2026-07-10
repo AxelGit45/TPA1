@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack.apis;
 
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.logistica.Camion;
 import arg.com.utn.donatrack.logistica.Entrega;
 import arg.com.utn.donatrack.logistica.EstadoEntrega;
@@ -182,10 +183,13 @@ public class LogisticaAPI {
   @Path("/entregas")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response crearEntrega(Entrega request) {
+  public Response crearEntrega(EntregaRequest request) {
     try {
       if (request == null) {
         return errorValidacion("El cuerpo de la solicitud es obligatorio");
+      }
+      if (request.entidadBeneficiaria == null) {
+        return errorValidacion("La entidad beneficiaria es obligatoria");
       }
 
       LocalDate fecha;
@@ -196,7 +200,7 @@ public class LogisticaAPI {
       }
 
       Long nuevoId = idEntregaCounter.getAndIncrement();
-      Entrega nueva = new Entrega(nuevoId, request.direccionEntidadBeneficiaria, fecha);
+      Entrega nueva = new Entrega(nuevoId, request.direccionEntidadBeneficiaria, fecha, request.entidadBeneficiaria);
       entregas.add(nueva);
 
       URI location = UriBuilder.fromResource(LogisticaAPI.class)
@@ -343,12 +347,14 @@ public class LogisticaAPI {
   public static class EntregaRequest {
     public String direccionEntidadBeneficiaria;
     public String fechaDeEntregaEsperada;
+    public EntidadBeneficiaria entidadBeneficiaria;
   }
 
   public static class EntregaPatchRequest {
     public String direccionEntidadBeneficiaria;
     public String fechaDeEntregaEsperada;
     public String estadoEntrega;
+    public EntidadBeneficiaria entidadBeneficiaria;
   }
 
   public static class GpsRequest {

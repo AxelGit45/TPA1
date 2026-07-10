@@ -1,6 +1,7 @@
 package arg.com.utn.donatrack.apis;
 
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.contactos.Mail;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -58,12 +59,11 @@ public class EntidadesApi {
   public Response crear(EntidadBeneficiariaRequest request) {
     Long nuevoId = idCounter.getAndIncrement();
 
-    List<Mail> correos = mapearCorreos(request.correos);
+    List<Contacto> correos = mapearCorreos(request.correos);
 
     EntidadBeneficiaria nueva = new EntidadBeneficiaria(
         request.razonSocial,
         request.direccion,
-        request.telefono,
         correos,
         new ArrayList<>()
     );
@@ -108,12 +108,12 @@ public class EntidadesApi {
     return Response.status(Response.Status.NOT_FOUND).entity(error).build();
   }
 
-  private List<Mail> mapearCorreos(List<String> correos) {
+  private List<Contacto> mapearCorreos(List<String> correos) {
     if (correos == null) {
       return new ArrayList<>();
     }
     return correos.stream()
-        .map(Mail::new)
+        .<Contacto>map(Mail::new)
         .collect(Collectors.toList());
   }
 
@@ -122,7 +122,6 @@ public class EntidadesApi {
   public static class EntidadBeneficiariaRequest {
     public String razonSocial;
     public String direccion;
-    public Integer telefono;
     public List<String> correos;
   }
 }
