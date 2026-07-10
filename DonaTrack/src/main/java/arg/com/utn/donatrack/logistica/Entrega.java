@@ -2,6 +2,7 @@ package arg.com.utn.donatrack.logistica;
 
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.Estados;
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,14 +14,15 @@ public class Entrega {
   private EstadoEntrega estadoEntrega;
   private Camion camionQueLaEntrego;
   private LocalDate fechaDeEntregaEsperada;
+  private EntidadBeneficiaria entidadBeneficiaria;
 
-  public Entrega() {
-  }
-  public Entrega(Long id, String direccionEntidadBeneficiaria, LocalDate fechaDeEntregaEsperada) {
+  public Entrega(Long id, String direccionEntidadBeneficiaria, LocalDate fechaDeEntregaEsperada,
+                 EntidadBeneficiaria entidadBeneficiaria) {
     this.id = id;
     this.direccionEntidadBeneficiaria = direccionEntidadBeneficiaria;
     this.fechaDeEntregaEsperada = fechaDeEntregaEsperada;
     this.estadoEntrega = EstadoEntrega.PENDIENTE;
+    this.entidadBeneficiaria = entidadBeneficiaria;
   }
   public Long getId() { return id; }
   public List<Donacion> getDonaciones() {
@@ -54,6 +56,7 @@ public class Entrega {
     return donacionesAEntregar.stream().allMatch(donacion -> donacion.getEstado() == Estados.ENDEPOSITO);
   }
   public String getDireccionEntidadBeneficiaria() {return direccionEntidadBeneficiaria;}
+  public EntidadBeneficiaria getEntidadBeneficiaria() {return entidadBeneficiaria;}
   public List<Donacion> getDonacionesAEntregar() {return donacionesAEntregar;}
   public EstadoEntrega getEstadoEntrega() {return estadoEntrega;}
   public Camion getCamionQueLaEntrego() {return camionQueLaEntrego;}

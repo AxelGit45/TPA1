@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack.donaciones;
 
+import arg.com.utn.donatrack.personas.Persona;
 import java.util.Date;
 
 public class Bien {
@@ -12,11 +13,12 @@ public class Bien {
   private Date fechaVencimiento;
   private EstadoUso estadoUso;
   private boolean perecedero;
+  private Persona donador;
 
   public Bien(){}
 
   public Bien(String descripcion, String foto, Subcategoria subcategoria, Integer cantidad, Unidad unidad,
-              Date fechaVencimiento, EstadoUso estadoUso, boolean perecedero){
+              Date fechaVencimiento, EstadoUso estadoUso, boolean perecedero, Persona donador){
 
     this.descripcion = descripcion;
     this.foto = foto;
@@ -26,6 +28,7 @@ public class Bien {
     this.fechaVencimiento = fechaVencimiento;
     this.estadoUso = estadoUso;
     this.perecedero= perecedero;
+    this.donador = donador;
 
   }
   public boolean esPerecedero(){
@@ -93,5 +96,9 @@ public class Bien {
 
   public void setEstadoUso(EstadoUso estadoUso) {
     this.estadoUso = estadoUso;
+  }
+
+  public Persona getDonador() {
+    return donador;
   }
 }

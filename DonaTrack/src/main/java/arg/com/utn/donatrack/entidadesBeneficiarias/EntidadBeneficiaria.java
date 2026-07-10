@@ -7,6 +7,7 @@ import arg.com.utn.donatrack.estados.Entregada;
 import arg.com.utn.donatrack.logistica.Camion;
 import arg.com.utn.donatrack.logistica.Entrega;
 import arg.com.utn.donatrack.logistica.EstadoEntrega;
+import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.contactos.Mail;
 
 import java.time.LocalDate;
@@ -17,9 +18,8 @@ public class EntidadBeneficiaria {
   private Long id;
   private String razonSocial;
   private String direccion;
-  private Integer telefono;
-  private List<Mail> correos;
   private List<Necesidad> necesidades;
+  protected List<Contacto> contactos;
   // private List<Camion> historialDeCamiones;
   private List<Entrega> peticionesEntregadas;
   private int donacionesRecibidasUltimoTrimestre; //POR AHORA ES ASI
@@ -30,13 +30,11 @@ public class EntidadBeneficiaria {
 
   public EntidadBeneficiaria(){}
 
-  public EntidadBeneficiaria(String razonSocial, String direccion, Integer telefono,
-                             List<Mail> correos, List<Necesidad> necesidades){
+  public EntidadBeneficiaria(String razonSocial, String direccion,List<Contacto> contactos, List<Necesidad> necesidades){
 
     this.razonSocial = razonSocial;
     this.direccion = direccion;
-    this.telefono = telefono;
-    this.correos = correos;
+    this.contactos = contactos;
     this.necesidades = necesidades;
 
   }
@@ -62,14 +60,6 @@ public class EntidadBeneficiaria {
 
   public String getDireccion() {
     return direccion;
-  }
-
-  public Integer getTelefono() {
-    return telefono;
-  }
-
-  public List<Mail> getCorreos() {
-    return correos;
   }
 
   public int cuantoNecesita(Donacion donacion){
@@ -101,5 +91,9 @@ public class EntidadBeneficiaria {
   public boolean entregaTardia(Entrega entrega) {
     LocalDate fechaDeHoy = LocalDate.now();
     return entrega.getFechaDeEntregaEsperada().isAfter(fechaDeHoy);
+  }
+
+  public List<Contacto> getContactos() {
+    return contactos;
   }
 }

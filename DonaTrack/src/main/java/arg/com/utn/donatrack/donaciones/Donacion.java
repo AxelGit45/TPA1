@@ -2,6 +2,7 @@ package arg.com.utn.donatrack.donaciones;
 
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.entidadesBeneficiarias.Necesidad;
+import arg.com.utn.donatrack.personas.Persona;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ public class Donacion {
   private Estados estadoDonacion;
   private List<Estados> historialDeCambiosDeEstado;
   private List<Algoritmo> algoritmos;
+  private List<Persona> donadores;
 
   public Donacion(Bien bien /*List<Bien> bienes*/){
     //this.bienes = bienes;
@@ -26,10 +28,24 @@ public class Donacion {
   public Donacion(List<Bien> bienes){
     this.bienes = bienes;
     this.historialDeCambiosDeEstado = new ArrayList<>();
+    this.donadores = new ArrayList<>();
 
     Estados estadoInicial = Estados.ENDEPOSITO;
 
     this.cambiarEstado(estadoInicial);
+
+    for (Bien bien : bienes) {
+
+      Persona donador = bien.getDonador();
+
+      if(!donadores.contains(donador)) {
+
+        donadores.add(bien.getDonador());
+
+      }
+
+    }
+
   }
 
   public void cambiarEstado(Estados nuevoEstado){
@@ -77,7 +93,6 @@ public class Donacion {
     return estadoDonacion;
   }
 
-
   public Long getId() {
     return id;
   }
@@ -89,4 +104,9 @@ public class Donacion {
   public List<Estados> getHistorialDeCambiosDeEstado() {
     return historialDeCambiosDeEstado;
   }
+
+  public List<Persona> getDonadores() {
+    return donadores;
+  }
+
 }
