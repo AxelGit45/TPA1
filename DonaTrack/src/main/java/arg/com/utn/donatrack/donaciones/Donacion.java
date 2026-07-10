@@ -2,6 +2,8 @@ package arg.com.utn.donatrack.donaciones;
 
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.entidadesBeneficiarias.Necesidad;
+import arg.com.utn.donatrack.estados.EnDeposito;
+import arg.com.utn.donatrack.estados.EstadoDonacion;
 import arg.com.utn.donatrack.personas.Persona;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +12,8 @@ public class Donacion {
 
   private Long id;
   private List<Bien> bienes;
-  private Estados estadoDonacion;
-  private List<Estados> historialDeCambiosDeEstado;
+  private EstadoDonacion estadoDonacion;
+  private List<EstadoDonacion> historialDeCambiosDeEstado;
   private List<Algoritmo> algoritmos;
   private List<Persona> donadores;
 
@@ -19,7 +21,7 @@ public class Donacion {
     //this.bienes = bienes;
     this.historialDeCambiosDeEstado = new ArrayList<>();
 
-    Estados estadoInicial = Estados.ENDEPOSITO;
+    EstadoDonacion estadoInicial = new EnDeposito();
 
     this.cambiarEstado(estadoInicial);
   }
@@ -30,7 +32,7 @@ public class Donacion {
     this.historialDeCambiosDeEstado = new ArrayList<>();
     this.donadores = new ArrayList<>();
 
-    Estados estadoInicial = Estados.ENDEPOSITO;
+    EstadoDonacion estadoInicial = new EnDeposito();
 
     this.cambiarEstado(estadoInicial);
 
@@ -48,7 +50,7 @@ public class Donacion {
 
   }
 
-  public void cambiarEstado(Estados nuevoEstado){
+  public void cambiarEstado(EstadoDonacion nuevoEstado){
 
     this.estadoDonacion = nuevoEstado;
     this.historialDeCambiosDeEstado.add(nuevoEstado);
@@ -70,26 +72,26 @@ public class Donacion {
     return bienes.stream().anyMatch(necesidad::esSatisfechaPor);
   }
 
-  //METODO PARA QUE UNA DONACION REALICE EL PROCESO DE MATCHMAKING
-  public void matchmakin(List<EntidadBeneficiaria> entidades){  //BIEN
-    if (estadoDonacion == Estados.ENDEPOSITO){
-      //ACA SE CREA EL RESULTADO DEL MATCHMAKING
-      //new ResultadoMatchmaking(this, resultadosDeAlgoritmos);
-      List<ResultadoAlgoritmo> resultadosDeAlgoritmos = algoritmos.stream().map(algoritmo -> algoritmo.ejecutar(this,entidades)).toList();
+  /* //METODO PARA QUE UNA DONACION REALICE EL PROCESO DE MATCHMAKING
+   public void matchmakin(List<EntidadBeneficiaria> entidades){  //BIEN
+     if (estadoDonacion == Estados.ENDEPOSITO){
+       //ACA SE CREA EL RESULTADO DEL MATCHMAKING
+       //new ResultadoMatchmaking(this, resultadosDeAlgoritmos);
+       List<ResultadoAlgoritmo> resultadosDeAlgoritmos = algoritmos.stream().map(algoritmo -> algoritmo.ejecutar(this,entidades)).toList();
 
-      ResultadoMatchmaking ranking = new ResultadoMatchmaking(this, resultadosDeAlgoritmos);
-    }else {
-      //MANEJO DE ERROR
-      //RUNTIMEEXCEPTION
-    }
+       ResultadoMatchmaking ranking = new ResultadoMatchmaking(this, resultadosDeAlgoritmos);
+     }else {
+       //MANEJO DE ERROR
+       //RUNTIMEEXCEPTION
+     }
 
-    //lista de algoritmos
-    //ejecuto cada algoritmo y guardo su resultado en la lista (transformacion)
-    //aca uso map
-    //return lista de listas (de EntidadBeneficiaria);
-  }
-
-  public Estados getEstado() {
+     //lista de algoritmos
+     //ejecuto cada algoritmo y guardo su resultado en la lista (transformacion)
+     //aca uso map
+     //return lista de listas (de EntidadBeneficiaria);
+   }
+ */
+  public EstadoDonacion getEstado() {
     return estadoDonacion;
   }
 
@@ -101,7 +103,7 @@ public class Donacion {
     this.id = id;
   }
 
-  public List<Estados> getHistorialDeCambiosDeEstado() {
+  public List<EstadoDonacion> getHistorialDeCambiosDeEstado() {
     return historialDeCambiosDeEstado;
   }
 

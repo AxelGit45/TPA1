@@ -65,9 +65,9 @@ public class Ruta {
   }
 
   public void cambiarEstadoDeDonaciones() {
-    entregas.stream()
+    /*entregas.stream()
         .flatMap(entrega -> entrega.getDonaciones().stream())
-        .forEach(donacion -> donacion.cambiarEstado(Estados.ENTRASLADO));
+        .forEach(donacion -> donacion.cambiarEstado(Estados.ENTRASLADO));*/
   }
 
   public void cambiarEstadoDeEntrega() {

@@ -6,10 +6,16 @@ public class EnTraslado extends EstadoDonacion{
 
   private Camion camion;
 
+  public EnTraslado(){}
+
   public EnTraslado(Camion camion){
 
     this.camion = camion;
 
+  }
+
+  public Camion getCamion() {
+    return camion;
   }
 
 }

@@ -24,7 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 @Path("/logistica")
 public class LogisticaAPI {
 
@@ -188,6 +188,15 @@ public class LogisticaAPI {
         return errorValidacion("El cuerpo de la solicitud es obligatorio");
       }
 
+      if (request.entidadBeneficiariaId == null) {
+        return errorValidacion("El id de la entidad beneficiaria es obligatorio");
+      }
+
+      EntidadBeneficiaria entidad = EntidadesApi.buscarPorId(request.entidadBeneficiariaId);
+      if (entidad == null) {
+        return errorNoEncontrado("No existe una entidad beneficiaria con id " + request.entidadBeneficiariaId);
+      }
+
       LocalDate fecha;
       try {
         fecha = LocalDate.parse(request.fechaDeEntregaEsperada);
@@ -196,7 +205,7 @@ public class LogisticaAPI {
       }
 
       Long nuevoId = idEntregaCounter.getAndIncrement();
-      Entrega nueva = new Entrega(nuevoId, request.direccionEntidadBeneficiaria, fecha);
+      Entrega nueva = new Entrega(nuevoId, request.direccionEntidadBeneficiaria, fecha, entidad);
       entregas.add(nueva);
 
       URI location = UriBuilder.fromResource(LogisticaAPI.class)
@@ -309,11 +318,6 @@ public class LogisticaAPI {
     public List<Entrega> entregas;
   }
 
-  public static class EntregaRequest {
-    public String direccionEntidadBeneficiaria;
-    public String fechaDeEntregaEsperada;
-  }
-
   public static class EntregaPatchRequest {
     public String direccionEntidadBeneficiaria;
     public String fechaDeEntregaEsperada;
@@ -352,4 +356,12 @@ public class LogisticaAPI {
     error.put("detalle", e.getMessage());
     return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
   }
+
+
+  public static class EntregaRequest {
+    public String direccionEntidadBeneficiaria;
+    public String fechaDeEntregaEsperada;
+    public Long entidadBeneficiariaId;
+  }
+
 }

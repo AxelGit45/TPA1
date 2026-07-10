@@ -13,10 +13,24 @@ public class Entregada extends EstadoDonacion {
   private Entrega entrega;
   private Camion camion;
 
+  public Entregada(){}
+
   public Entregada (Entrega entrega, Camion camion) {
 
     this.entrega = entrega;
     this.camion = camion;
+
+  }
+
+  public Entrega getEntrega() {
+    return entrega;
+  }
+
+  public Camion getCamion() {
+    return camion;
+  }
+
+  public void notificarEntrega() {
 
     LocalDateTime ahora = LocalDateTime.now();
     String fecha = ahora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));

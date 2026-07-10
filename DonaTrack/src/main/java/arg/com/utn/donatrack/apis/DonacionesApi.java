@@ -2,7 +2,7 @@ package arg.com.utn.donatrack.apis;
 
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
-import arg.com.utn.donatrack.donaciones.Estados;
+import arg.com.utn.donatrack.estados.EstadoDonacion;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -92,28 +92,21 @@ public class DonacionesApi {
   @Path("/{id}/estado")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response actualizarEstado(@PathParam("id") Long id, ActualizarEstadoRequest request) {
+  public Response actualizarEstado(@PathParam("id") Long id, EstadoDonacion nuevoEstado) {
     Donacion donacion = buscarPorId(id);
     if (donacion == null) {
       return errorNoEncontrada(id);
     }
 
-    if (request.estado == null) {
+    if (nuevoEstado == null) {
       Map<String, Object> error = new LinkedHashMap<>();
       error.put("error", "Debe indicar un estado válido");
       return Response.status(Response.Status.BAD_REQUEST).entity(error).build();
     }
 
-    donacion.cambiarEstado(request.estado);
+    donacion.cambiarEstado(nuevoEstado);
 
     return Response.ok(donacion).build();
-  }
-
-
-  //Request
-
-  public static class ActualizarEstadoRequest {
-    public Estados estado;
   }
 
   // Funciones extra
@@ -171,8 +164,16 @@ public class DonacionesApi {
   PUT http://localhost:8080/donaciones/1/estado
   Content-Type: application/json
 
-  {
-    "estado": "ENTRASLADO"
-  }
+  Ejemplos de body según el estado:
+
+  { "tipo": "EN_DEPOSITO" }
+
+  { "tipo": "EN_TRASLADO", "camion": { ... } }
+
+  { "tipo": "LISTA_PARA_ENTREGAR", "ruta": "Ruta 9 km 45" }
+
+  { "tipo": "ENTREGADA", "entrega": { ... }, "camion": { ... } }
+
+  { "tipo": "VENCIDA" }
 
  */

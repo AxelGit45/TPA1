@@ -38,14 +38,15 @@ public class EntidadBeneficiaria {
     this.necesidades = necesidades;
 
   }
+
+
   public List<Necesidad> getNecesidades(){
     return necesidades;
   }
 
   public int getDonacionesRecibidasUltimoTrimestre(){return donacionesRecibidasUltimoTrimestre;}
 
-  // TODO: agregados id + getters para exponer esta clase por la API REST
-  // (Jackson no serializa sin getters, y necesitamos id para las rutas /{id})
+
   public Long getId() {
     return id;
   }
@@ -69,24 +70,24 @@ public class EntidadBeneficiaria {
     return puntaje;
   }
 
-  public void confirmarRecepcionDeEntrega(Entrega entrega, Camion camionEntregador){
+ /* public void confirmarRecepcionDeEntrega(Entrega entrega, Camion camionEntregador){
     entrega.cambiarEstado(EstadoEntrega.ENTREGADA);
     // historialDeCamiones.add(camionEntregador); // REVISAR !!!!!!!
     entrega.registrarCamion(camionEntregador);
-  }
+  } */
 
   public void cargarFotosDeEntrega(List<String> urlFotos) {
     // TODO
   }
 
-  public void informarNoRecepcion(Entrega entrega) {
+ /* public void informarNoRecepcion(Entrega entrega) {
     if(this.entregaTardia(entrega)) {
       entrega.cambiarEstado(EstadoEntrega.NORECIBIDA);
       entrega.getDonaciones().forEach(donacion -> donacion.cambiarEstado(Estados.ENTREGAFALLIDA));
     } // Si no se cumple debería lanzar un error porque la fecha de hoy
     // aún no es posterior a la fecha de entrega esperada.
     // "EL CASO SERÁ REVISADO POR LAS PERSONAS ADMINISTRADORAS"
-  }
+  } */
 
   public boolean entregaTardia(Entrega entrega) {
     LocalDate fechaDeHoy = LocalDate.now();

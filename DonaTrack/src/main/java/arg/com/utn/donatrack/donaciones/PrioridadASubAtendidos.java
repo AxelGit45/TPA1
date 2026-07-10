@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PrioridadASubAtendidos implements Algoritmo {
 
-  @Override
+/*  @Override
   public ResultadoAlgoritmo ejecutar(Donacion donacion, List<EntidadBeneficiaria> entidades){
 
     List<MatchEntidad> resultadoDelAlgoritmo = entidades.stream()
@@ -14,5 +14,5 @@ public class PrioridadASubAtendidos implements Algoritmo {
         .sorted(Comparator.comparing(MatchEntidad::getPuntaje)).limit(10).toList();
     ResultadoAlgoritmo resultado = new ResultadoAlgoritmo(this,resultadoDelAlgoritmo);
     return resultado;
-  }
+  } */
 }

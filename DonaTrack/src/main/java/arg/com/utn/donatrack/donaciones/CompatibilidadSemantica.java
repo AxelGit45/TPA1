@@ -6,7 +6,7 @@ import java.util.List;
 
 public class CompatibilidadSemantica implements Algoritmo {
 
-  @Override
+ /* @Override
   public ResultadoAlgoritmo ejecutar(Donacion donacion, List<EntidadBeneficiaria> entidades) {
 
 //comparar por subcategoria
@@ -34,5 +34,5 @@ public class CompatibilidadSemantica implements Algoritmo {
 
     return resultadoDelAlgoritmo ; // PRIMER ALGORITMO LISTO
   }
-
+*/
 }

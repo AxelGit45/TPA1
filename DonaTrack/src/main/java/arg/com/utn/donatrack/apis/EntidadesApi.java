@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+import arg.com.utn.donatrack.personas.contactos.Telefono;
+import arg.com.utn.donatrack.personas.contactos.Contacto;
 
 /* CRUD PARA ENTIDADES BENEFICIARIAS
 Al todavía no tener persistencia, se mockea guardando en memoria
@@ -58,13 +60,18 @@ public class EntidadesApi {
   public Response crear(EntidadBeneficiariaRequest request) {
     Long nuevoId = idCounter.getAndIncrement();
 
-    List<Mail> correos = mapearCorreos(request.correos);
+    List<Contacto> contactos = new ArrayList<>();
+
+    if (request.telefono != null) {
+      contactos.add(new Telefono(String.valueOf(request.telefono)));
+    }
+
+    contactos.addAll(mapearCorreos(request.correos));
 
     EntidadBeneficiaria nueva = new EntidadBeneficiaria(
         request.razonSocial,
         request.direccion,
-        request.telefono,
-        correos,
+        contactos,
         new ArrayList<>()
     );
     nueva.setId(nuevoId);
@@ -95,7 +102,7 @@ public class EntidadesApi {
 
   // Funciones extra
 
-  private EntidadBeneficiaria buscarPorId(Long id) {
+  public static EntidadBeneficiaria buscarPorId(Long id) {
     return entidades.stream()
         .filter(e -> e.getId().equals(id))
         .findFirst()
