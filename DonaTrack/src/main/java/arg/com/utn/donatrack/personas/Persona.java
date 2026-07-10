@@ -1,12 +1,15 @@
 package arg.com.utn.donatrack.personas;
 
 import arg.com.utn.donatrack.personas.contactos.Contacto;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public abstract class Persona {
 
   protected Long id;
   protected List<Contacto> contactos;
+  private LocalDate ultimaConexion;
 
   public void ingresarDonacion(){}
 
@@ -28,4 +31,6 @@ public abstract class Persona {
   public List<Contacto> getContactos() {
     return contactos;
   }
+
+  public LocalDate getUltimaConexion(){ return this.ultimaConexion;}
 }

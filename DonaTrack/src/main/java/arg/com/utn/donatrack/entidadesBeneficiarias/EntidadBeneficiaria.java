@@ -11,6 +11,7 @@ import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.contactos.Mail;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class EntidadBeneficiaria {
@@ -20,6 +21,7 @@ public class EntidadBeneficiaria {
   private String direccion;
   private List<Necesidad> necesidades;
   protected List<Contacto> contactos;
+  private LocalDate ultimaConexion;
   // private List<Camion> historialDeCamiones;
   private List<Entrega> peticionesEntregadas;
   private int donacionesRecibidasUltimoTrimestre; //POR AHORA ES ASI
@@ -96,4 +98,6 @@ public class EntidadBeneficiaria {
   public List<Contacto> getContactos() {
     return contactos;
   }
+
+  public LocalDate getUltimaConexion(){ return this.ultimaConexion;}
 }

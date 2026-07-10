@@ -182,7 +182,7 @@ public class LogisticaAPI {
   @Path("/entregas")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response crearEntrega(EntregaRequest request) {
+  public Response crearEntrega(Entrega request) {
     try {
       if (request == null) {
         return errorValidacion("El cuerpo de la solicitud es obligatorio");
@@ -283,6 +283,37 @@ public class LogisticaAPI {
     }
   }
 
+  @POST
+  @Path("/monitoreo")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response reportarUbicacionGps(GpsRequest request) {
+    try {
+      if (request == null || request.idGps == null || request.latitud == null || request.longitud == null) {
+        return errorValidacion("Faltan datos del GPS");
+      }
+
+      Camion camionEncontrado = rutas.stream()
+          .map(Ruta::getCamion)
+          .filter(camion -> request.idGps.equals(camion.getIdGps()))
+          .findFirst()
+          .orElse(null);
+
+      if (camionEncontrado == null) {
+        return errorNoEncontrado("No hay camiones registrados con el GPS ID: " + request.idGps);
+      }
+
+      camionEncontrado.setLatitud(request.latitud);
+      camionEncontrado.setLongitud(request.longitud);
+
+      return Response.ok("Ubicación actualizada correctamente").build();
+
+    } catch (Exception e) {
+      return errorServidor(e);
+    }
+  }
+
+
   @DELETE
   @Path("/entregas/{id}")
   @Produces(MediaType.APPLICATION_JSON)
@@ -318,6 +349,12 @@ public class LogisticaAPI {
     public String direccionEntidadBeneficiaria;
     public String fechaDeEntregaEsperada;
     public String estadoEntrega;
+  }
+
+  public static class GpsRequest {
+    public String idGps;
+    public Double latitud;
+    public Double longitud;
   }
 
   private Ruta buscarRutaPorId(Long id) {
