@@ -21,4 +21,7 @@ public class PersonaJuridica extends Persona {
   public String getRazonSocial() { return razonSocial; }
   public TipoRazonSocial getTipoRazonSocial() { return tipoRazonSocial; }
   public String getRubro() { return rubro; }
+
+  public void setRazonSocial(String razonSocial) {this.razonSocial = razonSocial;}
+
 }

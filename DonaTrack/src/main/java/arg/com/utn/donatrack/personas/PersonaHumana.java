@@ -34,4 +34,6 @@ public class PersonaHumana extends Persona {
   public String getGenero() { return genero; }
   public String getDireccion() { return direccion; }
   public Contacto getPredeterminado() { return predeterminado; }
+
+  public void setNombre(String nombre) {this.nombre = nombre;}
 }

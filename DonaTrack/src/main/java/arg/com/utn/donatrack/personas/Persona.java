@@ -33,4 +33,6 @@ public abstract class Persona {
   }
 
   public LocalDate getUltimaConexion(){ return this.ultimaConexion;}
+
+  public void setContactos(List<Contacto> contactos) {this.contactos = contactos;}
 }
