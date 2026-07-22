@@ -1,22 +1,38 @@
 package arg.com.utn.donatrack.estados;
 
 import arg.com.utn.donatrack.donaciones.Donacion;
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.logistica.Camion;
 import arg.com.utn.donatrack.logistica.Entrega;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class Entregada extends EstadoDonacion {
 
   private Entrega entrega;
   private Camion camion;
 
+  public Entregada(){}
+
   public Entregada (Entrega entrega, Camion camion) {
 
     this.entrega = entrega;
     this.camion = camion;
+
+  }
+
+  public Entrega getEntrega() {
+    return entrega;
+  }
+
+  public Camion getCamion() {
+    return camion;
+  }
+
+  public void notificarEntrega() {
 
     LocalDateTime ahora = LocalDateTime.now();
     String fecha = ahora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -45,6 +61,11 @@ public class Entregada extends EstadoDonacion {
 
     }
 
+  }
+
+  @Override
+  public void matchmaking(List<EntidadBeneficiaria> entidades, Donacion donacion){
+    throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");
   }
 
 }

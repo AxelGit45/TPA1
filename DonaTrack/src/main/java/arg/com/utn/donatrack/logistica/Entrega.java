@@ -1,7 +1,7 @@
 package arg.com.utn.donatrack.logistica;
 
 import arg.com.utn.donatrack.donaciones.Donacion;
-import arg.com.utn.donatrack.donaciones.Estados;
+//import arg.com.utn.donatrack.donaciones.Estados;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 
 import java.time.LocalDate;
@@ -46,15 +46,15 @@ public class Entrega {
   }
 
   public void cambiarAPendiente() { // Método ejecutado por alguien externo (administrador)
-    if (this.lasDonacionesEstanEnDeposito()) {
+    /*if (this.lasDonacionesEstanEnDeposito()) {
       this.cambiarEstado(EstadoEntrega.PENDIENTE);
     } // Lanzar error si las donaciones no están en depósito. Se entiende
-    // que el administrador es quien regresa las donaciones al depósito.
+    // que el administrador es quien regresa las donaciones al depósito. */
   }
 
-  public boolean lasDonacionesEstanEnDeposito(){ // ¿Esta validación va? o, como lo hace un administrador, ¿ya se da por hecho?
+  /* public boolean lasDonacionesEstanEnDeposito(){ // ¿Esta validación va? o, como lo hace un administrador, ¿ya se da por hecho?
     return donacionesAEntregar.stream().allMatch(donacion -> donacion.getEstado() == Estados.ENDEPOSITO);
-  }
+  } */
   public String getDireccionEntidadBeneficiaria() {return direccionEntidadBeneficiaria;}
   public EntidadBeneficiaria getEntidadBeneficiaria() {return entidadBeneficiaria;}
   public List<Donacion> getDonacionesAEntregar() {return donacionesAEntregar;}

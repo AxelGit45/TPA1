@@ -122,6 +122,7 @@ public class EntidadesApi {
   public static class EntidadBeneficiariaRequest {
     public String razonSocial;
     public String direccion;
+    public Integer telefono;
     public List<String> correos;
   }
 }
