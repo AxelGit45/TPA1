@@ -1,0 +1,308 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+
+abstract class Necesidad {
+  - id: Long
+  - necesidad: Subcategoria
+  - cantidadNecesitada: Integer
+  - descripcion: String
+  - satisfecha: Boolean
+  + esSatisfechaPor(bien: Bien): boolean
+}
+
+class NecesidadExtraordinaria {
+  - recibidos: Integer
+  + recibir(recibido: Integer): void
+}
+
+class NecesidadRecurrente {
+  - recibidos: Integer
+  - fechaLimite: ChronoLocalDate
+  + recibir(recibido: Integer): void
+}
+
+abstract class Persona {
+  # id: Long
+  # contactos: List<Contacto>
+  + obtenerMedio(contacto: Contacto): Contacto
+}
+
+class PersonaHumana {
+  - nombre: String
+  - apellido: String
+  - edad: Integer
+  - numeroDeDocumento: Integer
+  - genero: String
+  - direccion: String
+  - predeterminado: Contacto
+}
+
+class PersonaJuridica {
+  - razonSocial: String
+  - tipoRazonSocial: TipoRazonSocial
+  - rubro: String
+}
+
+abstract class Contacto {
+  + contactar(mensaje: String): void
+}
+
+class Mail {
+  - direccion: String
+}
+
+class Telefono {
+  - numero: String
+}
+
+class WhatsApp {
+  - numero: String
+}
+
+class EntidadBeneficiaria {
+  - id: Long
+  - razonSocial: String
+  - direccion: String
+  - telefono: Integer
+  - correos: List<Mail>
+  - necesidades: List<Necesidad>
+  - peticionesEntregadas: List<Entrega>
+  - donacionesRecibidasUltimoTrimestre: int
+  + cuantoNecesita(donacion: Donacion): int
+  + confirmarRecepcionDeEntrega(entrega: Entrega, camion: Camion): void
+  + informarNoRecepcion(entrega: Entrega): void
+  + entregaTardia(entrega: Entrega): boolean
+}
+
+class Donacion {
+  - id: Long
+  - bienes: List<Bien>
+  - estadoDonacion: Estados
+  - historialDeCambiosDeEstado: List<Estados>
+  - algoritmos: List<Algoritmo>
+  + cambiarEstado(nuevoEstado: Estados): void
+  + contieneBienPara(necesidad: Necesidad): boolean
+  + matchmakin(entidades: List<EntidadBeneficiaria>): void
+}
+
+class Bien {
+  - descripcion: String
+  - foto: String
+  - subcategoria: Subcategoria
+  - cantidad: Integer
+  - unidad: Unidad
+  - fechaVencimiento: Date
+  - estadoUso: EstadoUso
+  - perecedero: boolean
+}
+
+class Categoria {
+  - nombre: String
+}
+
+class Subcategoria {
+  - nombre: String
+  - categoriaPadre: Categoria
+  - exigeFechaVencimiento: Boolean
+  - exigeEstadoUso: Boolean
+}
+
+interface Algoritmo {
+  + ejecutar(donacion: Donacion, entidades: List<EntidadBeneficiaria>): ResultadoAlgoritmo
+}
+
+class CompatibilidadSemantica
+
+class PrioridadASubAtendidos
+
+class MatchEntidad {
+  - entidad: EntidadBeneficiaria
+  - puntaje: int
+}
+
+class ResultadoAlgoritmo {
+  - algoritmo: Algoritmo
+  - resultadosAlgoritmo: List<MatchEntidad>
+}
+
+class ResultadoMatchmaking {
+  - donacion: Donacion
+  - resultadosMatchmaking: List<ResultadoAlgoritmo>
+}
+
+class Formulario {
+  - persona: Persona
+  - descripcion: String
+  - bienes: List<Bien>
+  + segmentarDonaciones(): List<Donacion>
+}
+
+enum Estados {
+  ENDEPOSITO
+  ENTRASLADO
+  ENTREGAFALLIDA
+}
+
+enum Unidad {
+  LITRO
+  KILOGRAMO
+  UNIDAD
+}
+
+enum EstadoUso {
+  NUEVO
+  USADO
+}
+
+enum TipoRazonSocial {
+  GUBERNAMENTAL
+  ONG
+  EMPRESA
+  INSTITUCION
+}
+
+abstract class EstadoDonacion {
+  - fechaDeAsignacion: LocalDate
+}
+
+class EnDeposito
+
+class ListaParaEntregar {
+  - ruta: String
+}
+
+class AsignacionRealizada {
+  - entidadBeneficiaria: EntidadBeneficiaria
+}
+
+class Entregada
+
+class EntregaFallida {
+  - justificacion: String
+}
+
+class Vencida
+
+class EnTraslado {
+  - camion: Camion
+}
+
+class Camion {
+  - patente: String
+  - volumen: Integer
+  - altura: Integer
+  - capacidadDeCarga: Integer
+  - bienesTransportados: List<Bien>
+}
+
+class Entrega {
+  - id: Long
+  - direccionEntidadBeneficiaria: String
+  - donacionesAEntregar: List<Donacion>
+  - estadoEntrega: EstadoEntrega
+  - camionQueLaEntrego: Camion
+  - fechaDeEntregaEsperada: LocalDate
+  + cambiarEstado(nuevoEstado: EstadoEntrega): void
+  + registrarCamion(camion: Camion): void
+  + cambiarAPendiente(): void
+  + lasDonacionesEstanEnDeposito(): boolean
+}
+
+class Ruta {
+  - Id: Long
+  - camion: Camion
+  - entregas: List<Entrega>
+  + Iniciarse(): void
+  + cambiarEstadoDeDonaciones(): void
+  + cambiarEstadoDeEntrega(): void
+}
+
+enum EstadoEntrega {
+  PENDIENTE
+  ENTRASLADO
+  ENTREGADA
+  NORECIBIDA
+}
+
+class Notificacion {
+  - destinatario: Persona
+  - mensaje: String
+  - medio: Contacto
+  - completada: Boolean
+  + contactar(): void
+}
+
+class EmailAdapter
+
+class TwilioAdapter {
+  - {static} instancia: TwilioAdapter
+  - {static} ACCOUNT_SID: String
+  - {static} AUTH_TOKEN: String
+  - {static} TWILIO_PHONE_NUMBER: String
+  - {static} TWILIO_WHATSAPP_NUMBER: String
+  + {static} getInstancia(): TwilioAdapter
+  + enviarSms(numero: String, mensaje: String): void
+  + enviarWhatsApp(numero: String, mensaje: String): void
+}
+
+' ===== HERENCIA =====
+Necesidad <|-- NecesidadExtraordinaria
+Necesidad <|-- NecesidadRecurrente
+Persona <|-- PersonaHumana
+Persona <|-- PersonaJuridica
+Contacto <|-- Mail
+Contacto <|-- Telefono
+Contacto <|-- WhatsApp
+EstadoDonacion <|-- EnDeposito
+EstadoDonacion <|-- EnTraslado
+EstadoDonacion <|-- ListaParaEntregar
+EstadoDonacion <|-- AsignacionRealizada
+EstadoDonacion <|-- Entregada
+EstadoDonacion <|-- EntregaFallida
+EstadoDonacion <|-- Vencida
+
+' ===== REALIZACION =====
+CompatibilidadSemantica ..|> Algoritmo
+PrioridadASubAtendidos ..|> Algoritmo
+
+' ===== ASOCIACION =====
+Donacion --> Estados
+Donacion --> ResultadoMatchmaking
+Donacion --> Bien
+Donacion --> Algoritmo
+Bien --> Subcategoria
+Bien --> Unidad
+Bien --> EstadoUso
+Subcategoria --> Categoria
+ResultadoAlgoritmo --> Algoritmo
+ResultadoAlgoritmo --> MatchEntidad
+MatchEntidad --> EntidadBeneficiaria
+ResultadoMatchmaking --> ResultadoAlgoritmo
+Formulario --> Persona
+Formulario --> Bien
+EntidadBeneficiaria --> Mail
+EntidadBeneficiaria --> Necesidad
+EntidadBeneficiaria --> Entrega
+Necesidad --> Subcategoria
+Persona --> Contacto
+PersonaJuridica --> TipoRazonSocial
+Mail --> EmailAdapter
+Telefono --> TwilioAdapter
+WhatsApp --> TwilioAdapter
+Notificacion --> Persona
+Notificacion --> Contacto
+AsignacionRealizada --> EntidadBeneficiaria
+EnTraslado --> Camion
+Ruta --> Camion
+Ruta --> Entrega
+Entrega --> EstadoEntrega
+Entrega --> Donacion
+Entrega --> Camion
+
+' ===== DEPENDENCIA =====
+Necesidad ..> Bien
+Formulario ..> Donacion
+
+
+@enduml
