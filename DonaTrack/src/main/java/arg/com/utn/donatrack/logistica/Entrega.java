@@ -60,7 +60,7 @@ public class Entrega {
 
   public boolean entregaTardia() {
     LocalDate fechaDeHoy = LocalDate.now();
-    return fechaDeEntregaEsperada.isAfter(fechaDeHoy);
+    return fechaDeEntregaEsperada.isBefore(fechaDeHoy);
   }
 
   public void volverAPendiente() {
@@ -68,22 +68,7 @@ public class Entrega {
       this.cambiarEstado(EstadoEntrega.PENDIENTE);
     }
   }
-  /*-----------------------------------------------------------------------------------------*/
 
-  public LocalDate getFechaDeEntregaEsperada() {
-    return fechaDeEntregaEsperada;
-  }
-
-  public void cambiarAPendiente() { // Método ejecutado por alguien externo (administrador)
-    /*if (this.lasDonacionesEstanEnDeposito()) {
-      this.cambiarEstado(EstadoEntrega.PENDIENTE);
-    } // Lanzar error si las donaciones no están en depósito. Se entiende
-    // que el administrador es quien regresa las donaciones al depósito. */
-  }
-
-  /* public boolean lasDonacionesEstanEnDeposito(){ // ¿Esta validación va? o, como lo hace un administrador, ¿ya se da por hecho?
-    return donacionesAEntregar.stream().allMatch(donacion -> donacion.getEstado() == Estados.ENDEPOSITO);
-  } */
   public String getDireccionEntidadBeneficiaria() {return direccionEntidadBeneficiaria;}
   public EntidadBeneficiaria getEntidadBeneficiaria() {return entidadBeneficiaria;}
   public List<Donacion> getDonacionesAEntregar() {return donacionesAEntregar;}

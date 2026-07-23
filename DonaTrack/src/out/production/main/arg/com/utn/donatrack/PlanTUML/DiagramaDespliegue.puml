@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+title Diagrama de Despliegue - Sistema de Donaciones
+node "DonaTrack" {
+        component "Sistema"
+}
+:user: --> "Sistema"
+cloud Twilio
+cloud "Servidor (Mails)"
+cloud GPS
+Sistema --> Twilio
+Sistema --> "Servidor (Mails)"
+Sistema <-- GPS
+@enduml

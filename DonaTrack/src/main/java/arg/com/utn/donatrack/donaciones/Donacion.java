@@ -33,8 +33,6 @@ public class Donacion {
     this.cambiarEstado(estadoInicial);
   }
 
-
-
   public Donacion(List<Bien> bienes){
     this.bienes = bienes;
     this.historialDeCambiosDeEstado = new ArrayList<>();

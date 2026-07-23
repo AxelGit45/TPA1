@@ -24,12 +24,6 @@ public class Camion {
     this.capacidadDeCarga = capacidadDeCarga;
   }
 
-  /*
-  {
-    camion,
-    la lista de destinos
-  }
-  */
   public String getPatente() {return patente;}
   public Integer getVolumen() {return volumen;}
   public Integer getAltura() {return altura;}
