@@ -2,14 +2,17 @@ package arg.com.utn.donatrack.donaciones;
 
 import arg.com.utn.donatrack.logistica.Camion;
 import arg.com.utn.donatrack.logistica.Ruta;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class ComponenteGeneradorDeRutas {
-  /** Donaciones con asignación realizada (Resultado del componente asignador) **/
-  public List<Donacion> donacionesAsignadas;
-  /** Aparte de las donaciones asignadas, se le manda los camiones disponibles**/
-  public List<Camion> camionesDisponibles;
-
-  /** El resultado del componente (las entregas a realizar por cada camión disponible)**/
-  public List<Ruta> resultadoRutas;
+public class ComponenteGeneradorDeRutas implements  ServiciosExternoGenerador {
+  ComponenteExterno adaptee;
+  @Override
+  public List<Ruta> planificacionDeRutas(List<Donacion> donacionesAsignadas, List<Camion> camionesEnDeposito) {
+    ////SIMULAMOS ASINCRONISMO
+    List<Ruta> resultado = adaptee.generarRuta(donacionesAsignadas,  camionesEnDeposito);
+    //TODO
+    return resultado;
+  }
 }
