@@ -19,6 +19,11 @@ public class Donacion {
   private List<Algoritmo> algoritmos;
   private List<Persona> donadores;
 
+  public Donacion(){
+      this.historialDeCambiosDeEstado = new ArrayList<>();
+
+  };
+
   public Donacion(Bien bien /*List<Bien> bienes*/){
     //this.bienes = bienes;
     this.historialDeCambiosDeEstado = new ArrayList<>();
@@ -114,5 +119,7 @@ public class Donacion {
   public List<Persona> getDonadores() {
     return donadores;
   }
+
+  public void setDonadores(List<Persona> donadores) { this.donadores = donadores; }
 
 }

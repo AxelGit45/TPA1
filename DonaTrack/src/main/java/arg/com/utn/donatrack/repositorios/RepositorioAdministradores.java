@@ -7,11 +7,10 @@ import java.util.List;
 
 public class RepositorioAdministradores {
 
-  private static List<Administrador> administradores;
+  private static List<Administrador> administradores = new ArrayList<>();
 
   public RepositorioAdministradores (){
 
-    this.administradores = new ArrayList<>();
 
   }
 

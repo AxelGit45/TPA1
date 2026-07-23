@@ -32,7 +32,9 @@ public class Entregada extends EstadoDonacion {
     return camion;
   }
 
-  public void notificarEntrega() {
+
+  @Override
+  public void notificar() {
 
     LocalDateTime ahora = LocalDateTime.now();
     String fecha = ahora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));

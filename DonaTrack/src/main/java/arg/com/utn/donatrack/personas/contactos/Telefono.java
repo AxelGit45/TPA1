@@ -2,7 +2,7 @@ package arg.com.utn.donatrack.personas.contactos;
 
 import arg.com.utn.donatrack.notificaciones.adapters.TwilioAdapter;
 
-public class Telefono extends Contacto{
+public class Telefono implements Contacto{
 
   private String numero;
 

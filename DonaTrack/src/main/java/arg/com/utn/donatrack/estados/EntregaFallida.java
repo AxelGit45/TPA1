@@ -24,6 +24,16 @@ public class EntregaFallida extends EstadoDonacion{
     this.camion = camion;
     this.justificacion = justificacion;
 
+  }
+
+  @Override
+  public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
+    throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");
+  }
+
+  @Override
+  public void notificar() {
+
     LocalDateTime ahora = LocalDateTime.now();
     String fecha = ahora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     String hora = ahora.format(DateTimeFormatter.ofPattern("HH:mm"));
@@ -33,7 +43,7 @@ public class EntregaFallida extends EstadoDonacion{
 
     for (Contacto c : entrega.getEntidadBeneficiaria().getContactos()) {
 
-      c.contactar(comprobante + " - Los bienes ya están en su establecimiento.");
+      c.contactar("La entrega ha fallado.");
 
     }
 
@@ -43,7 +53,7 @@ public class EntregaFallida extends EstadoDonacion{
 
         for (Contacto c : donador.getContactos()) {
 
-          c.contactar(comprobante + " - Su donación ha sido entregada exitosamente.");
+          c.contactar("La entrega ha fallado.");
 
         }
 
@@ -62,12 +72,6 @@ public class EntregaFallida extends EstadoDonacion{
 
     }
 
-
-  }
-
-  @Override
-  public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
-    throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");
   }
 
 }

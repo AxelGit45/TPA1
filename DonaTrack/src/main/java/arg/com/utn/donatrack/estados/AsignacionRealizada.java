@@ -15,6 +15,11 @@ public class AsignacionRealizada extends EstadoDonacion{
     this.entidadBeneficiaria = entidadBeneficiaria;
     this.donacion = donacion;
 
+  }
+
+  @Override
+  public void notificar() {
+
     for (Contacto medioDeLaEntidad : this.entidadBeneficiaria.getContactos()) {
 
       medioDeLaEntidad.contactar("Se le ha asignado una donación.");

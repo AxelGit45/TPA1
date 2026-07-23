@@ -21,6 +21,16 @@ public class Ruta {
       this.entregas = entregas;
       this.linkMapa = "http://donatrack.com/mapa/ruta/" + this.id;
 
+    }
+
+  public void Iniciarse() {
+    entregas.forEach(entrega -> entrega.iniciarTraslado());
+    notificar();
+
+  }
+
+  public void notificar(){
+
       for (Entrega entrega : entregas) {
 
         for (Contacto contacto : entrega.getEntidadBeneficiaria().getContactos()) {
@@ -48,13 +58,10 @@ public class Ruta {
 
     }
 
-  public void Iniciarse() {
-    entregas.forEach(entrega -> entrega.iniciarTraslado());
-  }
-
   public Camion getCamion() {return camion;}
   public Long getId() { return id; }
   public List<Entrega> getEntregas() {return entregas;}
+  public String getLinkMapa() { return linkMapa; }
   public void setCamion(Camion camion) { this.camion = camion; }
   public void setEntregas(List<Entrega> entregas) { this.entregas = entregas; }
 }

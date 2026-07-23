@@ -1,10 +1,8 @@
 package arg.com.utn.donatrack.personas.contactos;
 
-public abstract class Contacto {
+public interface Contacto {
 
-  public Contacto(){}
-
-  public abstract void contactar(String mensaje);
+  void contactar(String mensaje);
 
 
 }

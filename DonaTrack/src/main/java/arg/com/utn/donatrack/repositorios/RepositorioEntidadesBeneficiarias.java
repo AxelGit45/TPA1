@@ -7,11 +7,9 @@ import java.util.List;
 
 public class RepositorioEntidadesBeneficiarias {
 
-  private static List<EntidadBeneficiaria> entidadesBeneficiarias;
+  private static List<EntidadBeneficiaria> entidadesBeneficiarias = new ArrayList<>();
 
   public RepositorioEntidadesBeneficiarias (){
-
-    entidadesBeneficiarias = new ArrayList<>();
 
   }
 

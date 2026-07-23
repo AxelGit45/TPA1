@@ -6,14 +6,14 @@ import java.util.List;
 
 public class RepositorioPersonas {
 
-  private static List<Persona> personas;
+  private static List<Persona> personas = new ArrayList<>();
 
   public RepositorioPersonas (){
-
-    personas = new ArrayList<>();
 
   }
 
   public static List<Persona> getPersonas() {return personas;}
+
+  public static void agregar(Persona persona) {personas.add(persona);}
 
 }

@@ -2,7 +2,7 @@ package arg.com.utn.donatrack.personas.contactos;
 
 import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
 
-public class Mail extends Contacto{
+public class Mail implements Contacto{
 
   private String direccion;
 

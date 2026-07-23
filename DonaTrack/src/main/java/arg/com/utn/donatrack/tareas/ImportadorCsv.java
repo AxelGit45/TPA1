@@ -16,7 +16,7 @@ public class ImportadorCsv {
 
   public static void main(String[] args) {
 
-    String rutaArchivo = "donantes_prueba.csv";
+    String rutaArchivo = "DonaTrack/donantes_prueba.csv";
     importarDesde(rutaArchivo);
 
   }

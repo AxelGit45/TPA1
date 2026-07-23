@@ -2,7 +2,7 @@ package arg.com.utn.donatrack.personas.contactos;
 
 import arg.com.utn.donatrack.notificaciones.adapters.TwilioAdapter;
 
-public class WhatsApp extends Contacto{
+public class WhatsApp implements Contacto{
 
   private String numero;
 

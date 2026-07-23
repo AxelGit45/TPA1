@@ -29,4 +29,6 @@ public abstract class EstadoDonacion {
   }
 
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){}
+
+  public void notificar() {};
 }
