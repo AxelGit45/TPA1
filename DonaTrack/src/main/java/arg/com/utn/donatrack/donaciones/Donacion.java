@@ -64,13 +64,6 @@ public class Donacion {
     this.cambiarEstado(new EnTraslado(camion));
   }
 
-  /*
-  method cambiarEstadoAFallida(String justificacion){
-    cambiarEstado(enum Fallida),
-    this.justificacion = justificacion
-  }
-  */
-
   public List<Bien> getBienes(){
     return bienes;
   }

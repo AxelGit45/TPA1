@@ -41,7 +41,6 @@ public class EntidadBeneficiaria {
 
   }
 
-
   public List<Necesidad> getNecesidades(){
     return necesidades;
   }
@@ -74,20 +73,6 @@ public class EntidadBeneficiaria {
 
   public void cargarFotosDeEntrega() {
     // TODO
-  }
-
- /* public void informarNoRecepcion(Entrega entrega) {
-    if(this.entregaTardia(entrega)) {
-      entrega.cambiarEstado(EstadoEntrega.NORECIBIDA);
-      entrega.getDonaciones().forEach(donacion -> donacion.cambiarEstado(Estados.ENTREGAFALLIDA));
-    } // Si no se cumple debería lanzar un error porque la fecha de hoy
-    // aún no es posterior a la fecha de entrega esperada.
-    // "EL CASO SERÁ REVISADO POR LAS PERSONAS ADMINISTRADORAS"
-  } */
-
-  public boolean entregaTardia(Entrega entrega) {
-    LocalDate fechaDeHoy = LocalDate.now();
-    return entrega.getFechaDeEntregaEsperada().isAfter(fechaDeHoy);
   }
 
   public List<Contacto> getContactos() {

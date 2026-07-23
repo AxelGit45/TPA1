@@ -43,7 +43,6 @@ public class Entrega {
     donacionesAEntregar.forEach(donacion -> donacion.iniciarTraslado(camionQueEntrega));
   }
 
-  /*---------------------------------------ACTUAL--------------------------------------------*/
   /** El registro ya quedó previamente hecho porque lo realizó el componente externo. **/
   public void confirmarRecepcionDeEntrega() {
     this.cambiarEstado(EstadoEntrega.ENTREGADA);
