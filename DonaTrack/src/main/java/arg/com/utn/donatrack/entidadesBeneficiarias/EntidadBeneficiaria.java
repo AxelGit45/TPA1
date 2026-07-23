@@ -65,10 +65,15 @@ public class EntidadBeneficiaria {
   }
 
   public int cuantoNecesita(Donacion donacion){
+    if (!necesidades.isEmpty()) {
+      int puntaje = necesidades.stream().filter(necesidad -> donacion.contieneBienPara(necesidad)).toList().size();
 
-    int puntaje = necesidades.stream().filter(necesidad -> donacion.contieneBienPara(necesidad)).toList().size();
+      return puntaje;
+    }else {
+      throw new EntidadSinNecesidades("La entidad no posee necesidades en su lista");
 
-    return puntaje;
+    }
+
   }
 
   public void cargarFotosDeEntrega() {

@@ -1,11 +1,16 @@
 package fs;
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Categoria;
+import arg.com.utn.donatrack.donaciones.CompatibilidadSemantica;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.EstadoUso;
+import arg.com.utn.donatrack.donaciones.ResultadoAlgoritmo;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import arg.com.utn.donatrack.donaciones.Unidad;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadSinNecesidades;
+import arg.com.utn.donatrack.entidadesBeneficiarias.Necesidad;
+import arg.com.utn.donatrack.entidadesBeneficiarias.NecesidadExtraordinaria;
 import arg.com.utn.donatrack.personas.PersonaHumana;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.contactos.Telefono;
@@ -57,10 +62,24 @@ public class AlgoritmosTest {
 
   List<Bien> bienes = new ArrayList<>();
 
-  /** Cantidades: Agua 1, Aceite 2, Papel Higienico pack6 2, Harina 3, Arroz 3**/
-  @BeforeEach
-  void creacionDeBienes(){
+  /**Lista de Entidades beneficiarias**/
 
+    List<EntidadBeneficiaria> entidades = new ArrayList<>();
+
+    Telefono Telefono = new Telefono("1143789856");
+    List<Contacto> telefonos2 = new ArrayList<>();
+    //telefonos.add(telefono);
+    NecesidadExtraordinaria arroz = new NecesidadExtraordinaria(100L,subcategoria3,3,"Arroz para familias afectadas",false,0);
+    List<Necesidad> necesidades = new ArrayList<>();
+    //necesidades.add(Arroz);
+
+    EntidadBeneficiaria entidad1 = new EntidadBeneficiaria("SONRISITAS", "Calle Avalos 742",telefonos,necesidades);
+
+
+
+  /** Cantidades: Agua 1, Aceite 2, Papel Higienico pack6 2, Harina 3, Arroz 3**/
+  @Test
+  void laDonacionContiene11Bienes(){  //FUNCIONA
     bienes.add(Agua);
     bienes.add(Aceite);
     bienes.add(Aceite);
@@ -73,25 +92,54 @@ public class AlgoritmosTest {
     bienes.add(Arroz);
     bienes.add(Arroz);
 
-  }
-
-  @BeforeEach
-  void creacionDeEntidades(){
-
-    //EntidadBeneficiaria entidad1 = new EntidadBeneficiaria("PEPAS SA", "Calle Avalos 742",);
-  }
-
-  @Test
-  void laDonacionContiene11Bienes(){
-
     Donacion donacion = new Donacion(bienes);
     Assertions.assertEquals(11, donacion.getBienes().size());
   }
 
   @Test
+  void sinCoincidenciasEnCompatibilidadSemantica(){
+    CompatibilidadSemantica algoritmo1 = new CompatibilidadSemantica();
+    Donacion donacion = new Donacion(bienes);
+    entidades.add(entidad1);
+    //int puntaje = entidad1.cuantoNecesita(donacion);
+
+    Assertions.assertThrows(EntidadSinNecesidades.class, ()-> entidad1.cuantoNecesita(donacion));
+    Assertions.assertThrows(EntidadSinNecesidades.class, ()-> algoritmo1.ejecutar(donacion, entidades));
+
+    donacion.getEstado().setAlgoritmo(algoritmo1);  //solo para llevar a cabo el test
+    Assertions.assertThrows(EntidadSinNecesidades.class, ()-> donacion.getEstado().asignacionDonaciones(entidades,donacion));
+    Assertions.assertThrows(EntidadSinNecesidades.class,()-> donacion.realizarProcesoDeMtachmaking(entidades));
+
+    //Assertions.assertEquals(0, necesidades.size());
+    //Assertions.assertEquals(0,puntaje);
+  }
+
+  /**Test sobre algoritmo de Compatibilidad Semantica**/
+  @Test
+  void elAlgoritmoCompatibilidadSemanticaDevuelveUnRankingDe2Entidades(){ //funciona, agregar mas entidades
+    CompatibilidadSemantica algoritmo1 = new CompatibilidadSemantica();
+    entidades.add(entidad1);
+    Donacion donacion = new Donacion(bienes);
+    ResultadoAlgoritmo resultado =  algoritmo1.ejecutar(donacion,entidades);
+
+    //Assertions.assertEquals(1,resultado.getResultadosAlgoritmo().size());
+
+    //------------------------------------PRUEBA-------------------------------------//
+    /// si una entidad no tiene necesidades su puntaje calculado para el ranking es cero ///
+    /*int puntaje = entidad1.cuantoNecesita(donacion);
+    Assertions.assertEquals(0, necesidades.size());
+    Assertions.assertEquals(0,puntaje);*/
+
+  }
+
+  /**COMPLETAR TEST**/
+  @Test
   void obtengoUnaListaDelTipoMatchEntidadesDeDiezElementos(){
-      Donacion donacion = new Donacion(bienes);
-      //donacion.realizarProcesoDeMtachmaking();
+    entidades.add(entidad1);
+    Donacion donacion = new Donacion(bienes);
+    donacion.realizarProcesoDeMtachmaking(entidades);
+
+
   }
 
 

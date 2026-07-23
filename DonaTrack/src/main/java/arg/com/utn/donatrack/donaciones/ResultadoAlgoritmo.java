@@ -11,4 +11,6 @@ public class ResultadoAlgoritmo {
     this.resultadosAlgoritmo = resultadosDelAlgoritmo;
   }
 
+  public List<MatchEntidad> getResultadosAlgoritmo(){return resultadosAlgoritmo;}
+
 }

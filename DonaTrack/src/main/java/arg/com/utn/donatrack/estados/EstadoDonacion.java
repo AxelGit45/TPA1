@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack.estados;
 
+import arg.com.utn.donatrack.donaciones.Algoritmo;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -29,6 +30,6 @@ public abstract class EstadoDonacion {
   }
 
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){}
-
+  public void setAlgoritmo(Algoritmo algoritmo){}
   public void notificar() {};
 }

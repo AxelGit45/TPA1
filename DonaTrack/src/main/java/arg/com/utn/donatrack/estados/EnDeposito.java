@@ -3,6 +3,7 @@ package arg.com.utn.donatrack.estados;
 //import arg.com.utn.donatrack.donaciones.Algoritmo;
 import arg.com.utn.donatrack.donaciones.*;
 import arg.com.utn.donatrack.entidadesBeneficiarias.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EnDeposito extends EstadoDonacion{
@@ -11,7 +12,7 @@ public class EnDeposito extends EstadoDonacion{
     this.algoritmos = algoritmos;
   }*/
 
-  private List<Algoritmo> algoritmos;
+  public List<Algoritmo> algoritmos = new ArrayList<>();
 
   @Override
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){  //BIEN
@@ -23,5 +24,10 @@ public class EnDeposito extends EstadoDonacion{
       ResultadoMatchmaking ranking = new ResultadoMatchmaking(donacion, resultadosDeAlgoritmos);
 
 
+  }
+
+  @Override
+  public void setAlgoritmo(Algoritmo algoritmo) {
+    this.algoritmos.add(algoritmo);
   }
 }

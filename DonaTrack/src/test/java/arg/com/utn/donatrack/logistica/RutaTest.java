@@ -49,4 +49,9 @@ public class RutaTest {
     assertEquals(1, contactoDonador.getMensajesRecibidos().size());
     assertTrue(contactoDonador.getMensajesRecibidos().get(0).contains("http://donatrack.com/mapa/ruta/55"));
   }
+
+  @Test
+  public void alIniciarseUnaRuta_LaEntregaYSusDonacionesCambianDeEstado() {
+
+  }
 }
