@@ -72,13 +72,7 @@ public class EntidadBeneficiaria {
     return puntaje;
   }
 
- /* public void confirmarRecepcionDeEntrega(Entrega entrega, Camion camionEntregador){
-    entrega.cambiarEstado(EstadoEntrega.ENTREGADA);
-    // historialDeCamiones.add(camionEntregador); // REVISAR !!!!!!!
-    entrega.registrarCamion(camionEntregador);
-  } */
-
-  public void cargarFotosDeEntrega(List<String> urlFotos) {
+  public void cargarFotosDeEntrega() {
     // TODO
   }
 

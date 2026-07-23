@@ -14,16 +14,14 @@ public class EnDeposito extends EstadoDonacion{
   private List<Algoritmo> algoritmos;
 
   @Override
-  public void matchmaking(List<EntidadBeneficiaria> entidades, Donacion donacion){  //BIEN
+  public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){  //BIEN
 
       //ACA SE CREA EL RESULTADO DEL MATCHMAKING
-      //new ResultadoMatchmaking(this, resultadosDeAlgoritmos);
+
       List<ResultadoAlgoritmo> resultadosDeAlgoritmos = algoritmos.stream().map(algoritmo -> algoritmo.ejecutar(donacion,entidades)).toList();
 
       ResultadoMatchmaking ranking = new ResultadoMatchmaking(donacion, resultadosDeAlgoritmos);
 
-      //MANEJO DE ERROR
-      //RUNTIMEEXCEPTION
 
   }
 }

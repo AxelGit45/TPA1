@@ -48,30 +48,8 @@ public class Ruta {
 
     }
 
-    /*public void Iniciarse(){
-      entregas.stream()
-          .flatMap(entrega -> entrega.getDonaciones().stream())
-          .forEach(donacion -> donacion.cambiarEstado(new EnTraslado(this.getCamion())));
-    }*/
-
-  /*
-  public void Iniciarse(){
-    entregas.forEach(entrega -> entrega.cambiarEstado(EstadoEntrega.ENTRASLADO));
-  }*/
-
-  public void Iniciarse(){
-    this.cambiarEstadoDeDonaciones();
-    this.cambiarEstadoDeEntrega();
-  }
-
-  public void cambiarEstadoDeDonaciones() {
-    /*entregas.stream()
-        .flatMap(entrega -> entrega.getDonaciones().stream())
-        .forEach(donacion -> donacion.cambiarEstado(Estados.ENTRASLADO));*/
-  }
-
-  public void cambiarEstadoDeEntrega() {
-    entregas.forEach(entrega -> entrega.cambiarEstado(EstadoEntrega.ENTRASLADO));
+  public void Iniciarse() {
+    entregas.forEach(entrega -> entrega.iniciarTraslado());
   }
 
   public Camion getCamion() {return camion;}

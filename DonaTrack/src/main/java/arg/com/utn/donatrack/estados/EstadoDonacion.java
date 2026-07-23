@@ -28,5 +28,5 @@ public abstract class EstadoDonacion {
     return fechaDeAsignacion;
   }
 
-  public void matchmaking(List<EntidadBeneficiaria> entidades, Donacion donacion){}
+  public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){}
 }

@@ -3,7 +3,9 @@ package arg.com.utn.donatrack.donaciones;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.entidadesBeneficiarias.Necesidad;
 import arg.com.utn.donatrack.estados.EnDeposito;
+import arg.com.utn.donatrack.estados.EnTraslado;
 import arg.com.utn.donatrack.estados.EstadoDonacion;
+import arg.com.utn.donatrack.logistica.Camion;
 import arg.com.utn.donatrack.personas.Persona;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +60,10 @@ public class Donacion {
 
   }
 
+  public void iniciarTraslado(Camion camion) {
+    this.cambiarEstado(new EnTraslado(camion));
+  }
+
   /*
   method cambiarEstadoAFallida(String justificacion){
     cambiarEstado(enum Fallida),
@@ -74,7 +80,7 @@ public class Donacion {
   }
 
   public void realizarProcesoDeMtachmaking(List<EntidadBeneficiaria> entidades){
-    this.estadoDonacion.matchmaking(entidades, this);
+    this.estadoDonacion.asignacionDonaciones(entidades, this);
   }
 
   /* //METODO PARA QUE UNA DONACION REALICE EL PROCESO DE MATCHMAKING

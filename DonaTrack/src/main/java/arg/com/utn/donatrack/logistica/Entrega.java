@@ -3,6 +3,11 @@ package arg.com.utn.donatrack.logistica;
 import arg.com.utn.donatrack.donaciones.Donacion;
 //import arg.com.utn.donatrack.donaciones.Estados;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.estados.EnDeposito;
+import arg.com.utn.donatrack.estados.EnTraslado;
+import arg.com.utn.donatrack.estados.EntregaFallida;
+import arg.com.utn.donatrack.estados.Entregada;
+import arg.com.utn.donatrack.estados.EstadoDonacion;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,12 +17,12 @@ public class Entrega {
   private String direccionEntidadBeneficiaria;
   private List<Donacion> donacionesAEntregar;
   private EstadoEntrega estadoEntrega;
-  private Camion camionQueLaEntrego;
+  private Camion camionQueEntrega;
   private LocalDate fechaDeEntregaEsperada;
   private EntidadBeneficiaria entidadBeneficiaria;
 
   public Entrega(Long id, String direccionEntidadBeneficiaria, LocalDate fechaDeEntregaEsperada,
-                 EntidadBeneficiaria entidadBeneficiaria) {
+                 EntidadBeneficiaria entidadBeneficiaria) { // AGREGAR: Lista de donaciones y camion que entrega.
     this.id = id;
     this.direccionEntidadBeneficiaria = direccionEntidadBeneficiaria;
     this.fechaDeEntregaEsperada = fechaDeEntregaEsperada;
@@ -33,13 +38,38 @@ public class Entrega {
     this.estadoEntrega = nuevoEstado;
   }
 
-  public void registrarCamion(Camion camionEntregador) {
-    if (estadoEntrega == EstadoEntrega.ENTREGADA){
-      this.camionQueLaEntrego = camionEntregador;
-    } // Agregar throw new RuntimeException para que avise que hay
-    // un error al ejecutar este método si se lo llama si
-    // la entrega no está en estado Entregada.
+  public void iniciarTraslado() {
+    this.cambiarEstado(EstadoEntrega.ENTRASLADO);
+    donacionesAEntregar.forEach(donacion -> donacion.iniciarTraslado(camionQueEntrega));
   }
+
+  /*---------------------------------------ACTUAL--------------------------------------------*/
+  /** El registro ya quedó previamente hecho porque lo realizó el componente externo. **/
+  public void confirmarRecepcionDeEntrega() {
+    this.cambiarEstado(EstadoEntrega.ENTREGADA);
+    entidadBeneficiaria.cargarFotosDeEntrega();
+    donacionesAEntregar.forEach((donacion -> donacion.cambiarEstado(new Entregada())));
+  }
+
+  public void informarNoRecepcion() {
+    if (this.entregaTardia()) {
+      this.cambiarEstado(EstadoEntrega.NORECIBIDA);
+      donacionesAEntregar.forEach(donacion -> // AGREGAR JUSTIFICACION
+          donacion.cambiarEstado(new EntregaFallida(this, camionQueEntrega, null)));
+    }
+  }
+
+  public boolean entregaTardia() {
+    LocalDate fechaDeHoy = LocalDate.now();
+    return fechaDeEntregaEsperada.isAfter(fechaDeHoy);
+  }
+
+  public void volverAPendiente() {
+    if (donacionesAEntregar.stream().anyMatch(donacion -> donacion.getEstado() instanceof EnDeposito)) {
+      this.cambiarEstado(EstadoEntrega.PENDIENTE);
+    }
+  }
+  /*-----------------------------------------------------------------------------------------*/
 
   public LocalDate getFechaDeEntregaEsperada() {
     return fechaDeEntregaEsperada;
@@ -59,11 +89,11 @@ public class Entrega {
   public EntidadBeneficiaria getEntidadBeneficiaria() {return entidadBeneficiaria;}
   public List<Donacion> getDonacionesAEntregar() {return donacionesAEntregar;}
   public EstadoEntrega getEstadoEntrega() {return estadoEntrega;}
-  public Camion getCamionQueLaEntrego() {return camionQueLaEntrego;}
+  public Camion getCamionQueLaEntrego() {return camionQueEntrega;}
 
   public void setDireccionEntidadBeneficiaria(String direccionEntidadBeneficiaria) { this.direccionEntidadBeneficiaria = direccionEntidadBeneficiaria; }
   public void setDonacionesAEntregar(List<Donacion> donacionesAEntregar) { this.donacionesAEntregar = donacionesAEntregar; }
   public void setEstadoEntrega(EstadoEntrega estadoEntrega) { this.estadoEntrega = estadoEntrega; }
-  public void setCamionQueLaEntrego(Camion camionQueLaEntrego) { this.camionQueLaEntrego = camionQueLaEntrego; }
+  public void setCamionQueLaEntrego(Camion camionQueLaEntrego) { this.camionQueEntrega = camionQueLaEntrego; }
   public void setFechaDeEntregaEsperada(LocalDate fechaDeEntregaEsperada) { this.fechaDeEntregaEsperada = fechaDeEntregaEsperada; }
 }
