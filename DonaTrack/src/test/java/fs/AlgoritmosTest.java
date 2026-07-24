@@ -4,6 +4,7 @@ import arg.com.utn.donatrack.donaciones.Categoria;
 import arg.com.utn.donatrack.donaciones.CompatibilidadSemantica;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.EstadoUso;
+import arg.com.utn.donatrack.donaciones.PrioridadASubAtendidos;
 import arg.com.utn.donatrack.donaciones.ResultadoAlgoritmo;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import arg.com.utn.donatrack.donaciones.Unidad;
@@ -14,6 +15,7 @@ import arg.com.utn.donatrack.entidadesBeneficiarias.NecesidadExtraordinaria;
 import arg.com.utn.donatrack.personas.PersonaHumana;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.contactos.Telefono;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,17 +71,19 @@ public class AlgoritmosTest {
     Telefono Telefono = new Telefono("1143789856");
     List<Contacto> telefonos2 = new ArrayList<>();
     //telefonos.add(telefono);
-    NecesidadExtraordinaria arroz = new NecesidadExtraordinaria(100L,subcategoria3,3,"Arroz para familias afectadas",false,0);
+    NecesidadExtraordinaria arroz = new NecesidadExtraordinaria(100L,subcategoria,3,"Arroz para familias afectadas",false,0);
     List<Necesidad> necesidades = new ArrayList<>();
-    //necesidades.add(Arroz);
+
 
     EntidadBeneficiaria entidad1 = new EntidadBeneficiaria("SONRISITAS", "Calle Avalos 742",telefonos,necesidades);
 
+    List<Necesidad> necesidades2 = new ArrayList<>();
+    EntidadBeneficiaria entidad2 = new EntidadBeneficiaria("Sociedad de fomento Aguilar", "Pujato 1630", telefonos, necesidades2);
 
 
   /** Cantidades: Agua 1, Aceite 2, Papel Higienico pack6 2, Harina 3, Arroz 3**/
   @Test
-  void laDonacionContiene11Bienes(){  //FUNCIONA
+  void laDonacionContiene11Bienes(){
     bienes.add(Agua);
     bienes.add(Aceite);
     bienes.add(Aceite);
@@ -96,12 +100,14 @@ public class AlgoritmosTest {
     Assertions.assertEquals(11, donacion.getBienes().size());
   }
 
+  /**Test que verifica que se lanza una excepcion mientras se ejecuta el algoritmo de
+   * compatibilidad semantica solo si una entidad no contiene necesidades **/
   @Test
   void sinCoincidenciasEnCompatibilidadSemantica(){
+
     CompatibilidadSemantica algoritmo1 = new CompatibilidadSemantica();
     Donacion donacion = new Donacion(bienes);
     entidades.add(entidad1);
-    //int puntaje = entidad1.cuantoNecesita(donacion);
 
     Assertions.assertThrows(EntidadSinNecesidades.class, ()-> entidad1.cuantoNecesita(donacion));
     Assertions.assertThrows(EntidadSinNecesidades.class, ()-> algoritmo1.ejecutar(donacion, entidades));
@@ -110,37 +116,66 @@ public class AlgoritmosTest {
     Assertions.assertThrows(EntidadSinNecesidades.class, ()-> donacion.getEstado().asignacionDonaciones(entidades,donacion));
     Assertions.assertThrows(EntidadSinNecesidades.class,()-> donacion.realizarProcesoDeMtachmaking(entidades));
 
-    //Assertions.assertEquals(0, necesidades.size());
-    //Assertions.assertEquals(0,puntaje);
   }
 
   /**Test sobre algoritmo de Compatibilidad Semantica**/
   @Test
-  void elAlgoritmoCompatibilidadSemanticaDevuelveUnRankingDe2Entidades(){ //funciona, agregar mas entidades
+  void elAlgoritmoCompatibilidadSemanticaDevuelveUnRankingDe2Entidades(){
     CompatibilidadSemantica algoritmo1 = new CompatibilidadSemantica();
+
     entidades.add(entidad1);
+    entidades.add(entidad2);
+
     Donacion donacion = new Donacion(bienes);
+
+    necesidades2.add(arroz);
+    necesidades.add(arroz);
+
     ResultadoAlgoritmo resultado =  algoritmo1.ejecutar(donacion,entidades);
 
-    //Assertions.assertEquals(1,resultado.getResultadosAlgoritmo().size());
-
-    //------------------------------------PRUEBA-------------------------------------//
-    /// si una entidad no tiene necesidades su puntaje calculado para el ranking es cero ///
-    /*int puntaje = entidad1.cuantoNecesita(donacion);
-    Assertions.assertEquals(0, necesidades.size());
-    Assertions.assertEquals(0,puntaje);*/
+    Assertions.assertEquals(2,resultado.getResultadosAlgoritmo().size());
 
   }
 
-  /**COMPLETAR TEST**/
+  /** Test que prueba el puntaje que obtiene la primera entidad del raking devuelto por
+   * el algoritmo de compatibilidad semantica **/
   @Test
-  void obtengoUnaListaDelTipoMatchEntidadesDeDiezElementos(){
-    entidades.add(entidad1);
-    Donacion donacion = new Donacion(bienes);
-    donacion.realizarProcesoDeMtachmaking(entidades);
+  void elPuntajeDeLaEntidadEnPrimerPuestoDelRankingEs3(){
 
+    CompatibilidadSemantica algoritmo1 = new CompatibilidadSemantica();
+
+    /*La entidad (solo para el test) solo tiene una necesidad*/
+    necesidades.add(arroz);
+
+    entidades.add(entidad1);
+
+    /* La donacion contiene 3 bienes */
+    Donacion donacion = new Donacion(bienes);
+    bienes.add(Arroz);
+    bienes.add(Arroz);
+    bienes.add(Arroz);
+
+    entidades.add(entidad2);
+
+    /*necesidades de la segunda entidad*/
+    necesidades2.add(arroz);
+    necesidades2.add(arroz);
+    necesidades2.add(arroz);
+
+    /* El algoritmo (para el test) se ejecuta con una entidad*/
+    ResultadoAlgoritmo ranking = algoritmo1.ejecutar(donacion,entidades);
+
+    Assertions.assertEquals(3, ranking.getResultadosAlgoritmo().get(0).getPuntaje());
 
   }
+
+  /*@Test
+  void pruebaPrioridadSubatendidos(){
+
+    PrioridadASubAtendidos algoritmo1 = new PrioridadASubAtendidos();
+
+
+  }*/
 
 
 
