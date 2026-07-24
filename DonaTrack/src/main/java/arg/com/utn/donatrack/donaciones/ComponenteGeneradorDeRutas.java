@@ -8,6 +8,15 @@ import java.util.List;
 
 public class ComponenteGeneradorDeRutas implements  ServiciosExternoGenerador {
   ComponenteExterno adaptee;
+
+  public ComponenteGeneradorDeRutas() {
+    this.adaptee = new ComponenteExterno();
+  }
+
+  public ComponenteGeneradorDeRutas(ComponenteExterno adaptee) {
+    this.adaptee = adaptee;
+  }
+
   @Override
   public List<Ruta> planificacionDeRutas(List<Donacion> donacionesAsignadas, List<Camion> camionesEnDeposito) {
     ////SIMULAMOS ASINCRONISMO

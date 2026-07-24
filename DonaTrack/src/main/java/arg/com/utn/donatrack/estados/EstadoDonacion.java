@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import java.time.LocalDate;
 import java.util.List;
 
-// Discriminador "tipo" en el JSON para que Jackson sepa a qué subclase deserializar
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "tipo")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = EnDeposito.class, name = "EN_DEPOSITO"),

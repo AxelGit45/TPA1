@@ -46,6 +46,7 @@ public class EntidadBeneficiaria {
   }
 
   public int getDonacionesRecibidasUltimoTrimestre(){return donacionesRecibidasUltimoTrimestre;}
+  public void setDonacionesRecibidasUltimoTrimestre(int valor){this.donacionesRecibidasUltimoTrimestre = valor;}
 
 
   public Long getId() {

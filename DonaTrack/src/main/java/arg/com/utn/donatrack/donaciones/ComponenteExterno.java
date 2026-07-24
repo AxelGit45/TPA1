@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ComponenteExterno {
 
-    List<Ruta> generarRuta(List<Donacion> donacionesAsignadas, List<Camion> camionesEnDeposito){
+    List<Ruta> generarRuta(List<Donacion> donacionesAsignadas, List<Camion> camionesEnDeposito) {
         //TODO
         return List.of();
     }
