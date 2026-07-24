@@ -18,7 +18,7 @@ public class Donacion {
   private List<Persona> donadores;
 
   public Donacion(Bien bien /*List<Bien> bienes*/){
-    //this.bienes = bienes;
+    this.bienes = bienes;
     this.historialDeCambiosDeEstado = new ArrayList<>();
 
     EstadoDonacion estadoInicial = new EnDeposito();
