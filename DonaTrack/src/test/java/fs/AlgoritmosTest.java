@@ -2,6 +2,7 @@ package fs;
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Categoria;
 import arg.com.utn.donatrack.donaciones.CompatibilidadSemantica;
+import arg.com.utn.donatrack.donaciones.ComponenteAsignadorDeDestinatarios;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.EstadoUso;
 import arg.com.utn.donatrack.donaciones.PrioridadASubAtendidos;
@@ -151,8 +152,8 @@ public class AlgoritmosTest {
 
     /* La donacion contiene 3 bienes */
     Donacion donacion = new Donacion(bienes);
-    bienes.add(Arroz);
-    bienes.add(Arroz);
+    bienes.add(Aceite);
+    bienes.add(Agua);
     bienes.add(Arroz);
 
     entidades.add(entidad2);
@@ -169,13 +170,73 @@ public class AlgoritmosTest {
 
   }
 
-  /*@Test
-  void pruebaPrioridadSubatendidos(){
+  /**Test que verifica que el puntaje de la entidad en el primer
+   * puesto del ranking obtenido del algoritmo Prioridad a sub atendidos
+   * es 5 **/
+  @Test
+  void elPuntajeDeLaPrimeraEntidadDelRankingEs5(){
 
     PrioridadASubAtendidos algoritmo1 = new PrioridadASubAtendidos();
 
+    necesidades.add(arroz);
 
-  }*/
+    entidades.add(entidad1);
+    entidad1.setDonacionesRecibidasUltimoTrimestre(10);
+
+    /* La donacion contiene 3 bienes */
+    Donacion donacion = new Donacion(bienes);
+    bienes.add(PapelHigienico);
+    bienes.add(Harina);
+    bienes.add(Arroz);
+
+    entidades.add(entidad2);
+    entidad2.setDonacionesRecibidasUltimoTrimestre(5);
+    /*necesidades de la segunda entidad*/
+    necesidades2.add(arroz);
+    necesidades2.add(arroz);
+    necesidades2.add(arroz);
+
+    /* El algoritmo (para el test) se ejecuta con una entidad*/
+    ResultadoAlgoritmo ranking = algoritmo1.ejecutar(donacion,entidades);
+
+    Assertions.assertEquals(5,ranking.getResultadosAlgoritmo().get(0).getPuntaje());
+
+  }
+
+  @Test
+  void elComponenteAsignadorDeDonacionesRecive1RankingDeUnaDonacion(){
+
+    CompatibilidadSemantica algoritmo1 = new CompatibilidadSemantica();
+    PrioridadASubAtendidos algoritmo2 = new PrioridadASubAtendidos();
+
+    ComponenteAsignadorDeDestinatarios componenteExterno = new ComponenteAsignadorDeDestinatarios();
+    Donacion donacion = new Donacion(bienes);
+
+    bienes.add(Harina);
+    bienes.add(PapelHigienico);
+    bienes.add(Agua);
+    bienes.add(Arroz);
+
+    donacion.getEstado().setAlgoritmo(algoritmo1);
+    donacion.getEstado().setAlgoritmo(algoritmo2);
+    donacion.getEstado().setComponenteExterno(componenteExterno);
+
+    entidades.add(entidad1);
+    entidades.add(entidad2);
+
+    /*nececidades de la primera entidad*/
+    necesidades.add(arroz);
+
+    /*nececidades de la segunda entidad*/
+    necesidades2.add(arroz);
+    necesidades2.add(arroz);
+    necesidades2.add(arroz);
+
+    donacion.getEstado().asignacionDonaciones(entidades,donacion);
+
+    Assertions.assertEquals(1, componenteExterno.getResultadosAsignacionDeDonaciones().size() );
+
+  }
 
 
 

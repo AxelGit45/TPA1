@@ -22,7 +22,7 @@ public class Entrega {
   private EntidadBeneficiaria entidadBeneficiaria;
 
   public Entrega(Long id, String direccionEntidadBeneficiaria, LocalDate fechaDeEntregaEsperada,
-                 EntidadBeneficiaria entidadBeneficiaria) { // AGREGAR: Lista de donaciones y camion que entrega.
+                 EntidadBeneficiaria entidadBeneficiaria) {
     this.id = id;
     this.direccionEntidadBeneficiaria = direccionEntidadBeneficiaria;
     this.fechaDeEntregaEsperada = fechaDeEntregaEsperada;

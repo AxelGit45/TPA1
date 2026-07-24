@@ -8,6 +8,7 @@ import java.util.List;
 public class EnDeposito extends EstadoDonacion{
 
   public List<Algoritmo> algoritmos = new ArrayList<>();
+  public ComponenteAsignadorDeDestinatarios componenteExterno = new ComponenteAsignadorDeDestinatarios();
 
   @Override
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
@@ -16,10 +17,16 @@ public class EnDeposito extends EstadoDonacion{
 
       ResultadoMatchmaking ranking = new ResultadoMatchmaking(donacion, resultadosDeAlgoritmos);
 
+      componenteExterno.obtenerResultadoDeAlgoritmosPorDonacion(ranking);
   }
 
   @Override
   public void setAlgoritmo(Algoritmo algoritmo) {
     this.algoritmos.add(algoritmo);
+  }
+
+  @Override
+  public void setComponenteExterno(ComponenteAsignadorDeDestinatarios componenteExterno){
+    this.componenteExterno = componenteExterno;
   }
 }
