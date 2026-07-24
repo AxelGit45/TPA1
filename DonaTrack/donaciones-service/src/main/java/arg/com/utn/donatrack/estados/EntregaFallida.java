@@ -7,6 +7,8 @@ import arg.com.utn.donatrack.dtos.EntregaDTO;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.personas.Administrador;
 import arg.com.utn.donatrack.repositorios.RepositorioAdministradores;
+import arg.com.utn.donatrack.personas.contactos.Contacto;
+import arg.com.utn.donatrack.personas.Persona;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,16 +43,49 @@ public class EntregaFallida extends EstadoDonacion{
     String fecha = ahora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     String hora = ahora.format(DateTimeFormatter.ofPattern("HH:mm"));
     String datosCamion = camion != null ? camion.getPatente() : "N/A";
+    String comprobante = "COMPROBANTE DE ENTREGA - Fecha: " + fecha +
+        " | Hora: " + hora + " | Camión: " + datosCamion;
 
     System.out.println("[NOTIFICACIÓN ENTIDAD] La entrega ha fallado.");
 
     System.out.println("[NOTIFICACIÓN DONADOR] La entrega ha fallado.");
 
     for (Administrador administrador : RepositorioAdministradores.getAdministradores()) {
-      for (arg.com.utn.donatrack.personas.contactos.Contacto contacto : administrador.getContactos()) {
+      for (Contacto contacto : administrador.getContactos()) {
         contacto.contactar("ALERTA: Ha fallado la entrega ID " + entregaId);
       }
     }
+
+//    for (Contacto c : entrega.getEntidadBeneficiaria().getContactos()) {
+//
+//      c.contactar("La entrega ha fallado.");
+//
+//    }
+//
+//    for (Donacion donacion : entrega.getDonacionesAEntregar()) {
+//
+//      for (Persona donador : donacion.getDonadores()) {
+//
+//        for (Contacto c : donador.getContactos()) {
+//
+//          c.contactar("La entrega ha fallado.");
+//
+//        }
+//
+//      }
+//
+//    }
+//
+//    for (Administrador administrador : RepositorioAdministradores.getAdministradores()) {
+//
+//      for (Contacto contacto : administrador.getContactos()) {
+//
+//        contacto.contactar("ALERTA: Ha fallado la entrega ID " + entrega.getId() +
+//            " para la entidad " + entrega.getEntidadBeneficiaria().getRazonSocial());
+//
+//      }
+//
+//    }
   }
 
 }

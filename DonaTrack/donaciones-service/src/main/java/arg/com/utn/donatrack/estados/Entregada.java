@@ -5,6 +5,8 @@ import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.dtos.CamionDTO;
 import arg.com.utn.donatrack.dtos.EntregaDTO;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.personas.Persona;
+import arg.com.utn.donatrack.personas.contactos.Contacto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,6 +42,26 @@ public class Entregada extends EstadoDonacion {
 
     System.out.println("[NOTIFICACIÓN ENTREGA] " + comprobante + " - Los bienes ya están en su establecimiento.");
     System.out.println("[NOTIFICACIÓN DONADOR] " + comprobante + " - Su donación ha sido entregada exitosamente.");
+
+//    for (Contacto c : entrega.getEntidadBeneficiaria().getContactos()) {
+//
+//      c.contactar(comprobante + " - Los bienes ya están en su establecimiento.");
+//
+//    }
+//
+//    for (Donacion donacion : entrega.getDonacionesAEntregar()) {
+//
+//      for (Persona donador : donacion.getDonadores()) {
+//
+//        for (Contacto c : donador.getContactos()) {
+//
+//          c.contactar(comprobante + " - Su donación ha sido entregada exitosamente.");
+//
+//        }
+//
+//      }
+//
+//    }
   }
 
   @Override
