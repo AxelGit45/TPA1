@@ -106,14 +106,20 @@ public class DonacionesClient {
         return List.of();
     }
 
-    public void cambiarEstadoDonacion(Long donacionId, String nuevoEstado) {
+    public void cambiarEstadoDonacion(Long donacionId, String nuevoEstado, Long camionId, Long entregaId, String justificacion) {
         try {
-            String json = "{\"estado\":\"" + nuevoEstado + "\"}";
+            StringBuilder body = new StringBuilder();
+            body.append("{\"estado\":\"").append(nuevoEstado).append("\"");
+            if (camionId != null) body.append(",\"camionId\":").append(camionId);
+            if (entregaId != null) body.append(",\"entregaId\":").append(entregaId);
+            if (justificacion != null) body.append(",\"justificacion\":\"").append(justificacion).append("\"");
+            body.append("}");
+
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(baseUrl + "/donaciones/" + donacionId + "/estado-nombre"))
                 .header("Content-Type", "application/json")
                 .timeout(Duration.ofSeconds(10))
-                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .build();
             httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {

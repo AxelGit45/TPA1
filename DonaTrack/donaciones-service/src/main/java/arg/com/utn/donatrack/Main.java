@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack;
 
+import arg.com.utn.donatrack.tareas.AsignadorDeEntidadesParaDonaciones;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -19,6 +20,7 @@ public class Main {
   public static void main(String[] args) throws IOException {
     final ResourceConfig config = new ResourceConfig();
 
+    // Jersey va a escanear este paquete buscando clases con @Path
     config.packages("arg.com.utn.donatrack.apis");
     config.register(JacksonFeature.class);
 
@@ -31,9 +33,14 @@ public class Main {
 
     final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
 
+    AsignadorDeEntidadesParaDonaciones asignador = new AsignadorDeEntidadesParaDonaciones();
+    asignador.iniciar();
+
     System.out.println("[DONACIONES-SERVICE] Levantado en " + BASE_URI);
     System.out.println("Proba: http://localhost:8080/health");
+    System.out.println("Presiona ENTER para detenerlo...");
     try { Thread.currentThread().join(); } catch (InterruptedException ignored) {}
+    asignador.detener();
     server.shutdownNow();
   }
 }

@@ -37,28 +37,29 @@ public class Entrega {
     this.estadoEntrega = nuevoEstado;
   }
 
-  public void iniciarTraslado() {
+  public void iniciarTraslado(Long camionId) {
+    this.camionId = camionId;
     this.cambiarEstado(EstadoEntrega.ENTRASLADO);
     DonacionesClient client = new DonacionesClient();
     for (Long donacionId : donacionIds) {
-      client.cambiarEstadoDonacion(donacionId, "EN_TRASLADO");
+      client.cambiarEstadoDonacion(donacionId, "EN_TRASLADO", camionId, null, null);
     }
   }
 
-  public void confirmarRecepcionDeEntrega() {
+  public void confirmarRecepcionDeEntrega(Long camionId) {
     this.cambiarEstado(EstadoEntrega.ENTREGADA);
     DonacionesClient client = new DonacionesClient();
     for (Long donacionId : donacionIds) {
-      client.cambiarEstadoDonacion(donacionId, "ENTREGADA");
+      client.cambiarEstadoDonacion(donacionId, "ENTREGADA", camionId, this.id, null);
     }
   }
 
-  public void informarNoRecepcion() {
+  public void informarNoRecepcion(Long camionId) {
     if (this.entregaTardia()) {
       this.cambiarEstado(EstadoEntrega.NORECIBIDA);
       DonacionesClient client = new DonacionesClient();
       for (Long donacionId : donacionIds) {
-        client.cambiarEstadoDonacion(donacionId, "ENTREGA_FALLIDA");
+        client.cambiarEstadoDonacion(donacionId, "ENTREGA_FALLIDA", camionId, this.id, null);
       }
     }
   }

@@ -4,6 +4,8 @@ import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.estados.*;
 import arg.com.utn.donatrack.personas.Persona;
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.repositorios.RepositorioEntidadesBeneficiarias;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -153,6 +155,38 @@ public class DonacionesApi {
 
     donacion.cambiarEstado(nuevoEstado);
     return Response.ok(donacion).build();
+  }
+
+  // Getter para que el Scheduler acceda a la lista en memoria
+  public static List<Donacion> getDonacionesEnMemoria() {
+    return donaciones;
+  }
+
+  // Ejecución a demanda de los algoritmos de asignación
+  @POST
+  @Path("/matchmaking/ejecutar")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response ejecutarMatchmakingManual() {
+    try {
+      List<EntidadBeneficiaria> entidades = RepositorioEntidadesBeneficiarias.getEntidadesBeneficiarias();
+      int procesadas = 0;
+
+      for (Donacion donacion : donaciones) {
+        if (donacion.getEstado() instanceof EnDeposito) {
+          donacion.realizarProcesoDeMtachmaking(entidades);
+          procesadas++;
+        }
+      }
+
+      return Response.ok(Map.of(
+          "mensaje", "Matchmaking ejecutado exitosamente a demanda",
+          "donacionesProcesadas", procesadas
+      )).build();
+    } catch (Exception e) {
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+          .entity(Map.of("error", e.getMessage()))
+          .build();
+    }
   }
 
   // Funciones extra

@@ -77,21 +77,28 @@ public class EntregaTest {
   @Test
   void iniciarTraslado_DebeCambiarAEstadoEnTraslado() {
     Entrega entrega = crearEntrega(LocalDate.now(), List.of(donacionId1));
-    entrega.iniciarTraslado();
+    entrega.iniciarTraslado(42L);
     assertEquals(EstadoEntrega.ENTRASLADO, entrega.getEstadoEntrega());
+  }
+
+  @Test
+  void iniciarTraslado_DebeGuardarElCamionId() {
+    Entrega entrega = crearEntrega(LocalDate.now(), List.of(donacionId1));
+    entrega.iniciarTraslado(42L);
+    assertEquals(42L, entrega.getCamionId());
   }
 
   @Test
   void confirmarRecepcionDeEntrega_DebeCambiarAEstadoEntregada() {
     Entrega entrega = crearEntrega(LocalDate.now(), List.of(donacionId1));
-    entrega.confirmarRecepcionDeEntrega();
+    entrega.confirmarRecepcionDeEntrega(42L);
     assertEquals(EstadoEntrega.ENTREGADA, entrega.getEstadoEntrega());
   }
 
   @Test
   void informarNoRecepcion_SiEsTardia_DebeCambiarANoRecibida() {
     Entrega entrega = crearEntrega(LocalDate.now().minusDays(1), List.of(donacionId1));
-    entrega.informarNoRecepcion();
+    entrega.informarNoRecepcion(42L);
     assertEquals(EstadoEntrega.NORECIBIDA, entrega.getEstadoEntrega());
   }
 
@@ -99,7 +106,7 @@ public class EntregaTest {
   void informarNoRecepcion_SiNoEsTardia_NoCambiaDeEstado() {
     Entrega entrega = crearEntrega(LocalDate.now().plusDays(3), List.of(donacionId1));
     entrega.setEstadoEntrega(EstadoEntrega.ENTRASLADO);
-    entrega.informarNoRecepcion();
+    entrega.informarNoRecepcion(42L);
     assertEquals(EstadoEntrega.ENTRASLADO, entrega.getEstadoEntrega());
   }
 

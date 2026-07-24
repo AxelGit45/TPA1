@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Camion {
 
+    private Long id;
     private String patente;
     private Integer volumen;
     private Integer altura;
@@ -25,7 +26,7 @@ public class Camion {
     this.bienesTransportados = new ArrayList<>();
   }
 
-  public Long getId() { return null; }
+  public Long getId() { return id; }
   public String getPatente() {return patente;}
   public Integer getVolumen() {return volumen;}
   public Integer getAltura() {return altura;}
@@ -35,6 +36,7 @@ public class Camion {
   public Double getLatitud() {return latitud;}
   public Double getLongitud() {return longitud;}
 
+  public void setId(Long id) { this.id = id; }
   public void setPatente(String patente) { this.patente = patente; }
   public void setVolumen(Integer volumen) { this.volumen = volumen; }
   public void setAltura(Integer altura) { this.altura = altura; }

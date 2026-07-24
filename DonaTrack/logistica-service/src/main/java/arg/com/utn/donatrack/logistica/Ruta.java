@@ -25,7 +25,7 @@ public class Ruta {
     public void Iniciarse(List<Entrega> entregasRepositorio) {
       for (Entrega entrega : entregasRepositorio) {
         if (entregaIds.contains(entrega.getId())) {
-          entrega.iniciarTraslado();
+          entrega.iniciarTraslado(this.camionId);
         }
       }
       notificar(entregasRepositorio);
@@ -64,6 +64,10 @@ public class Ruta {
     public Long getId() { return id; }
     public List<Long> getEntregaIds() { return entregaIds; }
     public String getLinkMapa() { return linkMapa; }
+    public void setId(Long id) {
+      this.id = id;
+      this.linkMapa = "http://donatrack.com/mapa/ruta/" + this.id;
+    }
     public void setCamionId(Long camionId) { this.camionId = camionId; }
     public void setEntregaIds(List<Long> entregaIds) { this.entregaIds = entregaIds; }
 }

@@ -15,7 +15,7 @@ public class Bien {
   private boolean perecedero;
   private Persona donador;
 
-  //public Bien(){}
+  public Bien(){}
 
   public Bien(String descripcion, String foto, Subcategoria subcategoria, Integer cantidad, Unidad unidad,
               Date fechaVencimiento, EstadoUso estadoUso, boolean perecedero, Persona donador){

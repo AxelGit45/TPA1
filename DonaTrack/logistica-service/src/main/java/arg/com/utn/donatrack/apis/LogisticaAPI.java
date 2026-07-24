@@ -282,9 +282,9 @@ public class LogisticaAPI {
         try {
           EstadoEntrega nuevoEstado = EstadoEntrega.valueOf(request.estadoEntrega.toUpperCase());
           switch (nuevoEstado) {
-            case ENTRASLADO -> entrega.iniciarTraslado();
-            case ENTREGADA -> entrega.confirmarRecepcionDeEntrega();
-            case NORECIBIDA -> entrega.informarNoRecepcion();
+            case ENTRASLADO -> entrega.iniciarTraslado(request.camionId);
+            case ENTREGADA -> entrega.confirmarRecepcionDeEntrega(request.camionId);
+            case NORECIBIDA -> entrega.informarNoRecepcion(request.camionId);
             default -> entrega.cambiarEstado(nuevoEstado);
           }
         } catch (IllegalArgumentException e) {
@@ -340,10 +340,17 @@ public class LogisticaAPI {
       if (request == null || request.getPatente() == null) {
         return errorValidacion("La patente del camión es obligatoria");
       }
+      Long nuevoId = idCamionCounter.getAndIncrement();
       Camion nuevo = new Camion(request.getPatente(), request.getVolumen(), request.getAltura(), request.getCapacidadDeCarga());
+      nuevo.setId(nuevoId);
       nuevo.setIdGps(request.getIdGps());
       camiones.add(nuevo);
-      return Response.ok(nuevo).build();
+
+      URI location = UriBuilder.fromResource(LogisticaAPI.class)
+          .path("/camiones/{id}")
+          .build(nuevoId);
+
+      return Response.created(location).entity(nuevo).build();
     } catch (Exception e) {
       return errorServidor(e);
     }
@@ -373,12 +380,52 @@ public class LogisticaAPI {
       camionEncontrado.setLatitud(request.latitud);
       camionEncontrado.setLongitud(request.longitud);
 
-      return Response.ok("Ubicación actualizada correctamente").build();
+       return Response.ok("Ubicación actualizada correctamente").build();
 
-    } catch (Exception e) {
-      return errorServidor(e);
-    }
-  }
+     } catch (Exception e) {
+       return errorServidor(e);
+     }
+   }
+
+   // === CALLBACK Y LOTES (Requerimientos de Integración Externa) ===
+
+   @POST
+   @Path("/rutas/callback")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public Response callbackPlanificacionRutas(CallbackRutasRequest request) {
+     try {
+       if (request == null || request.rutasGeneradas == null) {
+         return errorValidacion("Estructura de callback inválida");
+       }
+
+       for (Ruta nuevaRuta : request.rutasGeneradas) {
+         Long nuevoId = idRutaCounter.getAndIncrement();
+         nuevaRuta.setId(nuevoId);
+         rutas.add(nuevaRuta);
+         nuevaRuta.Iniciarse(entregas);
+       }
+
+       if (request.donacionesSinAsignar != null && !request.donacionesSinAsignar.isEmpty()) {
+         System.out.println("[Callback] Donaciones sin asignar recibidas: " + request.donacionesSinAsignar.size());
+       }
+
+       return Response.ok(Map.of(
+           "status", "OK",
+           "rutasRegistradas", request.rutasGeneradas.size()
+       )).build();
+     } catch (Exception e) {
+       return errorServidor(e);
+     }
+   }
+
+   private <T> List<List<T>> dividirEnLotes(List<T> listaOriginal, int tamanoLote) {
+     List<List<T>> lotes = new ArrayList<>();
+     for (int i = 0; i < listaOriginal.size(); i += tamanoLote) {
+       lotes.add(listaOriginal.subList(i, Math.min(i + tamanoLote, listaOriginal.size())));
+     }
+     return lotes;
+   }
 
   // === DTOs internos ===
 
@@ -403,13 +450,19 @@ public class LogisticaAPI {
     public String direccionEntidadBeneficiaria;
     public String fechaDeEntregaEsperada;
     public String estadoEntrega;
+    public Long camionId;
   }
 
-  public static class GpsRequest {
-    public String idGps;
-    public Double latitud;
-    public Double longitud;
-  }
+   public static class GpsRequest {
+     public String idGps;
+     public Double latitud;
+     public Double longitud;
+   }
+
+   public static class CallbackRutasRequest {
+     public List<Ruta> rutasGeneradas;
+     public List<Long> donacionesSinAsignar;
+   }
 
   // === Helpers ===
 
