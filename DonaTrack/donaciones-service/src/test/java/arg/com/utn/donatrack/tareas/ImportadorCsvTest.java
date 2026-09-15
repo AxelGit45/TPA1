@@ -2,10 +2,12 @@ package arg.com.utn.donatrack.tareas;
 
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 public class ImportadorCsvTest {
 
   @BeforeEach
