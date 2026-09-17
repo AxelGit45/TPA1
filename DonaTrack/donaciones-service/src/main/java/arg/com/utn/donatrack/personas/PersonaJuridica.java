@@ -1,11 +1,24 @@
 package arg.com.utn.donatrack.personas;
 
 import arg.com.utn.donatrack.personas.contactos.Contacto;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
+@Entity
+@Table(name = "PersonaJuridica")
 public class PersonaJuridica extends Persona {
 
   private String razonSocial;
+  @Enumerated(EnumType.STRING)
   private TipoRazonSocial tipoRazonSocial;
   private String rubro;
 

@@ -2,9 +2,17 @@ package arg.com.utn.donatrack.personas.contactos;
 
 import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
 
-public class Mail implements Contacto{
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("MAIL")
+public class Mail extends Contacto {
 
   private String direccion;
+
+  public Mail(){
+  }
 
   public Mail(String direccion){
 

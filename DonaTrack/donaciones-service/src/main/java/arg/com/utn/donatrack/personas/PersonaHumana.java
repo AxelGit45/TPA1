@@ -1,8 +1,14 @@
 package arg.com.utn.donatrack.personas;
 
 import arg.com.utn.donatrack.personas.contactos.Contacto;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
+@Entity
+@Table(name = "PersonaHumana")
 public class PersonaHumana extends Persona {
 
   private String nombre;
@@ -11,6 +17,7 @@ public class PersonaHumana extends Persona {
   private Integer numeroDeDocumento;
   private String genero;
   private String direccion;
+  @Transient
   private Contacto predeterminado;
 
   public PersonaHumana(){}
@@ -23,7 +30,9 @@ public class PersonaHumana extends Persona {
     this.numeroDeDocumento = numeroDeDocumento;
     this.genero = genero;
     this.direccion = direccion;
-    this.contactos = contactos;
+    if (contactos != null) {
+      this.contactos = contactos;
+    }
     this.predeterminado = predeterminado;
   }
 

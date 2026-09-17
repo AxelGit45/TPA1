@@ -16,12 +16,25 @@
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/prueba" />
             <property name="hibernate.connection.username" value="root" />
             <property name="hibernate.connection.password" value="mysql" /> -->
+
+            <!-- COMENTADO PARA PROBAR LA HSQLDB
             <property name="javax.persistence.validation.mode" value="NONE"/>
             <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
             <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/donaciones_db"/>
             <property name="hibernate.connection.username" value="sa"/>
             <property name="hibernate.connection.password" value=""/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            -->
+
+            <!-- LO NUEVO -->
+            <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
+            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:testdb;shutdown=true"/>
+            <property name="hibernate.connection.username" value="sa"/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+
+            <property name="javax.persistence.validation.mode" value="NONE"/>
+            <!-- LO NUEVO -->
 
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>

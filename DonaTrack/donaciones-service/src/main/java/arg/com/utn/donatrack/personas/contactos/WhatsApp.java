@@ -2,9 +2,17 @@ package arg.com.utn.donatrack.personas.contactos;
 
 import arg.com.utn.donatrack.notificaciones.adapters.TwilioAdapter;
 
-public class WhatsApp implements Contacto{
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("WHATSAPP")
+public class WhatsApp extends Contacto {
 
   private String numero;
+
+  public WhatsApp(){
+  }
 
   public WhatsApp(String numero){
 

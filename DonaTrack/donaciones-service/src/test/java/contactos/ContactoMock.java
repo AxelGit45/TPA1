@@ -2,8 +2,12 @@ package arg.com.utn.donatrack.personas.contactos;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
-public class ContactoMock implements Contacto {
+@Entity
+@DiscriminatorValue("MOCK")
+public class ContactoMock extends Contacto {
 
   private List<String> mensajesRecibidos = new ArrayList<>();
 

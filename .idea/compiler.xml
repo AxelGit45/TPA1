@@ -6,7 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="logistica-service" />
         <module name="TPA1REHECHO" />
+        <module name="donaciones-service" />
       </profile>
     </annotationProcessing>
   </component>

@@ -50,6 +50,14 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <!-- NUEVO -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.36</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- NUEVO -->
     </dependencies>
 
     <build>
