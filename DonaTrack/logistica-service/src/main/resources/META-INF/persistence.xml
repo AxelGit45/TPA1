@@ -5,17 +5,43 @@
     http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
 
-    <persistence-unit name="simple-persistence-unit" transaction-type="RESOURCE_LOCAL">
+    <!-- PERSISTENCE UNIT PARA LOS TEST HSQLDB-->
+   <persistence-unit name="simple-persistence-unit" transaction-type="RESOURCE_LOCAL">
+       <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+       <properties>
+           <property name="hibernate.archive.autodetection" value="class"/>
+
+           <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
+           <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:logisticadb;shutdown=true"/>
+           <property name="hibernate.jdbc.time_zone" value="UTC"/>
+           <property name="hibernate.connection.username" value="sa"/>
+           <property name="hibernate.connection.password" value=""/>
+           <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+
+           <property name="javax.persistence.validation.mode" value="NONE"/>
+
+           <property name="hibernate.show_sql" value="true"/>
+           <property name="hibernate.format_sql" value="true"/>
+           <property name="use_sql_comments" value="true"/>
+           <property name="hibernate.hbm2ddl.auto" value="update"/>
+       </properties>
+
+   </persistence-unit>
+
+    <!-- PERSISTENCE UNIT PARA POSTGRESQL -->
+
+    <persistence-unit name="postgres-persistence-unit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <properties>
             <property name="hibernate.archive.autodetection" value="class"/>
 
-            <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
-            <property name="hibernate.connection.url" value="jdbc:hsqldb:mem:logisticadb;shutdown=true"/>
-            <property name="hibernate.connection.username" value="sa"/>
-            <property name="hibernate.connection.password" value=""/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5433/logistica_db?options=-c%20TimeZone%3DUTC"/>
+            <property name="hibernate.connection.username" value="donatrack"/>
+            <property name="hibernate.connection.password" value="donatrack"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 
             <property name="javax.persistence.validation.mode" value="NONE"/>
 
