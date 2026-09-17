@@ -3,14 +3,26 @@ package arg.com.utn.donatrack.logistica;
 import arg.com.utn.donatrack.clients.DonacionesClient;
 import arg.com.utn.donatrack.dtos.DonacionDTO;
 
+import javax.persistence.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "Entrega")
 public class Entrega {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String direccionEntidadBeneficiaria;
+
+  @ElementCollection
+  @CollectionTable(name = "Entrega_donacionIds", joinColumns = @JoinColumn(name = "entrega_id"))
+  @Column(name = "donacion_id")
   private List<Long> donacionIds;
+  @Enumerated(EnumType.STRING)
   private EstadoEntrega estadoEntrega;
   private Long camionId;
   private LocalDate fechaDeEntregaEsperada;

@@ -6,10 +6,20 @@ import arg.com.utn.donatrack.dtos.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "Ruta")
 public class Ruta {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long camionId;
+    @ElementCollection
+    @CollectionTable(name = "Ruta_entregaIds", joinColumns = @JoinColumn(name = "ruta_id"))
+    @Column(name = "entrega_id")
     private List<Long> entregaIds;
     private String linkMapa;
 
@@ -21,6 +31,11 @@ public class Ruta {
       this.entregaIds = entregaIds;
       this.linkMapa = "http://donatrack.com/mapa/ruta/" + this.id;
     }
+
+   @PostPersist
+   private void actualizarLinkMapa() {
+     this.linkMapa = "http://donatrack.com/mapa/ruta/" + this.id;
+   }
 
     public void Iniciarse(List<Entrega> entregasRepositorio) {
       for (Entrega entrega : entregasRepositorio) {

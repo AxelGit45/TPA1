@@ -3,13 +3,34 @@ package arg.com.utn.donatrack.logistica;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Camion")
 public class Camion {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String patente;
     private Integer volumen;
     private Integer altura;
     private Integer capacidadDeCarga;
+    @ElementCollection
+    @CollectionTable(
+      name = "camion_bienes",
+      joinColumns = @JoinColumn(name = "camion_id")
+    )
+    @Column(name = "bien_id")
     private List<Long> bienesTransportados;
     private String idGps;
     private Double latitud;
