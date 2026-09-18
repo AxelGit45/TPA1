@@ -3,41 +3,19 @@ package arg.com.utn.donatrack.entidadesBeneficiarias;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "entidad_beneficiaria")
 public class EntidadBeneficiaria {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column(name = "razon_social", nullable = false)
   private String razonSocial;
-
   private String direccion;
-
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "entidad_beneficiaria_id")
   private List<Necesidad> necesidades;
-
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  @JoinColumn(name = "entidad_beneficiaria_id")
   protected List<Contacto> contactos;
-
   private LocalDate ultimaConexion;
-  @ElementCollection
-  @CollectionTable(
-      name = "peticiones_entregadas",
-      joinColumns = @JoinColumn(name = "entidad_beneficiaria_id")
-  )
-  @Column(name = "peticion_id")
   private List<Long> peticionesEntregadas;
-
   private int donacionesRecibidasUltimoTrimestre;
 
   public EntidadBeneficiaria(){
@@ -64,7 +42,6 @@ public class EntidadBeneficiaria {
   public String getRazonSocial() { return razonSocial; }
   public String getDireccion() { return direccion; }
 
-  @Transient
   public int cuantoNecesita(Donacion donacion){
     if (!necesidades.isEmpty()) {
       return necesidades.stream().filter(necesidad -> donacion.contieneBienPara(necesidad)).toList().size();
