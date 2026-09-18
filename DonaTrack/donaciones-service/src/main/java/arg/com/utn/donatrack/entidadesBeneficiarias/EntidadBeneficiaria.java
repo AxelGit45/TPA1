@@ -6,15 +6,36 @@ import arg.com.utn.donatrack.personas.contactos.Contacto;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table(name = "entidad_beneficiaria")
 public class EntidadBeneficiaria {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String razonSocial;
   private String direccion;
+
+  @OneToMany(/*cascade = CascadeType.ALL, orphanRemoval = true*/)
+  @JoinColumn(name = "entidad_beneficiaria_id")
   private List<Necesidad> necesidades;
+
+  @OneToMany
+  @JoinColumn(name = "entidad_beneficiaria_id")
   protected List<Contacto> contactos;
+
   private LocalDate ultimaConexion;
+  @Transient
   private List<Long> peticionesEntregadas;
   private int donacionesRecibidasUltimoTrimestre;
 

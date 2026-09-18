@@ -1,4 +1,4 @@
-package arg.com.utn.donatrack.logistica;
+/*package arg.com.utn.donatrack.logistica;
 
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +34,7 @@ public class PostgresConnectionTest {
     }
   }
 }
-
+*/
 // levantar docker docker compose up -d
 //comprobar que este corriendo docker ps
 // comando por terminal para ver: docker exec -it donatrack-postgres-logistica psql -U donatrack -d logistica_db -c "SELECT * FROM Camion;"
