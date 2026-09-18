@@ -35,4 +35,7 @@ public class PostgresConnectionTest {
   }
 }
 
+// levantar docker docker compose up -d
+//comprobar que este corriendo docker ps
 // comando por terminal para ver: docker exec -it donatrack-postgres-logistica psql -U donatrack -d logistica_db -c "SELECT * FROM Camion;"
+// comando por terminal para eliminar: docker exec -it donatrack-postgres-logistica psql -U donatrack -d logistica_db -c "DELETE FROM Camion;"

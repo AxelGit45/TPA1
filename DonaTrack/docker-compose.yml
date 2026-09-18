@@ -26,3 +26,4 @@ services:
 volumes:
   postgres_donaciones_data:
   postgres_logistica_data:
+
