@@ -1,8 +1,13 @@
 package arg.com.utn.donatrack.donaciones;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
+@Embeddable
 public class Subcategoria {
 
   private String nombre;
+  @Transient
   private Categoria categoriaPadre;
   private Boolean exigeFechaVencimiento;
   private Boolean exigeEstadoUso;

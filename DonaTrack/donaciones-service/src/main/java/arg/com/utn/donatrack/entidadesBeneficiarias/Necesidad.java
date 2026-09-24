@@ -3,13 +3,33 @@ package arg.com.utn.donatrack.entidadesBeneficiarias;
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Table;
+import javax.persistence.Embedded;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_necesidad")
+@Table(name = "necesidades")
 public abstract class Necesidad {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   protected Long id;
+  @Embedded
   protected Subcategoria necesidad;
   protected Integer cantidadNecesitada;
   protected String descripcion;
   protected Boolean satisfecha;
+
+  public Necesidad() {
+  }
 
   public Necesidad(Long id, Subcategoria necesidad, Integer cantidadNecesitada, String descripcion, Boolean satisfecha){
 

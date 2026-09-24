@@ -1,5 +1,8 @@
 package arg.com.utn.donatrack.donaciones;
 
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Categoria {
 
   private String nombre;

@@ -5,10 +5,21 @@ import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 
-public class AsignacionRealizada extends EstadoDonacion{
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 
+@Entity
+@DiscriminatorValue("ASIGNACION_REALIZADA")
+public class AsignacionRealizada extends EstadoDonacion{
+  @Transient
   private EntidadBeneficiaria entidadBeneficiaria;
+  @Transient
   private Donacion donacion;
+
+  public AsignacionRealizada() {
+
+  }
 
   public AsignacionRealizada(EntidadBeneficiaria entidadBeneficiaria, Donacion donacion){
 
