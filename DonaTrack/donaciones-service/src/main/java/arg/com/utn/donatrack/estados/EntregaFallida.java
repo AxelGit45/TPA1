@@ -10,10 +10,14 @@ import arg.com.utn.donatrack.repositorios.RepositorioAdministradores;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.Persona;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue("ENTREGA_FALLIDA")
 public class EntregaFallida extends EstadoDonacion{
 
   private Long entregaId;

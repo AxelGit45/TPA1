@@ -6,16 +6,46 @@ import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.estados.EnTraslado;
 import arg.com.utn.donatrack.estados.EstadoDonacion;
 import arg.com.utn.donatrack.personas.Persona;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "donacion")
 public class Donacion {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private List<Bien> bienes;
+
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "donacion_id")
+  private List<Bien> bienes = new ArrayList<>();
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "estado_actual_id")
   private EstadoDonacion estadoDonacion;
-  private List<EstadoDonacion> historialDeCambiosDeEstado;
+
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "donacion_id")
+  @OrderColumn(name = "indice_historial")
+  private List<EstadoDonacion> historialDeCambiosDeEstado = new ArrayList<>();
+
+  @Transient
   private List<Algoritmo> algoritmos;
+
+  @Transient
   private List<Persona> donadores;
 
   public Donacion(){

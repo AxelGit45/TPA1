@@ -5,15 +5,16 @@ import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@DiscriminatorValue("recurrente")
-
+@DiscriminatorValue("RECURRENTE")
 public class NecesidadRecurrente extends Necesidad{
 
   private Integer recibidos;
   private LocalDate fechaLimite;
+
+  public NecesidadRecurrente() {
+  }
 
   public NecesidadRecurrente(Long id, Subcategoria necesidad, Integer cantidadNecesitada, String descripcion,
                              Boolean satisfecha, Integer recibidos, LocalDate fechaLimite){
@@ -31,7 +32,7 @@ public class NecesidadRecurrente extends Necesidad{
     return recibidos;
   }
 
-  public ChronoLocalDate getFechaLimite() {
+  public LocalDate getFechaLimite() {
     return fechaLimite;
   }
 

@@ -3,14 +3,15 @@ package arg.com.utn.donatrack.entidadesBeneficiarias;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@DiscriminatorValue("extraordinaria")
-
+@DiscriminatorValue("EXTRAORDINARIA")
 public class NecesidadExtraordinaria extends Necesidad{
 
   private Integer recibidos;
+
+  public NecesidadExtraordinaria() {
+  }
 
   public NecesidadExtraordinaria(Long id,
                                  Subcategoria necesidad,

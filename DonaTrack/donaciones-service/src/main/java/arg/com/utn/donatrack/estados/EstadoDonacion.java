@@ -6,6 +6,14 @@ import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,8 +26,14 @@ import java.util.List;
     @JsonSubTypes.Type(value = EntregaFallida.class, name = "ENTREGA_FALLIDA"),
     @JsonSubTypes.Type(value = Vencida.class, name = "VENCIDA")
 })
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_estado")
 public abstract class EstadoDonacion {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private LocalDate fechaDeAsignacion;
 
   public EstadoDonacion() {

@@ -1,18 +1,40 @@
 package arg.com.utn.donatrack.donaciones;
 
 import arg.com.utn.donatrack.personas.Persona;
+
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
+@Entity
+@Table(name = "bien")
 public class Bien {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   private String descripcion;
   private String foto;
+  @Embedded
   private Subcategoria subcategoria;
   private Integer cantidad;
+  @Enumerated(EnumType.STRING)
   private Unidad unidad;
   private Date fechaVencimiento;
+  @Enumerated(EnumType.STRING)
   private EstadoUso estadoUso;
   private boolean perecedero;
+  @ManyToOne
+  @JoinColumn(name = "persona_id")
   private Persona donador;
 
   public Bien(){}

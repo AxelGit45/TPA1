@@ -2,12 +2,20 @@ package arg.com.utn.donatrack.estados;
 
 import arg.com.utn.donatrack.donaciones.*;
 import arg.com.utn.donatrack.entidadesBeneficiarias.*;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue("EN_DEPOSITO")
 public class EnDeposito extends EstadoDonacion{
 
+  @Transient
   public List<Algoritmo> algoritmos = new ArrayList<>();
+  @Transient
   public ComponenteAsignadorDeDestinatarios componenteExterno = new ComponenteAsignadorDeDestinatarios();
 
   @Override

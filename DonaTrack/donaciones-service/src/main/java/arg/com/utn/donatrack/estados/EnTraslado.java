@@ -2,8 +2,13 @@ package arg.com.utn.donatrack.estados;
 
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import java.util.List;
 
+@Entity
+@DiscriminatorValue("EN_TRASLADO")
 public class EnTraslado extends EstadoDonacion{
 
   private Long camionId;
