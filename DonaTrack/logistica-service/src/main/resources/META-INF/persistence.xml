@@ -38,7 +38,7 @@
             <property name="hibernate.archive.autodetection" value="class"/>
 
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5433/logistica_db?options=-c%20TimeZone%3DUTC"/>
+            <property name="hibernate.connection.url" value="jdbc:postgresql://127.0.0.1:5432/logistica_db?options=-c%20TimeZone%3DUTC"/>
             <property name="hibernate.connection.username" value="donatrack"/>
             <property name="hibernate.connection.password" value="donatrack"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
