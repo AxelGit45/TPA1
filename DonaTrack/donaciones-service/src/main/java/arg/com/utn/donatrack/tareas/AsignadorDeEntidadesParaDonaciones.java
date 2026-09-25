@@ -13,6 +13,35 @@ import java.util.concurrent.TimeUnit;
 
 public class AsignadorDeEntidadesParaDonaciones {
 
+    public static void main(String[] args) {
+        System.out.println("[BATCH] Iniciando asignación automática de entidades (Matchmaking nocturno)...");
+        try {
+            List<EntidadBeneficiaria> entidades = RepositorioEntidadesBeneficiarias.getEntidadesBeneficiarias();
+            List<Donacion> donaciones = DonacionesApi.getDonacionesEnMemoria();
+
+            if (entidades.isEmpty() || donaciones.isEmpty()) {
+                System.out.println("[BATCH] No hay entidades o donaciones suficientes para procesar.");
+                return;
+            }
+
+            int procesadas = 0;
+            for (Donacion donacion : donaciones) {
+                // Polimorfismo puro: si está en depósito hace el match; si está en otro estado, no hace nada (método vacío en el padre)
+                donacion.getEstado().asignacionDonaciones(entidades, donacion);
+                procesadas++;
+            }
+
+            System.out.println("[BATCH] Matchmaking nocturno completado con éxito. Donaciones evaluadas: " + procesadas);
+        } catch (Exception e) {
+            System.err.println("[BATCH] Error crítico en la ejecución del batch: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}
+
+/*
+public class AsignadorDeEntidadesParaDonaciones {
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public void iniciar() {
@@ -50,3 +79,4 @@ public class AsignadorDeEntidadesParaDonaciones {
         System.out.println("[CRON] AsignadorDeEntidadesParaDonaciones detenido.");
     }
 }
+*/

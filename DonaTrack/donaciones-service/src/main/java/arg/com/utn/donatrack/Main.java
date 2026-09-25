@@ -33,14 +33,11 @@ public class Main {
 
     final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
 
-    AsignadorDeEntidadesParaDonaciones asignador = new AsignadorDeEntidadesParaDonaciones();
-    asignador.iniciar();
-
     System.out.println("[DONACIONES-SERVICE] Levantado en " + BASE_URI);
     System.out.println("Proba: http://localhost:8080/health");
     System.out.println("Presiona ENTER para detenerlo...");
     try { Thread.currentThread().join(); } catch (InterruptedException ignored) {}
-    asignador.detener();
+
     server.shutdownNow();
   }
 }

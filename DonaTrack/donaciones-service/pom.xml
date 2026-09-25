@@ -62,6 +62,34 @@
                     <mainClass>arg.com.utn.donatrack.Main</mainClass>
                 </configuration>
             </plugin>
+
+            <!-- NUEVO -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>build-batch</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <archive>
+                                <manifest>
+                                    <mainClass>arg.com.utn.donatrack.tareas.AsignadorDeEntidadesParaDonaciones</mainClass>
+                                </manifest>
+                            </archive>
+                            <finalName>donacion-batch</finalName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- NUEVO -->
+
         </plugins>
     </build>
 
