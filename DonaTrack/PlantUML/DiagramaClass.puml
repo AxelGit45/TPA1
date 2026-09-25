@@ -67,7 +67,7 @@ class EntidadBeneficiaria {
   - telefono: Integer
   - correos: List<Mail>
   - necesidades: List<Necesidad>
-  - peticionesEntregadas: List<Entrega>
+  - peticionesEntregadas: List<Long>
   - donacionesRecibidasUltimoTrimestre: int
   + cuantoNecesita(donacion: Donacion): int
   + confirmarRecepcionDeEntrega(entrega: Entrega, camion: Camion): void
@@ -193,29 +193,35 @@ class Camion {
   - volumen: Integer
   - altura: Integer
   - capacidadDeCarga: Integer
-  - bienesTransportados: List<Bien>
+  - bienesTransportados: List<Long>
+  - idGps: String
+  - latitud: Double
+  - longitud: Double
 }
 
 class Entrega {
   - id: Long
   - direccionEntidadBeneficiaria: String
-  - donacionesAEntregar: List<Donacion>
+  - donacionIds: List<Long>
   - estadoEntrega: EstadoEntrega
-  - camionQueLaEntrego: Camion
+  - camionId: Long
   - fechaDeEntregaEsperada: LocalDate
+  - entidadBeneficiariaId: Long
   + cambiarEstado(nuevoEstado: EstadoEntrega): void
-  + registrarCamion(camion: Camion): void
-  + cambiarAPendiente(): void
-  + lasDonacionesEstanEnDeposito(): boolean
+  + iniciarTraslado(camionId: Long): void
+  + confirmarRecepcionDeEntrega(camionId: Long): void
+  + informarNoRecepcion(camionId: Long): void
+  + entregaTardia(): boolean
+  + volverAPendiente(): void
 }
 
 class Ruta {
   - Id: Long
-  - camion: Camion
-  - entregas: List<Entrega>
-  + Iniciarse(): void
-  + cambiarEstadoDeDonaciones(): void
-  + cambiarEstadoDeEntrega(): void
+  - camionId: Long
+  - entregasId: List<Long>
+  - linkMapa: String
+  + Iniciarse(entregasRepositorio: List<Entrega>): void
+  + notificar(entregasRepositorio: List<Entrega>): void
 }
 
 enum EstadoEntrega {
@@ -283,7 +289,6 @@ Formulario --> Persona
 Formulario --> Bien
 EntidadBeneficiaria --> Mail
 EntidadBeneficiaria --> Necesidad
-EntidadBeneficiaria --> Entrega
 Necesidad --> Subcategoria
 Persona --> Contacto
 PersonaJuridica --> TipoRazonSocial
@@ -293,12 +298,7 @@ WhatsApp --> TwilioAdapter
 Notificacion --> Persona
 Notificacion --> Contacto
 AsignacionRealizada --> EntidadBeneficiaria
-EnTraslado --> Camion
-Ruta --> Camion
-Ruta --> Entrega
 Entrega --> EstadoEntrega
-Entrega --> Donacion
-Entrega --> Camion
 
 ' ===== DEPENDENCIA =====
 Necesidad ..> Bien
