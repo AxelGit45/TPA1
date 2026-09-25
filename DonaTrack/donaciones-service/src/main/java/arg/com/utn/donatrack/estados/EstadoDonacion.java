@@ -48,4 +48,7 @@ public abstract class EstadoDonacion {
   public void setAlgoritmo(Algoritmo algoritmo){}
   public void notificar() {};
   public void setComponenteExterno(ComponenteAsignadorDeDestinatarios componenteExterno){}
+  public Long getId() {
+    return id;
+  }
 }

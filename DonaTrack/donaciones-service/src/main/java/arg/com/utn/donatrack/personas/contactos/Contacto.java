@@ -24,7 +24,7 @@ public abstract class Contacto {
   protected Long id;
 
   @ManyToOne
-  @JoinColumn(name = "persona_id", nullable = false)
+  @JoinColumn(name = "persona_id"/*, nullable = false*/)
   protected Persona persona;
 
   public abstract void contactar(String mensaje);

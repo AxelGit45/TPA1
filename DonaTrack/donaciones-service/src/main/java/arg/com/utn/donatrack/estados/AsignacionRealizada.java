@@ -17,9 +17,7 @@ public class AsignacionRealizada extends EstadoDonacion{
   @Transient
   private Donacion donacion;
 
-  public AsignacionRealizada() {
-
-  }
+  public AsignacionRealizada() {}
 
   public AsignacionRealizada(EntidadBeneficiaria entidadBeneficiaria, Donacion donacion){
 

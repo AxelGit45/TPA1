@@ -18,6 +18,8 @@ public class EnDeposito extends EstadoDonacion{
   @Transient
   public ComponenteAsignadorDeDestinatarios componenteExterno = new ComponenteAsignadorDeDestinatarios();
 
+  public EnDeposito() { }
+
   @Override
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
 

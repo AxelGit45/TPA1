@@ -11,6 +11,8 @@ import java.util.List;
 @DiscriminatorValue("VENCIDA")
 public class Vencida extends EstadoDonacion{
 
+  public Vencida() { }
+
   @Override
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
     throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");

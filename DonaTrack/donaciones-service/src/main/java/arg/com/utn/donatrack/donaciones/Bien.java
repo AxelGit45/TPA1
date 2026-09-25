@@ -53,6 +53,11 @@ public class Bien {
     this.donador = donador;
 
   }
+
+  public Long getId() {
+    return id;
+  }
+
   public boolean esPerecedero(){
     return perecedero;
   }

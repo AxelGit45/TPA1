@@ -94,4 +94,8 @@ public class EntidadBeneficiaria {
   public List<Contacto> getContactos() { return contactos; }
   public void setContactos(List<Contacto> contactos) { this.contactos = contactos; }
   public LocalDate getUltimaConexion(){ return this.ultimaConexion; }
+
+  public String getNombre() {
+    return this.razonSocial;
+  }
 }
