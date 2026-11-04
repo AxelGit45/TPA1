@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class BienPersistenceTest implements SimplePersistenceTest {
 
   @Test
-
    /*
   1- Creamos el donante
   2- Creamos la subcategoría y su categoría
@@ -30,16 +29,20 @@ public class BienPersistenceTest implements SimplePersistenceTest {
 
       PersonaHumana donante = new PersonaHumana("Julieta", "Gonzalez", 21, 45320415, "Femenino", "Avellaneda 1810", null, null);
 
-      Subcategoria subcategoria = new Subcategoria("Enlatados", new Categoria ("Alimentos"), true, false);
+      Categoria categoria = new Categoria("Alimentos");
+      Subcategoria subcategoria = new Subcategoria("Enlatados", categoria, true, false);
       Date fechaVencimiento = new Date();
       Bien arvejas = new Bien ("Arvejas en lata", "arvejas.jpg", subcategoria, 10, Unidad.UNIDAD, fechaVencimiento, null, true, donante);
 
       withTransaction(() -> {
-          entityManager().persist(donante);
-          entityManager().persist(arvejas);
+        entityManager().persist(donante);
+        entityManager().persist(categoria);
+        entityManager().persist(subcategoria);
+        entityManager().persist(arvejas);
       });
 
       assertNotNull(arvejas.getId());
+      entityManager().clear();
 
       Bien bienRecuperado = entityManager().find(Bien.class, arvejas.getId());
       assertNotNull(bienRecuperado);
@@ -55,6 +58,7 @@ public class BienPersistenceTest implements SimplePersistenceTest {
 
       assertNotNull(bienRecuperado.getDonador());
       assertEquals(donante.getId(), bienRecuperado.getDonador().getId());
+      assertEquals("Alimentos", bienRecuperado.getSubcategoria().getCategoriaPadre().getNombre());
 
 
   }
@@ -70,19 +74,23 @@ public class BienPersistenceTest implements SimplePersistenceTest {
 8- Consultamos el donador
  */
 
+  @Test
   void crearYPersistirUnBienNoPerecedero(){
     PersonaHumana donante = new PersonaHumana("Rocio", "Lopez", 25,  40320415, "Femenino", "Moreno 1810", null, null);
 
-    Subcategoria subcategoria = new Subcategoria("Remera", new Categoria ("Ropa"), false, true);
-
+    Categoria categoria = new Categoria("Ropa");
+    Subcategoria subcategoria = new Subcategoria("Remera", categoria, false, true);
     Bien remera = new Bien ("Remera de algodón", "remera.jpg", subcategoria, 5, Unidad.UNIDAD, null, EstadoUso.USADO, false, donante);
 
     withTransaction(() -> {
       entityManager().persist(donante);
+      entityManager().persist(categoria);
+      entityManager().persist(subcategoria);
       entityManager().persist(remera);
     });
 
     assertNotNull (remera.getId());
+    entityManager().clear();
 
     Bien bienRecuperado = entityManager().find(Bien.class, remera.getId());
     assertNotNull(bienRecuperado);
@@ -92,9 +100,10 @@ public class BienPersistenceTest implements SimplePersistenceTest {
     assertEquals(Unidad.UNIDAD, bienRecuperado.getUnidad());
     assertEquals(false, bienRecuperado.isPerecedero());
     assertEquals (EstadoUso.USADO, bienRecuperado.getEstadoUso());
+    assertEquals("Remera", bienRecuperado.getSubcategoria().getNombre());
+    assertEquals("Ropa", bienRecuperado.getSubcategoria().getCategoriaPadre().getNombre());
 
     assertNotNull(bienRecuperado.getSubcategoria());
-    assertEquals("Ropa", bienRecuperado.getSubcategoria().getNombre());
 
     assertNotNull(bienRecuperado.getDonador());
     assertEquals(donante.getId(), bienRecuperado.getDonador().getId());

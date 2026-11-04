@@ -3,15 +3,7 @@ package arg.com.utn.donatrack.entidadesBeneficiarias;
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Table;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -22,7 +14,8 @@ public abstract class Necesidad {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   protected Long id;
-  @Embedded
+  @ManyToOne
+  @JoinColumn(name = "subcategoria_id")
   protected Subcategoria necesidad;
   protected Integer cantidadNecesitada;
   protected String descripcion;
@@ -41,8 +34,12 @@ public abstract class Necesidad {
 
   }
 
-  public boolean esSatisfechaPor(Bien bien){
+  /*public boolean esSatisfechaPor(Bien bien){
     return necesidad == bien.getSubcategoria();
+  }*/
+
+  public boolean esSatisfechaPor(Bien bien){
+    return necesidad != null && necesidad.equals(bien.getSubcategoria());
   }
 
   public Long getId() {

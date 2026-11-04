@@ -1,5 +1,7 @@
+
 package arg.com.utn.donatrack.entidadesBeneficiarias;
 
+import arg.com.utn.donatrack.donaciones.Categoria;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import io.github.flbulgarelli.jpa.extras.test.SimplePersistenceTest;
 import org.junit.jupiter.api.Test;
@@ -13,29 +15,50 @@ public class NecesidadPersistenceTest implements SimplePersistenceTest {
 
   @Test
   void testPersistirNecesidadExtraordinaria() {
+
+    Categoria categoria = new Categoria("Vestimenta");
+    Subcategoria subcategoria =
+        new Subcategoria("Ropa", categoria, false, true);
+
     NecesidadExtraordinaria necesidad = new NecesidadExtraordinaria(
         null,
-        new Subcategoria("Ropa", null, false, true),
+        subcategoria,
         5,
         "Abrigos de invierno",
         false,
         0
     );
 
-    withTransaction(() -> entityManager().persist(necesidad));
+    withTransaction(() -> {
+      entityManager().persist(categoria);
+      entityManager().persist(subcategoria);
+      entityManager().persist(necesidad);
+    });
+
     assertNotNull(necesidad.getId());
 
-    NecesidadExtraordinaria recuperada = entityManager().find(NecesidadExtraordinaria.class, necesidad.getId());
+    entityManager().clear();
+
+    NecesidadExtraordinaria recuperada =
+        entityManager().find(NecesidadExtraordinaria.class, necesidad.getId());
+
     assertNotNull(recuperada);
     assertEquals("Abrigos de invierno", recuperada.getDescripcion());
     assertEquals(5, recuperada.getCantidadNecesitada());
+    assertEquals("Ropa", recuperada.getSubcategoria().getNombre());
   }
 
   @Test
   void testPersistirNecesidadRecurrente() {
+
+    Categoria categoria = new Categoria("Alimentacion");
+
+    Subcategoria subcategoria =
+        new Subcategoria("Alimentos", categoria, false, true);
+
     NecesidadRecurrente necesidad = new NecesidadRecurrente(
         null,
-        new Subcategoria("Alimentos", null, false, true),
+        subcategoria,
         50,
         "Fideos y arroz",
         false,
@@ -43,13 +66,23 @@ public class NecesidadPersistenceTest implements SimplePersistenceTest {
         LocalDate.now().plusMonths(2)
     );
 
-    withTransaction(() -> entityManager().persist(necesidad));
+    withTransaction(() -> {
+      entityManager().persist(categoria);
+      entityManager().persist(subcategoria);
+      entityManager().persist(necesidad);
+    });
+
     assertNotNull(necesidad.getId());
 
-    NecesidadRecurrente recuperada = entityManager().find(NecesidadRecurrente.class, necesidad.getId());
+    entityManager().clear();
+
+    NecesidadRecurrente recuperada =
+        entityManager().find(NecesidadRecurrente.class, necesidad.getId());
+
     assertNotNull(recuperada);
     assertEquals("Fideos y arroz", recuperada.getDescripcion());
     assertEquals(50, recuperada.getCantidadNecesitada());
     assertEquals(10, recuperada.getRecibidos());
+    assertEquals("Alimentos", recuperada.getSubcategoria().getNombre());
   }
 }

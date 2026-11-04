@@ -24,7 +24,8 @@ public class Bien {
   private Long id;
   private String descripcion;
   private String foto;
-  @Embedded
+  @ManyToOne
+  @JoinColumn(name = "subcategoria_id")
   private Subcategoria subcategoria;
   private Integer cantidad;
   @Enumerated(EnumType.STRING)

@@ -1,14 +1,29 @@
 package arg.com.utn.donatrack.donaciones;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Transient;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-@Embeddable
+@Entity
+@Table(name = "subcategoria")
 public class Subcategoria {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
+
+  @Column(nullable = false, unique = true)
   private String nombre;
-  @Transient
+
+  @ManyToOne
+  @JoinColumn(name = "categoria_id")
   private Categoria categoriaPadre;
+
   private Boolean exigeFechaVencimiento;
   private Boolean exigeEstadoUso;
 
@@ -55,4 +70,17 @@ public class Subcategoria {
   public void setExigeEstadoUso(Boolean exigeEstadoUso) {
     this.exigeEstadoUso = exigeEstadoUso;
   }
+
+  @Override
+  public boolean equals(Object subcategoria) {
+    if (this == subcategoria) return true;
+    if (!(subcategoria instanceof Subcategoria)) return false;
+    return nombre != null && nombre.equals(((Subcategoria) subcategoria).getNombre());
+  }
+
+  @Override
+  public int hashCode() {
+    return nombre == null ? 0 : nombre.hashCode();
+  }
+
 }
