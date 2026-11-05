@@ -1,39 +1,28 @@
 package arg.com.utn.donatrack;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import jakarta.ws.rs.ext.ContextResolver;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.jackson.JacksonFeature;
-import org.glassfish.jersey.server.ResourceConfig;
-
-import java.io.IOException;
-import java.net.URI;
+import arg.com.utn.donatrack.services.LogisticaGrpcServiceImpl;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
 
 public class Main {
 
-  public static final String BASE_URI = "http://0.0.0.0:8081/";
 
-  public static void main(String[] args) throws IOException {
-    final ResourceConfig config = new ResourceConfig();
+  public static void main(String[] args) throws Exception {
 
-    config.packages("arg.com.utn.donatrack.apis");
-    config.register(JacksonFeature.class);
+    //Configurar el puerto y registrar el servicio gRPC
+    int puerto = 50051;
+    Server server = ServerBuilder.forPort(puerto)
+        .addService(new LogisticaGrpcServiceImpl())
+        .build();
 
-    config.register((ContextResolver<ObjectMapper>) type -> {
-      ObjectMapper mapper = new ObjectMapper();
-      mapper.registerModule(new JavaTimeModule());
-      mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-      return mapper;
-    });
+    //Iniciar la escucha de red
+    server.start();
+    System.out.println("=================================================");
+    System.out.println(" Servidor gRPC de Logística activo en puerto " + puerto);
+    System.out.println("=================================================");
 
-    final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
-
-    System.out.println("[LOGISTICA-SERVICE] Levantado en " + BASE_URI);
-    System.out.println("Proba: http://localhost:8081/health");
-    try { Thread.currentThread().join(); } catch (InterruptedException ignored) {}
-    server.shutdownNow();
+    //Evitar que la aplicación de Java se cierre inmediatamente
+    server.awaitTermination();
   }
+
 }
