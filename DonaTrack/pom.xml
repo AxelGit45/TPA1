@@ -21,6 +21,7 @@
     <modules>
         <module>donaciones-service</module>
         <module>logistica-service</module>
+        <module>cliente-web</module>
     </modules>
 
     <dependencies>
