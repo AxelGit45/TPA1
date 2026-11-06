@@ -1,5 +1,7 @@
 package arg.com.utn.donatrack;
 
+import arg.com.utn.donatrack.controllers.DonanteController;
+import arg.com.utn.donatrack.controllers.EntidadController;
 import arg.com.utn.donatrack.controllers.HomeController;
 import arg.com.utn.donatrack.controllers.SaludoController;
 import arg.com.utn.donatrack.controllers.SessionController;
@@ -15,16 +17,24 @@ public class Main {
 
     Javalin app = Javalin.create(config -> {
       config.fileRenderer(renderer);
+      config.staticFiles.add("/public");
     }).start(9000);
 
     HomeController home = new HomeController();
     SaludoController saludo = new SaludoController();
     SessionController session = new SessionController();
+    DonanteController donante = new DonanteController();
+    EntidadController entidad = new EntidadController();
 
     app.get("/", home::index);
     app.get("/bienvenida", saludo::bienvenida);
     app.get("/despedida", saludo::despedida);
     app.get("/login", session::mostrarLogin);
+    app.get("/donante/donaciones", donante::listarDonaciones);
+    app.get("/donante/entidades", donante::listarEntidades);
+    app.get("/donante/seguimiento", donante::seguirEntregas);
+    app.post("/entidad/necesidades", entidad::guardarNecesidad);
+    app.get("/entidad/necesidades/nueva", entidad::mostrarFormularioNecesidad);
 
     app.get("/donante", ctx -> ctx.result("Landing donante"));
     app.get("/entidad", ctx -> ctx.result("Landing entidad"));

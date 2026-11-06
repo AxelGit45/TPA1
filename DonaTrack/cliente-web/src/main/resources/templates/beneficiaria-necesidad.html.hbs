@@ -1,0 +1,55 @@
+{{> partials/header}}
+
+<h1>Registrar Nueva Necesidad</h1>
+
+<p>
+    <a href="/entidad/donaciones">Ver donaciones asignadas</a>
+</p>
+
+{{#if exito}}
+    <p>Necesidad registrada correctamente.</p>
+{{/if}}
+
+<form method="POST" action="/entidad/necesidades">
+    <p>
+        <label for="tipo">Tipo de Necesidad:</label><br>
+        <select id="tipo" name="tipo" required>
+            <option value="RECURRENTE">Recurrente (periódica)</option>
+            <option value="EXTRAORDINARIA">Extraordinaria (urgencia puntual)</option>
+        </select>
+    </p>
+
+    <p>
+        <label for="subcategoria">Categoría / Bien Necesitado:</label><br>
+        <select id="subcategoria" name="subcategoria" required>
+            <option value="">-- Seleccionar --</option>
+            <option value="Alimentos no perecederos">Alimentos no perecedeors</option>
+            <option value="Ropa y Abrigo">Ropa y Abrigo</option>
+            <option value="Calzado">Calzado</option>
+            <option value="Medicamentos">Medicamentos</option>
+            <option value="Artículos de Limpieza">Artículos de Limpieza</option>
+        </select>
+    </p>
+
+    <p>
+        <label for="cantidad">Cantidad necesaria (unidades / kg / litros):</label><br>
+        <input type="number" id="cantidad" name="cantidad" min="1" required>
+    </p>
+
+    <p>
+        <label for="fechaLimite">Fecha Límite (si es recurrente):</label><br>
+        <input type="date" id="fechaLimite" name="fechaLimite">
+    </p>
+
+    <p>
+        <label for="descripcion">Descripción detallada:</label><br>
+        <textarea id="descripcion" name="descripcion" rows="4" cols="50"></textarea>
+    </p>
+
+    <p>
+        <button type="submit">Guardar Necesidad</button>
+    </p>
+
+</form>
+
+{{> partials/footer}}

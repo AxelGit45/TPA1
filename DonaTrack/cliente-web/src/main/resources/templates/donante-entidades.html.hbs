@@ -1,0 +1,40 @@
+{{> partials/header}}
+
+<h1>Entidades Beneficiarias</h1>
+
+<p>
+    <a href="/donante/donaciones">Volver a Mis Donaciones</a>
+</p>
+
+{{#if entidades}}
+    <table>
+        <thead>
+        <tr>
+            <th>Razón Social / Nombre</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Necesidades Actuales</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each entidades}}
+            <tr>
+                <td>this.razonSocial</td>
+                <td>this.direccion</td>
+                <td>this.telefono</td>
+                <td>
+                    <ul>
+                        {{#each this.necesidades}}
+                            <li>{{this.descripcion}} ({{this.cantidad}} unidades)</li>
+                        {{/each}}
+                    </ul>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p>No hay entidades beneficiarias registradas actualmente.</p>
+{{/if}}
+
+{{> partials/footer}}
