@@ -10,6 +10,9 @@
     </parent>
     <artifactId>cliente-web</artifactId>
     <packaging>jar</packaging>
+    <properties>
+        <os.detected.classifier>windows-x86_64</os.detected.classifier>
+    </properties>
 
     <dependencies>
         <dependency>

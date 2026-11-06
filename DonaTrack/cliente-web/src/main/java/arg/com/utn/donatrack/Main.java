@@ -50,5 +50,10 @@ public class Main {
 
     app.get("/entidad/necesidades/nueva", entidad::mostrarFormularioNecesidad);
     app.post("/entidad/necesidades", entidad::guardarNecesidad);
+    app.get("/entidad/donaciones", entidad::listarDonacionesAsignadas);
+    app.get("/entidad/confirmar/{id}", entidad::mostrarFormularioConfirmacion);
+    app.post("/entidad/confirmar/{id}", entidad::confirmarRecepcion);
+    app.get("/entidad/notificaciones", entidad::listarNotificaciones);
+    app.get("/entidad/seguimiento", entidad::seguirEntregas);
   }
 }

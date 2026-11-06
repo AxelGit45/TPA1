@@ -1,0 +1,45 @@
+{{> partials/header}}
+
+<h1>Donaciones Asignadas</h1>
+
+<p>
+    <a href="/entidad/necesidades/nueva">Registrar nueva necesidad</a>
+    <a href="/entidad/seguimiento">Ver entregas en camino</a>
+    <a href="/entidad/notifiaciones">Ver notificaciones</a>
+</p>
+
+<hr>
+
+{{#if donaciones}}
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha Asignación</th>
+            <th>Bienes / Descripción</th>
+            <th>Cantidad</th>
+            <th>Estado Actual</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each donaciones}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.fechaAsignacion}}</td>
+                <td>{{this.descripcion}}</td>
+                <td>{{this.cantidad}} {{this.unidad}}</td>
+                <td>{{this.estado}}</td>
+                <td>
+                    <a href="/entidad/seguimiento">Seguir camión</a>
+                    <a href="/entidad/confirmar/{{this.id}}">Confirmar recepción</a>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p>No tenés donaciones asignadas pendientes en este momento.</p>
+{{/if}}
+
+{{> partials/footer}}

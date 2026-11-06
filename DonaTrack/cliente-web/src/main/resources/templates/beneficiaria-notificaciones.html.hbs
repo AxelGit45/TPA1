@@ -1,0 +1,37 @@
+{{> partials/header}}
+
+<h1>Bandeja de Notificaciones</h1>
+
+<p>
+    <a href="/entidad/donaciones">Volver a Donaciones Asignadas</a> |
+    <a href="/entidad/necesidades/nueva">Registrar Necesidad</a>
+</p>
+
+<hr>
+
+{{#if notificaciones}}
+    <table>
+        <thead>
+        <tr>
+            <th>Fecha y Hora</th>
+            <th>Tipo de Aviso</th>
+            <th>Mensaje</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each notificaciones}}
+            <tr>
+                <td>{{this.fechaHora}}</td>
+                <td>{{this.tipo}}</td>
+                <td>{{this.mensaje}}</td>
+                <td>{{this.estado}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p>No tenés notificaciones pendientes en este momento.</p>
+{{/if}}
+
+{{> partials/footer}}
