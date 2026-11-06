@@ -6,7 +6,10 @@
     <file url="file://$PROJECT_DIR$/cliente-web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/cliente-web/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/donaciones-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/donaciones-service/src/main/proto" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/donaciones-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/donaciones-service/target/generated-sources/protobuf/grpc-java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/donaciones-service/target/generated-sources/protobuf/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/logistica-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/logistica-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />

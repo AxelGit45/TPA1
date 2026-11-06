@@ -6,19 +6,23 @@
 </head>
 <body>
   <h1>Iniciar sesión</h1>
+
+  {{#if error}}
+    <p style="color: red;">{{error}}</p>
+  {{/if}}
+
   <form method="POST" action="/login">
     <p>
       <label>Email</label><br>
-      <input type="email" name="email">
+      <input type="email" name="email" value="{{email}}" required>
     </p>
     <p>
       <label>Contraseña</label><br>
-      <input type="password" name="contrasena">
+      <input type="password" name="contrasena" required>
     </p>
     <input type="submit" value="Ingresar">
   </form>
 
-<p><a href="/registro/humana">¿No tenés cuenta? Registrate</a></p>
-
+  <p>¿No tenés cuenta? <a href="/registro">Registrate</a></p>
 </body>
 </html>

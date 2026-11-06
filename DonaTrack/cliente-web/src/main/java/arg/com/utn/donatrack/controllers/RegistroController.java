@@ -1,11 +1,8 @@
 package arg.com.utn.donatrack.controllers;
 
-import arg.com.utn.donatrack.clientes.ClienteDonaciones;
-import arg.com.utn.donatrack.registro.MedioContacto;
-import arg.com.utn.donatrack.registro.RegistroPersonaHumana;
-import arg.com.utn.donatrack.usuarios.RepositorioUsuarios;
-import arg.com.utn.donatrack.usuarios.Rol;
-import arg.com.utn.donatrack.usuarios.Usuario;
+import arg.com.utn.donatrack.clientes.ClienteUsuarios;
+import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteResponse;
+import io.grpc.StatusRuntimeException;
 import io.javalin.http.Context;
 
 import java.util.ArrayList;
@@ -15,63 +12,133 @@ import java.util.Map;
 
 public class RegistroController {
 
-  private final RepositorioUsuarios usuarios;
-  private final ClienteDonaciones donaciones;
+  private static final List<String> GENEROS =
+      List.of("Femenino", "Masculino", "No binario", "Otro", "Prefiero no decir");
+  private static final String FORMATO_EMAIL = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
 
-  public RegistroController(RepositorioUsuarios usuarios, ClienteDonaciones donaciones) {
+  private final ClienteUsuarios usuarios;
+
+  public RegistroController(ClienteUsuarios usuarios) {
     this.usuarios = usuarios;
-    this.donaciones = donaciones;
   }
 
   public void mostrarFormularioHumana(Context ctx) {
-    RegistroPersonaHumana vacio = new RegistroPersonaHumana(campo -> null);
-    ctx.render("registro-humana.html.hbs", modelo(vacio, List.of()));
+    ctx.render("registro-humana.html.hbs", modelo(ctx, List.of()));
   }
 
   public void crearPersonaHumana(Context ctx) {
-    RegistroPersonaHumana datos = new RegistroPersonaHumana(ctx::formParam);
-
-    List<String> errores = datos.validar();
-    if (usuarios.buscarPorEmail(datos.getEmail()).isPresent()) {
-      errores.add("Ya existe una cuenta con ese correo electrónico.");
-    }
-
+    List<String> errores = validar(ctx);
     if (!errores.isEmpty()) {
-      ctx.status(400).render("registro-humana.html.hbs", modelo(datos, errores));
+      ctx.status(400).render("registro-humana.html.hbs", modelo(ctx, errores));
       return;
     }
 
-    Usuario usuario = usuarios.crear(datos.getEmail(), datos.getContrasena(), Rol.DONANTE);
-    donaciones.registrarPersonaHumana(usuario.getId(), datos);
-    ctx.redirect("/login");
+    try {
+      RegistrarDonanteResponse respuesta = usuarios.registrarDonante(
+          texto(ctx, "nombre"),
+          texto(ctx, "apellido"),
+          entero(texto(ctx, "edad")),
+          entero(texto(ctx, "numeroDeDocumento")),
+          texto(ctx, "genero"),
+          texto(ctx, "direccion"),
+          texto(ctx, "email"),
+          texto(ctx, "telefono"),
+          texto(ctx, "whatsapp"),
+          texto(ctx, "predeterminado"),
+          campo(ctx, "contrasena"));
+
+      if (respuesta.getOk()) {
+        ctx.redirect("/login");
+      } else {
+        ctx.status(400).render("registro-humana.html.hbs", modelo(ctx, List.of(respuesta.getError())));
+      }
+    } catch (StatusRuntimeException e) {
+      ctx.status(503).render("registro-humana.html.hbs",
+          modelo(ctx, List.of("No se pudo conectar con el servicio de donaciones")));
+    }
   }
 
-  private Map<String, Object> modelo(RegistroPersonaHumana datos, List<String> errores) {
+  private List<String> validar(Context ctx) {
+    List<String> errores = new ArrayList<>();
+
+    if (texto(ctx, "nombre").isBlank()) {
+      errores.add("El nombre es obligatorio.");
+    }
+    if (texto(ctx, "apellido").isBlank()) {
+      errores.add("El apellido es obligatorio.");
+    }
+    if (!texto(ctx, "numeroDeDocumento").matches("\\d{7,8}")) {
+      errores.add("El número de documento debe tener 7 u 8 dígitos.");
+    }
+    if (texto(ctx, "direccion").isBlank()) {
+      errores.add("La dirección es obligatoria.");
+    }
+    if (!texto(ctx, "email").matches(FORMATO_EMAIL)) {
+      errores.add("El correo electrónico no tiene un formato válido.");
+    }
+    if (campo(ctx, "contrasena").length() < 8) {
+      errores.add("La contraseña debe tener al menos 8 caracteres.");
+    }
+    if (!campo(ctx, "contrasena").equals(campo(ctx, "confirmacion"))) {
+      errores.add("Las contraseñas no coinciden.");
+    }
+
+    return errores;
+  }
+
+  // Lo que se le vuelve a mostrar a la persona: errores y lo que ya había escrito (sin contraseñas)
+  private Map<String, Object> modelo(Context ctx, List<String> errores) {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("errores", errores);
-    modelo.put("valores", datos.valores());
-    modelo.put("generos", generosConSeleccion(datos.getGenero()));
-    modelo.put("medios", mediosConSeleccion(datos.getMedioPredeterminado()));
+    modelo.put("nombre", texto(ctx, "nombre"));
+    modelo.put("apellido", texto(ctx, "apellido"));
+    modelo.put("edad", texto(ctx, "edad"));
+    modelo.put("numeroDeDocumento", texto(ctx, "numeroDeDocumento"));
+    modelo.put("direccion", texto(ctx, "direccion"));
+    modelo.put("email", texto(ctx, "email"));
+    modelo.put("telefono", texto(ctx, "telefono"));
+    modelo.put("whatsapp", texto(ctx, "whatsapp"));
+    modelo.put("generos", generos(texto(ctx, "genero")));
+    modelo.put("medios", medios(texto(ctx, "predeterminado")));
     return modelo;
   }
 
-  private List<Map<String, Object>> generosConSeleccion(String elegido) {
+  private List<Map<String, Object>> generos(String elegido) {
     List<Map<String, Object>> opciones = new ArrayList<>();
-    for (String genero : RegistroPersonaHumana.GENEROS) {
+    for (String genero : GENEROS) {
       opciones.add(Map.of("valor", genero, "seleccionado", genero.equals(elegido)));
     }
     return opciones;
   }
 
-  private List<Map<String, Object>> mediosConSeleccion(MedioContacto elegido) {
-    MedioContacto seleccionado = elegido == null ? MedioContacto.EMAIL : elegido;
-    List<Map<String, Object>> opciones = new ArrayList<>();
-    for (MedioContacto medio : MedioContacto.values()) {
-      opciones.add(Map.of(
-          "codigo", medio.name(),
-          "etiqueta", medio.getEtiqueta(),
-          "seleccionado", medio == seleccionado));
+  private List<Map<String, Object>> medios(String elegido) {
+    String actual = elegido.isBlank() ? "EMAIL" : elegido;
+    return List.of(
+        opcionMedio("EMAIL", "Email", actual),
+        opcionMedio("TELEFONO", "Teléfono", actual),
+        opcionMedio("WHATSAPP", "WhatsApp", actual));
+  }
+
+  private Map<String, Object> opcionMedio(String codigo, String etiqueta, String actual) {
+    return Map.of("codigo", codigo, "etiqueta", etiqueta, "seleccionado", codigo.equals(actual));
+  }
+
+  // Valor tal cual llegó (para contraseñas, que no se recortan)
+  private String campo(Context ctx, String nombre) {
+    String valor = ctx.formParam(nombre);
+    return valor == null ? "" : valor;
+  }
+
+  // Valor sin espacios al principio y al final
+  private String texto(Context ctx, String nombre) {
+    return campo(ctx, nombre).trim();
+  }
+
+  private int entero(String texto) {
+    try {
+      return Integer.parseInt(texto);
+    } catch (NumberFormatException e) {
+      return 0;
     }
-    return opciones;
   }
 }
