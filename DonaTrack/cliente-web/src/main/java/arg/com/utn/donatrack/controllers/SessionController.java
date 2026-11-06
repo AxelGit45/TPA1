@@ -16,6 +16,11 @@ public class SessionController {
   }
 
   public void mostrarLogin(Context ctx) {
+    String rol = ctx.sessionAttribute("rol");
+    if (rol != null) {
+      ctx.redirect(landingPara(rol));
+      return;
+    }
     ctx.render("login.html.hbs", Map.of());
   }
 
@@ -39,6 +44,11 @@ public class SessionController {
       ctx.status(503).render("login.html.hbs",
           Map.of("error", "No se pudo conectar con el servicio de donaciones.", "email", email));
     }
+  }
+
+  public void cerrarSesion(Context ctx) {
+    ctx.req().getSession().invalidate();
+    ctx.redirect("/login");
   }
 
   private String landingPara(String rol) {

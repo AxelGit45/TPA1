@@ -2,9 +2,11 @@ package arg.com.utn.donatrack;
 
 import arg.com.utn.donatrack.clientes.ClienteUsuarios;
 import arg.com.utn.donatrack.controllers.*;
+import arg.com.utn.donatrack.seguridad.ControlDeAcceso;
 import arg.com.utn.donatrack.templates.JavalinHandlebars;
 import arg.com.utn.donatrack.templates.JavalinRenderer;
 import io.javalin.Javalin;
+import io.javalin.http.ForbiddenResponse;
 
 public class Main {
 
@@ -17,6 +19,12 @@ public class Main {
       config.staticFiles.add("/public");
     }).start(9000);
 
+    app.exception(ForbiddenResponse.class, (e, ctx) -> {
+      ctx.status(403)
+          .contentType("text/plain; charset=utf-8")
+          .result(e.getMessage());
+    });
+
 
 
     ClienteUsuarios clienteUsuarios = new ClienteUsuarios("localhost", 9091);
@@ -26,6 +34,7 @@ public class Main {
     LandingController landing = new LandingController();
     RegistroJuridicaController registroJuridica = new RegistroJuridicaController(clienteUsuarios);
     RegistroEntidadController registroEntidad = new RegistroEntidadController(clienteUsuarios);
+    ControlDeAcceso acceso = new ControlDeAcceso();
 
     app.get("/login", session::mostrarLogin);
     app.post("/login", session::crearSesion);
@@ -40,6 +49,15 @@ public class Main {
     app.post("/registro/juridica", registroJuridica::crear);
     app.get("/registro/entidad", registroEntidad::mostrarFormulario);
     app.post("/registro/entidad", registroEntidad::crear);
+    app.before("/donante", acceso.requiere("DONANTE"));
+    app.before("/donante/*", acceso.requiere("DONANTE"));
+    app.before("/entidad", acceso.requiere("ENTIDAD"));
+    app.before("/entidad/*", acceso.requiere("ENTIDAD"));
+    app.before("/admin", acceso.requiere("ADMINISTRADOR"));
+    app.before("/admin/*", acceso.requiere("ADMINISTRADOR"));
+
+    app.post("/logout", session::cerrarSesion);
+
 
 
   }
