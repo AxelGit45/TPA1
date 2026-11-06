@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de donante - DonaTrack</title>
+</head>
+<body>
+  <h1>Registro de persona donante</h1>
+
+  {{#if errores}}
+    <ul style="color: red;">
+      {{#each errores}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  <form method="POST" action="/registro">
+    <p>
+      <label>Nombre</label><br>
+      <input type="text" name="nombre" value="{{nombre}}" required>
+    </p>
+    <p>
+      <label>Apellido</label><br>
+      <input type="text" name="apellido" value="{{apellido}}" required>
+    </p>
+    <p>
+      <label>Edad</label><br>
+      <input type="number" name="edad" value="{{edad}}">
+    </p>
+    <p>
+      <label>Número de documento</label><br>
+      <input type="text" name="numeroDeDocumento" value="{{numeroDeDocumento}}"
+             inputmode="numeric" pattern="[0-9]{7,8}" title="7 u 8 dígitos" required>
+    </p>
+    <p>
+      <label>Género</label><br>
+      <select name="genero">
+        {{#each generos}}
+          <option value="{{valor}}" {{#if seleccionado}}selected{{/if}}>{{valor}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <p>
+      <label>Dirección</label><br>
+      <input type="text" name="direccion" value="{{direccion}}" required>
+    </p>
+
+    <h3>Medios de contacto</h3>
+    <p>
+      <label>Email (obligatorio)</label><br>
+      <input type="email" name="email" value="{{email}}" required>
+    </p>
+    <p>
+      <label>Teléfono (opcional)</label><br>
+      <input type="text" name="telefono" value="{{telefono}}">
+    </p>
+    <p>
+      <label>WhatsApp (opcional)</label><br>
+      <input type="text" name="whatsapp" value="{{whatsapp}}">
+    </p>
+    <p>
+      <label>Medio de contacto predeterminado</label><br>
+      {{#each medios}}
+        <input type="radio" name="predeterminado" value="{{codigo}}" {{#if seleccionado}}checked{{/if}}> {{etiqueta}}
+      {{/each}}
+    </p>
+
+    <p>
+      <label>Contraseña (mínimo 8 caracteres)</label><br>
+      <input type="password" name="contrasena" minlength="8" required>
+    </p>
+    <p>
+      <label>Repetir contraseña</label><br>
+      <input type="password" name="confirmacion" required>
+    </p>
+    <input type="submit" value="Registrarme">
+  </form>
+</body>
+</html>

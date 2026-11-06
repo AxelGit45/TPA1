@@ -29,6 +29,7 @@ public class EntidadBeneficiaria {
   private Long id;
   private String razonSocial;
   private String direccion;
+  private Long usuarioId;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "entidad_id")
@@ -98,4 +99,8 @@ public class EntidadBeneficiaria {
   public String getNombre() {
     return this.razonSocial;
   }
+
+  public Long getUsuarioId() { return usuarioId; }
+  public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
+
 }

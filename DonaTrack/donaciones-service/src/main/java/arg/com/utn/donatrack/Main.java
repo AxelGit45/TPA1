@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack;
 
+import arg.com.utn.donatrack.grpc.usuarios.ServidorUsuariosGrpc;
 import arg.com.utn.donatrack.tareas.AsignadorDeEntidadesParaDonaciones;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -32,6 +33,9 @@ public class Main {
     });
 
     final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), config);
+
+    ServidorUsuariosGrpc.iniciar();
+
 
     System.out.println("[DONACIONES-SERVICE] Levantado en " + BASE_URI);
     System.out.println("Proba: http://localhost:8080/health");

@@ -30,6 +30,8 @@ public abstract class Persona {
 
   private LocalDate ultimaConexion;
 
+  private Long usuarioId;
+
   public void ingresarDonacion(){}
 
   public void agregarContacto(Contacto contacto) {
@@ -64,4 +66,9 @@ public abstract class Persona {
   public void setContactos(List<Contacto> contactos) {this.contactos = contactos;}
 
   public void setUltimaConexion(LocalDate ultimaConexion){ this.ultimaConexion = ultimaConexion;}
+
+  public Long getUsuarioId() { return usuarioId; }
+
+  public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
+
 }

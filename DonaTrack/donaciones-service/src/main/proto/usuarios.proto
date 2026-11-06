@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package donatrack.usuarios;
+
+option java_multiple_files = true;
+option java_package = "arg.com.utn.donatrack.grpc.usuarios";
+option java_outer_classname = "UsuariosProto";
+
+service UsuariosService {
+  // Crea el usuario y la persona donante humana
+  rpc RegistrarDonante (RegistrarDonanteRequest) returns (RegistrarDonanteResponse);
+
+  // Crea el usuario y la persona donante jurídica
+  rpc RegistrarDonanteJuridica (RegistrarDonanteJuridicaRequest) returns (RegistrarDonanteResponse);
+
+  // Crea el usuario y la entidad beneficiaria
+  rpc RegistrarEntidadBeneficiaria (RegistrarEntidadRequest) returns (RegistrarEntidadResponse);
+
+  // Valida email y contraseña
+  rpc Autenticar (AutenticarRequest) returns (AutenticarResponse);
+}
+
+message RegistrarDonanteRequest {
+  string nombre = 1;
+  string apellido = 2;
+  string email = 3;
+  string contrasena = 4;
+  int32 edad = 5;
+  int32 numero_de_documento = 6;
+  string genero = 7;
+  string direccion = 8;
+  string telefono = 9;
+  string whatsapp = 10;
+  string medio_predeterminado = 11; // "EMAIL", "TELEFONO" o "WHATSAPP"
+}
+
+message RegistrarDonanteJuridicaRequest {
+  string razon_social = 1;
+  string tipo_razon_social = 2; // "GUBERNAMENTAL", "ONG", "EMPRESA" o "INSTITUCION"
+  string rubro = 3;
+  string email = 4;
+  string contrasena = 5;
+}
+
+message RegistrarDonanteResponse {
+  bool ok = 1;
+  int64 usuario_id = 2;
+  string error = 3;
+}
+
+message RegistrarEntidadRequest {
+  string razon_social = 1;
+  string direccion = 2;
+  string email = 3;
+  string contrasena = 4;
+}
+
+message RegistrarEntidadResponse {
+  bool ok = 1;
+  int64 usuario_id = 2;
+  string error = 3;
+}
+
+message AutenticarRequest {
+  string email = 1;
+  string contrasena = 2;
+}
+
+message AutenticarResponse {
+  bool ok = 1;
+  int64 usuario_id = 2;
+  string rol = 3; // "DONANTE", "ENTIDAD" o "ADMINISTRADOR"
+}

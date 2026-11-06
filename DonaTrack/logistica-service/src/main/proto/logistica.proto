@@ -5,14 +5,13 @@ package donatrack.logistica;
 option java_multiple_files = true;
 option java_package = "arg.com.utn.donatrack.grpc.logistica";
 
-// --- MENSAJES DE PLANIFICACIÓN DE RUTAS ---
+// ============================================================
+// PLANIFICACIÓN DE RUTAS
+// ============================================================
 
 message DonacionPlanificableProto {
-  int64 id = 1;
+  int64  donacion_id = 1;
   string direccion_destino = 2;
-  double volumen_m3 = 3;
-  double peso_kg = 4;
-  string entidad_beneficiaria_nombre = 5;
 }
 
 message PlanificarRutasRequest {
@@ -20,58 +19,76 @@ message PlanificarRutasRequest {
 }
 
 message EntregaRutaProto {
-  int64 entrega_id = 1;
-  int64 donacion_id = 2;
-  string direccion_destino = 3;
-  int32 orden = 4;
+  int64          entrega_id = 1;
+  repeated int64 donacion_ids = 2;
+  string         direccion_destino = 3;
+  int32          orden = 4;
 }
 
 message RutaResponse {
-  int64 ruta_id = 1;
-  int64 camion_id = 2;
-  string patente_camion = 3;
-  repeated EntregaRutaProto entregas = 4;
+  int64                     ruta_id        = 1;
+  int64                     camion_id      = 2;
+  string                    patente_camion = 3;
+  string                    link_mapa      = 4;
+  repeated EntregaRutaProto entregas       = 5;
 }
 
 message PlanificacionResponse {
-  repeated RutaResponse rutas = 1;
-  repeated int64 donaciones_sin_asignar_ids = 2;
+  repeated RutaResponse rutas                      = 1;
+  repeated int64        donaciones_sin_asignar_ids = 2;
 }
 
-// --- MENSAJES DE MONITOREO Y ESTADO ---
+// ============================================================
+// INICIO DE RUTA
+// ============================================================
+
+message IniciarRutaRequest {
+  int64 ruta_id = 1;
+}
+
+message IniciarRutaResponse {
+  bool   exito   = 1;
+  string mensaje = 2;
+}
+
+// ============================================================
+// ESTADO DE UNA ENTREGA
+// ============================================================
+
+message ActualizarEstadoEntregaRequest {
+  int64  entrega_id    = 1;
+  string nuevo_estado  = 2; // PENDIENTE | ENTRASLADO | ENTREGADA | NORECIBIDA
+  string justificacion = 3;
+}
+
+message ActualizarEstadoEntregaResponse {
+  bool   exito   = 1;
+  string mensaje = 2;
+}
+
+// ============================================================
+// UBICACIÓN DEL CAMIÓN
+// ============================================================
 
 message UbicacionCamionRequest {
   int64 camion_id = 1;
 }
 
 message UbicacionCamionResponse {
-  int64 camion_id = 1;
-  string patente = 2;
-  double latitud = 3;
-  double longitud = 4;
+  int64  camion_id            = 1;
+  string patente              = 2;
+  double latitud              = 3;
+  double longitud             = 4;
   string ultima_actualizacion = 5;
 }
 
-message ActualizarEstadoEntregaRequest {
-  int64 entrega_id = 1;
-  string nuevo_estado = 2; // "EN_TRASLADO", "ENTREGADA", "ENTREGA_FALLIDA"
-  string observaciones = 3;
-}
-
-message ActualizarEstadoEntregaResponse {
-  bool exito = 1;
-  string mensaje = 2;
-}
-
-// --- SERVICIO GRPC ---
+// ============================================================
+// SERVICIO
+// ============================================================
 
 service LogisticaService {
-  // Solicita la planificación de rutas a partir de un lote de donaciones
-  rpc PlanificarRutas (PlanificarRutasRequest) returns (PlanificacionResponse);
-
-  // Consulta la ubicación en tiempo real de un camión
-  rpc ObtenerUbicacionCamion (UbicacionCamionRequest) returns (UbicacionCamionResponse);
-
-  // Notifica la actualización del estado de una entrega
+  rpc PlanificarRutas         (PlanificarRutasRequest)         returns (PlanificacionResponse);
+  rpc IniciarRuta             (IniciarRutaRequest)             returns (IniciarRutaResponse);
   rpc ActualizarEstadoEntrega (ActualizarEstadoEntregaRequest) returns (ActualizarEstadoEntregaResponse);
+  rpc ObtenerUbicacionCamion  (UbicacionCamionRequest)         returns (UbicacionCamionResponse);
 }

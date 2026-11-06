@@ -1,5 +1,28 @@
-{{> partials/header}}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión - DonaTrack</title>
+</head>
+<body>
+  <h1>Iniciar sesión</h1>
 
+  {{#if error}}
+    <p style="color: red;">{{error}}</p>
+  {{/if}}
 
+  <form method="POST" action="/login">
+    <p>
+      <label>Email</label><br>
+      <input type="email" name="email" value="{{email}}" required>
+    </p>
+    <p>
+      <label>Contraseña</label><br>
+      <input type="password" name="contrasena" required>
+    </p>
+    <input type="submit" value="Ingresar">
+  </form>
 
-{{> partials/footer}}
+  <p>¿No tenés cuenta? <a href="/registro">Registrate</a></p>
+</body>
+</html>
