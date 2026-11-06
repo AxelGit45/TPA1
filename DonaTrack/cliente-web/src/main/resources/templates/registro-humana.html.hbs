@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de persona humana - DonaTrack</title>
+</head>
+<body>
+  <h1>Registro de persona humana</h1>
+
+  {{#if errores}}
+  <ul>
+    {{#each errores}}
+    <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  <form method="POST" action="/registro/humana">
+    <p>
+      <label>Nombre</label><br>
+      <input type="text" name="nombre" value="{{valores.nombre}}" required>
+    </p>
+    <p>
+      <label>Apellido</label><br>
+      <input type="text" name="apellido" value="{{valores.apellido}}" required>
+    </p>
+    <p>
+      <label>Edad</label><br>
+      <input type="number" name="edad" min="18" value="{{valores.edad}}" required>
+    </p>
+    <p>
+      <label>Número de documento (DNI)</label><br>
+      <input type="text" name="numeroDeDocumento" inputmode="numeric" value="{{valores.numeroDeDocumento}}" required>
+    </p>
+    <p>
+      <label>Género</label><br>
+      <select name="genero" required>
+        <option value="">Elegí una opción</option>
+        {{#each generos}}
+        <option value="{{valor}}" {{#if seleccionado}}selected{{/if}}>{{valor}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <p>
+      <label>Dirección completa (calle, número, localidad, provincia)</label><br>
+      <input type="text" name="direccion" value="{{valores.direccion}}" required>
+    </p>
+
+    <h2>Medios de contacto</h2>
+    <p>
+      <label>Correo electrónico (también es tu usuario para ingresar)</label><br>
+      <input type="email" name="email" value="{{valores.email}}" required>
+    </p>
+    <p>
+      <label>Teléfono (opcional)</label><br>
+      <input type="text" name="telefono" value="{{valores.telefono}}">
+    </p>
+    <p>
+      <label>WhatsApp (opcional)</label><br>
+      <input type="text" name="whatsapp" value="{{valores.whatsapp}}">
+    </p>
+    <p>
+      <label>¿Por cuál querés recibir las notificaciones?</label><br>
+      {{#each medios}}
+      <label>
+        <input type="radio" name="predeterminado" value="{{codigo}}" {{#if seleccionado}}checked{{/if}}>
+        {{etiqueta}}
+      </label><br>
+      {{/each}}
+    </p>
+
+    <h2>Contraseña</h2>
+    <p>
+      <label>Contraseña</label><br>
+      <input type="password" name="contrasena" required>
+    </p>
+    <p>
+      <label>Repetir contraseña</label><br>
+      <input type="password" name="confirmacion" required>
+    </p>
+
+    <input type="submit" value="Registrarme">
+  </form>
+</body>
+</html>

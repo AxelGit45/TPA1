@@ -1,10 +1,13 @@
 package arg.com.utn.donatrack;
 
+import arg.com.utn.donatrack.clientes.ClienteDonacionesMock;
 import arg.com.utn.donatrack.controllers.HomeController;
+import arg.com.utn.donatrack.controllers.RegistroController;
 import arg.com.utn.donatrack.controllers.SaludoController;
 import arg.com.utn.donatrack.controllers.SessionController;
 import arg.com.utn.donatrack.templates.JavalinHandlebars;
 import arg.com.utn.donatrack.templates.JavalinRenderer;
+import arg.com.utn.donatrack.usuarios.RepositorioUsuarios;
 import io.javalin.Javalin;
 
 public class Main {
@@ -25,9 +28,16 @@ public class Main {
     app.get("/bienvenida", saludo::bienvenida);
     app.get("/despedida", saludo::despedida);
     app.get("/login", session::mostrarLogin);
+    app.post("/login", session::crearSesion);
 
     app.get("/donante", ctx -> ctx.result("Landing donante"));
     app.get("/entidad", ctx -> ctx.result("Landing entidad"));
     app.get("/admin", ctx -> ctx.result("Landing administrador"));
+
+    RegistroController registro =
+        new RegistroController(RepositorioUsuarios.instance(), new ClienteDonacionesMock());
+
+    app.get("/registro/humana", registro::mostrarFormularioHumana);
+    app.post("/registro/humana", registro::crearPersonaHumana);
   }
 }
