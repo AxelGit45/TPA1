@@ -1,0 +1,37 @@
+{{> partials/header}}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<h1>Mapa de Donaciones Entregadas</h1>
+
+<div id="mapa" style="height: 480px; width: 100%; border: 1px solid #cbd5e1; border-radius: 6px; margin: 20px auto;"></div>
+{{#if entregadas}}
+    <p>Hacé clic en cualquier marcador para ver las fotos y detalles de la donación.</p>
+{{else}}
+    <p>Aún no hay registros de donaciones entregadas para mostrar en el mapa.</p>
+{{/if}}
+
+<script>
+
+    var map = L.map('mapa').setView([-34.6037, -58.3816], 12);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+        {{#each entregadas}}
+        L.marker([{{this.latitud}}, {{this.longitud}}])
+                .addTo(map)
+                .bindPopup(
+                        "<b>Donación Entregada #{{this.id}}</b><br>" +
+                        "<b>Destino:</b> {{this.entidadNombre}}<br>" +
+                        "<b>Bienes:</b> {{this.descripcion}}<br>" +
+                        "<b>Fecha:</b> {{this.fechaEntrega}}<br><br>" +
+                        "<img src='{{this.fotoUrl}}' width='160' style='border-radius: 4px; display: block; margin: 0 auto;'>"
+                );
+        {{/each}}
+</script>
+
+{{> partials/footer}}

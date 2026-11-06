@@ -30,6 +30,8 @@ public class Main {
     EntidadController entidad = new EntidadController();
 
     app.get("/", home::index);
+    app.get("/mapa-entregas", home::mostrarMapaEntregas);
+    app.get("/legal", home::mostrarLegal);
     app.get("/login", session::mostrarLogin);
     app.post("/login", session::crearSesion);
 
