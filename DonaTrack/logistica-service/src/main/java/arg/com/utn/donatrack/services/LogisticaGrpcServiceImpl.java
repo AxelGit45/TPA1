@@ -7,21 +7,6 @@ public class LogisticaGrpcServiceImpl extends LogisticaServiceGrpc.LogisticaServ
 
   /*@Override
   public void planificarRutas(PlanificarRutasRequest request, StreamObserver<PlanificacionResponse> responseObserver) {
-    // Implementación del método PlanificarRuta
-    // Aquí puedes agregar la lógica para planificar la ruta según los datos del request
-
-    // Ejemplo de respuesta
-    PlanificacionResponse response = PlanificacionResponse.newBuilder()
-        .setMensaje("Ruta planificada exitosamente")
-        .build();
-
-    // Enviar la respuesta al cliente
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
-  }*/
-
-  @Override
-  public void planificarRutas(PlanificarRutasRequest request, StreamObserver<PlanificacionResponse> responseObserver) {
     // 1. LEER LOS DATOS ENVIADOS POR EL CLIENTE (donaciones-service)
     // 'request' contiene la lista de donaciones en formato ProtoBuf
     int cantidadDonaciones = request.getDonacionesCount();
@@ -47,5 +32,6 @@ public class LogisticaGrpcServiceImpl extends LogisticaServiceGrpc.LogisticaServ
     // 4. ENVIAR LA RESPUESTA AL CLIENTE Y CERRAR LA COMUNICACIÓN
     responseObserver.onNext(response);      // Transmite la respuesta binaria
     responseObserver.onCompleted();         // Notifica que la llamada finalizó
-  }
+  }*/
+
 }
