@@ -25,6 +25,7 @@ public class Main {
     HomeController home = new HomeController();
     LandingController landing = new LandingController();
     RegistroJuridicaController registroJuridica = new RegistroJuridicaController(clienteUsuarios);
+    RegistroEntidadController registroEntidad = new RegistroEntidadController(clienteUsuarios);
 
     app.get("/login", session::mostrarLogin);
     app.post("/login", session::crearSesion);
@@ -37,6 +38,8 @@ public class Main {
     app.post("/registro", registro::crearPersonaHumana);
     app.get("/registro/juridica", registroJuridica::mostrarFormulario);
     app.post("/registro/juridica", registroJuridica::crear);
+    app.get("/registro/entidad", registroEntidad::mostrarFormulario);
+    app.post("/registro/entidad", registroEntidad::crear);
 
 
   }

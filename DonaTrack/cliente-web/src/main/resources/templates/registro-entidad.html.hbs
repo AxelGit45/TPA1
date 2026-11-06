@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de entidad beneficiaria - DonaTrack</title>
+</head>
+<body>
+  <h1>Registro de entidad beneficiaria</h1>
+
+  {{#if errores}}
+    <ul style="color: red;">
+      {{#each errores}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  <form method="POST" action="/registro/entidad">
+    <p>
+      <label>Razón social</label><br>
+      <input type="text" name="razonSocial" value="{{razonSocial}}" required>
+    </p>
+    <p>
+      <label>Dirección completa</label><br>
+      <input type="text" name="direccion" value="{{direccion}}" required>
+    </p>
+    <p>
+      <label>Email institucional</label><br>
+      <input type="email" name="email" value="{{email}}" required>
+    </p>
+    <p>
+      <label>Contraseña (mínimo 8 caracteres)</label><br>
+      <input type="password" name="contrasena" minlength="8" required>
+    </p>
+    <p>
+      <label>Repetir contraseña</label><br>
+      <input type="password" name="confirmacion" required>
+    </p>
+    <input type="submit" value="Registrar entidad">
+  </form>
+</body>
+</html>

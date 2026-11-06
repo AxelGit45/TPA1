@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack.usuarios;
 
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.personas.PersonaHumana;
 import arg.com.utn.donatrack.personas.PersonaJuridica;
 import arg.com.utn.donatrack.personas.TipoRazonSocial;
@@ -72,6 +73,24 @@ public class ServicioDeUsuarios {
     persona.agregarContacto(new Mail(usuario.getEmail()));
     persona.setUsuarioId(usuario.getId());
     em.persist(persona);
+
+    return usuario;
+  }
+
+  // El email institucional es el usuario y el único medio de contacto por ahora.
+  public Usuario registrarEntidadBeneficiaria(EntityManager em, String razonSocial, String direccion,
+                                              String email, String contrasena) {
+    if (repositorio.existeEmail(em, email)) {
+      throw new IllegalStateException("Ya existe una cuenta con ese email");
+    }
+
+    Usuario usuario = new Usuario(email, contrasena, Rol.ENTIDAD);
+    repositorio.guardar(em, usuario);
+
+    EntidadBeneficiaria entidad = new EntidadBeneficiaria(razonSocial, direccion, new ArrayList<>(), null);
+    entidad.getContactos().add(new Mail(usuario.getEmail()));
+    entidad.setUsuarioId(usuario.getId());
+    em.persist(entidad);
 
     return usuario;
   }

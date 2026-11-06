@@ -5,6 +5,8 @@ import arg.com.utn.donatrack.grpc.usuarios.AutenticarResponse;
 import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteJuridicaRequest;
 import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteRequest;
 import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteResponse;
+import arg.com.utn.donatrack.grpc.usuarios.RegistrarEntidadRequest;
+import arg.com.utn.donatrack.grpc.usuarios.RegistrarEntidadResponse;
 import arg.com.utn.donatrack.grpc.usuarios.UsuariosServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -45,6 +47,16 @@ public class ClienteUsuarios {
         .setRazonSocial(razonSocial)
         .setTipoRazonSocial(tipoRazonSocial)
         .setRubro(rubro)
+        .setEmail(email)
+        .setContrasena(contrasena)
+        .build());
+  }
+
+  public RegistrarEntidadResponse registrarEntidadBeneficiaria(String razonSocial, String direccion,
+                                                               String email, String contrasena) {
+    return stub.registrarEntidadBeneficiaria(RegistrarEntidadRequest.newBuilder()
+        .setRazonSocial(razonSocial)
+        .setDireccion(direccion)
         .setEmail(email)
         .setContrasena(contrasena)
         .build());

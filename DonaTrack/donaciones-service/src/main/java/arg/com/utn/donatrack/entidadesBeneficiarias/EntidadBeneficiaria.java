@@ -99,4 +99,8 @@ public class EntidadBeneficiaria {
   public String getNombre() {
     return this.razonSocial;
   }
+
+  public Long getUsuarioId() { return usuarioId; }
+  public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
+
 }
