@@ -1,0 +1,63 @@
+{{> partials/header}}
+
+<h1>Mis Donaciones</h1>
+
+<p>
+    <a href="/donante/seguimiento"> Ver entregas en el mapa</a>
+</p>
+
+<form method="GET" action="/donante/donaciones">
+    <label for="estado">Estado:</label>
+    <select id="estado" name="estado">
+        <option value="">Todos</option>
+        <option value="EN_DEPOSITO">En Depósito</option>
+        <option value="EN_TRASLADO">En Traslado</option>
+        <option value="ENTREGADA">Entregada</option>
+    </select>
+
+    <label for="categoria">Categoría:</label>
+    <select id="categoria" name="categoria">
+        <option value="">Todas</option>
+        <option value="Alimentos">Alimentos</option>
+        <option value="Ropa">Ropa</option>
+        <option value="Medicamentos">Medicamentos</option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+    <a href="/donante/donaciones">Limpiar</a>
+</form>
+
+{{#if donaciones}}
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Entidad Destino</th>
+            <th>Estado</th>
+            <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each donaciones}}
+            <tr>
+                <td>{{this.id}}</td>
+                <td>{{this.fecha}}</td>
+                <td>{{this.descripcion}}</td>
+                <td>{{this.categoria}}</td>
+                <td>{{this.entidadDestino}}</td>
+                <td>{{this.estado}}</td>
+                <td>
+                    <a href="/donante/seguimiento">Seguir camión</a>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p>No se encontraron donaciones registradas.</p>
+{{/if}}
+
+{{> partials/footer}}

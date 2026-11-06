@@ -1,0 +1,56 @@
+{{> partials/header}}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<h1>Seguimiento de Donaciones en Camino</h1>
+
+<p>
+    <a href="/entidad/donaciones">Volver a Donaciones Asignadas</a>
+</p>
+
+{{#if entregas}}
+    <table>
+        <thead>
+        <tr>
+            <th>Donación</th>
+            <th>Bienes</th>
+            <th>Camión (Patente)</th>
+            <th>Última Actualización</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each entregas}}
+            <tr>
+                <td>#{{this.donacionId}}</td>
+                <td>{{this.descripcion}}</td>
+                <td>{{this.patenteCamion}}</td>
+                <td>{{this.ultimaActualizacion}}</td>
+                <td>{{this.estado}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+    <br>
+
+    <div id="mapa" style="height: 400px; width: 100%;"></div>
+
+    <script>
+        var map = L.map('mapa').setView([-34.6037, -58.3816], 12);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+            {{#each entregas}}
+            L.marker([{{this.latitud}}, {{this.longitud}}])
+                    .addTo(map)
+                    .bindPopup("<b>Camión: {{this.patenteCamion}}</b><br>Donación #{{this.donacionId}}<br>Actualizado: {{this.ultimaActualizacion}}");
+            {{/each}}
+    </script>
+{{else}}
+    <p>No tenés donaciones en viaje hacia tu sede en este momento.</p>
+{{/if}}
+
+{{> partials/footer}}

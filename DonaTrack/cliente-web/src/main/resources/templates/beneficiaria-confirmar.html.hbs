@@ -1,0 +1,47 @@
+{{> partials/header}}
+
+<h1>Confirmar Recepción de Donación #{{donacionId}}</h1>
+
+<p>
+    <a href="/entidad/donaciones">Volver a Donaciones Asignadas</a>
+</p>
+
+{{#if exito}}
+    <p>Recepción confirmada con éxito! Las fotos fueron registradas.</p>
+{{/if}}
+
+<form method="POST" action="/entidad/confirmar/{{donacionID}}" enctype="multipart/forma-data">
+
+    <p>
+        <label for="fechaRecepcion">Fecha de Recepción:</label><br>
+        <input type="date" id="fechaRecepcion" name="fechaRecepcion" required>
+    </p>
+
+    <p>
+        <label for="fotos">Fotos de la donación recibida:</label><br>
+        <input type="file" id="fotos" name="fotos" accept="image/*" multiple required>
+    </p>
+
+    <p>
+        <label for="estadoBienes">Estado en que llegaron los bienes:</label><br>
+        <select id="estadoBienes" name="estadoBienes" required>
+            <option value="EXCELENTE">Excelente estado</option>
+            <option value="BUENO">Buen estado</option>
+            <option value="REGULAR">Regular</option>
+            <option value="DAÑADO">Dañado / Incompleto</option>
+        </select>
+    </p>
+
+    <p>
+        <label for="observaciones">Observaciones adicionales:</label><br>
+        <textarea id="observaciones" name="observaciones" rows="4" cols="50" placeholder="Comentarios sobre la entrega,
+el camión o el contenido..."></textarea>
+    </p>
+
+    <p>
+        <button type="submit">Confirmar y Enviar Fotos</button>
+    </p>
+
+</form>
+
+{{> partials/footer}}

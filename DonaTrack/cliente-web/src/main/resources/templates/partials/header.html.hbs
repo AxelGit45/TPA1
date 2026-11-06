@@ -3,16 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>DonaTrack</title>
+
+    <style>
+
+        body {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background-color: #1e3a8a;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a, .navbar a:visited {
+            color: #ffffff !important;
+            text-decoration: none;
+        }
+
+        .navbar-brand {}
+
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 12px;
+            border-radius: 6px;
+        }
+
+        .navbar-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin-right: 12px;
+            font-size: 15px;
+        }
+
+        .navbar-links a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            margin: 30px;
+            background-color: #ffffff;
+            text-align: center;
+        }
+
+        ul {
+            list-style-position: inside;
+        }
+
+    </style>
+
 </head>
 <body>
-<nav class="navbar">
-    <a href="/">DonaTrack</a>
-    <div>
+<header class="navbar">
+    <a href="/" class="navbar-brand">
+        <img src="/logo.jpg" alt="Logo DonaTrack">
+        <span>DonaTrack</span>
+    </a>
+    <nav class="navbar-links">
         <a href="/">Inicio</a>
         <a href="/mapa-entregas">Mapa de Entregas</a>
-        <a href="/login">Iniciar Sesión</a>
-        <a href="/registro">Registrarse</a>
-    </div>
-</nav>
+        <a href="/login">Iniciar Sesión/Registrarse</a>
+    </nav>
+</header>
 
 <main>
