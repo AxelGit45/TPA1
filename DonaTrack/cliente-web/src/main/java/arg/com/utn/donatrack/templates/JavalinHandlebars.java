@@ -9,6 +9,7 @@ import io.javalin.rendering.FileRenderer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JavalinHandlebars implements FileRenderer {
@@ -21,7 +22,14 @@ public class JavalinHandlebars implements FileRenderer {
     try {
       String templateName = path.replace(".html.hbs", "").replace(".hbs", "");
       Template template = handlebars.compile(templateName);
-      return template.apply(model);
+
+      // Copia mutable del modelo (puede venir de Map.of) + datos de sesión para todas las vistas
+      Map<String, Object> modeloCompleto = new HashMap<>(model);
+      String rolSesion = context.sessionAttribute("rol");
+      modeloCompleto.put("logueado", rolSesion != null);
+      modeloCompleto.put("rolSesion", rolSesion);
+
+      return template.apply(modeloCompleto);
     } catch (IOException e) {
       e.printStackTrace();
       context.status(HttpStatus.NOT_FOUND);

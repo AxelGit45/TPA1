@@ -63,7 +63,13 @@
     <nav class="navbar-links">
         <a href="/">Inicio</a>
         <a href="/mapa-entregas">Mapa de Entregas</a>
-        <a href="/login">Iniciar Sesión/Registrarse</a>
+        {{#if logueado}}
+            <form method="POST" action="/logout" style="display:inline; margin:0;">
+                <button type="submit" class="btn-logout">Cerrar sesión</button>
+            </form>
+        {{else}}
+            <a href="/login">Iniciar Sesión/Registrarse</a>
+        {{/if}}
     </nav>
 </header>
 

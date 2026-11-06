@@ -37,6 +37,9 @@ public class SessionController {
         return;
       }
 
+      // Temporal: borrar cuando se confirme el valor del rol
+      System.out.println("ROL RECIBIDO: [" + respuesta.getRol() + "]");
+
       ctx.sessionAttribute("user_id", respuesta.getUsuarioId());
       ctx.sessionAttribute("rol", respuesta.getRol());
       ctx.redirect(landingPara(respuesta.getRol()));
@@ -53,11 +56,11 @@ public class SessionController {
 
   private String landingPara(String rol) {
     if ("ENTIDAD".equals(rol)) {
-      return "/entidad";
+      return "/entidad/donaciones";
     }
     if ("ADMINISTRADOR".equals(rol)) {
-      return "/admin";
+      return "/"; // temporal, hasta que existan las vistas de admin
     }
-    return "/donante";
+    return "/donante/donaciones";
   }
 }

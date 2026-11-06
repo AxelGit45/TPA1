@@ -33,7 +33,6 @@ public class Main {
         RegistroEntidadController registroEntidad = new RegistroEntidadController(clienteUsuarios);
         ControlDeAcceso acceso = new ControlDeAcceso();
         HomeController home = new HomeController();
-        LandingController landing = new LandingController();
 
         DonanteController donante = new DonanteController();
         EntidadController entidad = new EntidadController();
@@ -42,12 +41,14 @@ public class Main {
         app.get("/login", session::mostrarLogin);
         app.post("/login", session::crearSesion);
 
+        app.get("/registro", ctx -> ctx.render("registro-opciones.html.hbs"));
         app.get("/registro/humana", registro::mostrarFormularioHumana);
         app.post("/registro", registro::crearPersonaHumana);
         app.get("/registro/juridica", registroJuridica::mostrarFormulario);
         app.post("/registro/juridica", registroJuridica::crear);
         app.get("/registro/entidad", registroEntidad::mostrarFormulario);
         app.post("/registro/entidad", registroEntidad::crear);
+
         app.before("/donante", acceso.requiere("DONANTE"));
         app.before("/donante/*", acceso.requiere("DONANTE"));
         app.before("/entidad", acceso.requiere("ENTIDAD"));
@@ -57,10 +58,9 @@ public class Main {
 
         app.post("/logout", session::cerrarSesion);
 
-
-        app.get("/donante", landing::mostrar);
-        app.get("/entidad", landing::mostrar);
-        app.get("/admin", landing::mostrar);
+        app.get("/donante", ctx -> ctx.redirect("/donante/donaciones"));
+        app.get("/entidad", ctx -> ctx.redirect("/entidad/donaciones"));
+        app.get("/admin", ctx -> ctx.redirect("/")); // temporal, hasta que existan las vistas de admin
 
         app.get("/donante/donaciones", donante::listarDonaciones);
         app.get("/donante/entidades", donante::listarEntidades);
