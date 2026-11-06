@@ -7,12 +7,15 @@ import arg.com.utn.donatrack.personas.contactos.Contacto;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("ASIGNACION_REALIZADA")
 public class AsignacionRealizada extends EstadoDonacion{
-  @Transient
+  @ManyToOne
+  @JoinColumn(name = "entidad_beneficiaria_id")
   private EntidadBeneficiaria entidadBeneficiaria;
   @Transient
   private Donacion donacion;
