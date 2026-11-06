@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro de persona jurídica - DonaTrack</title>
+</head>
+<body>
+  <h1>Registro de persona jurídica donante</h1>
+
+  {{#if errores}}
+    <ul style="color: red;">
+      {{#each errores}}
+        <li>{{this}}</li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  <form method="POST" action="/registro/juridica">
+    <p>
+      <label>Razón social</label><br>
+      <input type="text" name="razonSocial" value="{{razonSocial}}" required>
+    </p>
+    <p>
+      <label>Tipo de organización</label><br>
+      <select name="tipoRazonSocial">
+        {{#each tipos}}
+          <option value="{{codigo}}" {{#if seleccionado}}selected{{/if}}>{{etiqueta}}</option>
+        {{/each}}
+      </select>
+    </p>
+    <p>
+      <label>Rubro</label><br>
+      <input type="text" name="rubro" value="{{rubro}}" required>
+    </p>
+    <p>
+      <label>Email institucional</label><br>
+      <input type="email" name="email" value="{{email}}" required>
+    </p>
+    <p>
+      <label>Contraseña (mínimo 8 caracteres)</label><br>
+      <input type="password" name="contrasena" minlength="8" required>
+    </p>
+    <p>
+      <label>Repetir contraseña</label><br>
+      <input type="password" name="confirmacion" required>
+    </p>
+    <input type="submit" value="Registrar organización">
+  </form>
+</body>
+</html>

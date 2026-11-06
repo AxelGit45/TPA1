@@ -2,6 +2,7 @@ package arg.com.utn.donatrack.clientes;
 
 import arg.com.utn.donatrack.grpc.usuarios.AutenticarRequest;
 import arg.com.utn.donatrack.grpc.usuarios.AutenticarResponse;
+import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteJuridicaRequest;
 import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteRequest;
 import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteResponse;
 import arg.com.utn.donatrack.grpc.usuarios.UsuariosServiceGrpc;
@@ -34,6 +35,17 @@ public class ClienteUsuarios {
         .setTelefono(telefono)
         .setWhatsapp(whatsapp)
         .setMedioPredeterminado(medioPredeterminado)
+        .setContrasena(contrasena)
+        .build());
+  }
+
+  public RegistrarDonanteResponse registrarDonanteJuridica(String razonSocial, String tipoRazonSocial,
+                                                           String rubro, String email, String contrasena) {
+    return stub.registrarDonanteJuridica(RegistrarDonanteJuridicaRequest.newBuilder()
+        .setRazonSocial(razonSocial)
+        .setTipoRazonSocial(tipoRazonSocial)
+        .setRubro(rubro)
+        .setEmail(email)
         .setContrasena(contrasena)
         .build());
   }

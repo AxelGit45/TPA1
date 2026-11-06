@@ -29,6 +29,7 @@ public class EntidadBeneficiaria {
   private Long id;
   private String razonSocial;
   private String direccion;
+  private Long usuarioId;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "entidad_id")

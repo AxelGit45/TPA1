@@ -1,10 +1,7 @@
 package arg.com.utn.donatrack;
 
 import arg.com.utn.donatrack.clientes.ClienteUsuarios;
-import arg.com.utn.donatrack.controllers.HomeController;
-import arg.com.utn.donatrack.controllers.LandingController;
-import arg.com.utn.donatrack.controllers.RegistroController;
-import arg.com.utn.donatrack.controllers.SessionController;
+import arg.com.utn.donatrack.controllers.*;
 import arg.com.utn.donatrack.templates.JavalinHandlebars;
 import arg.com.utn.donatrack.templates.JavalinRenderer;
 import io.javalin.Javalin;
@@ -27,6 +24,7 @@ public class Main {
     RegistroController registro = new RegistroController(clienteUsuarios);
     HomeController home = new HomeController();
     LandingController landing = new LandingController();
+    RegistroJuridicaController registroJuridica = new RegistroJuridicaController(clienteUsuarios);
 
     app.get("/login", session::mostrarLogin);
     app.post("/login", session::crearSesion);
@@ -37,6 +35,8 @@ public class Main {
     app.get("/admin", landing::mostrar);
     app.get("/registro/humana", registro::mostrarFormularioHumana);
     app.post("/registro", registro::crearPersonaHumana);
+    app.get("/registro/juridica", registroJuridica::mostrarFormulario);
+    app.post("/registro/juridica", registroJuridica::crear);
 
 
   }

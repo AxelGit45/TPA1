@@ -1,6 +1,8 @@
 package arg.com.utn.donatrack.usuarios;
 
 import arg.com.utn.donatrack.personas.PersonaHumana;
+import arg.com.utn.donatrack.personas.PersonaJuridica;
+import arg.com.utn.donatrack.personas.TipoRazonSocial;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.contactos.Mail;
 import arg.com.utn.donatrack.personas.contactos.Telefono;
@@ -8,6 +10,7 @@ import arg.com.utn.donatrack.personas.contactos.WhatsApp;
 import arg.com.utn.donatrack.repositorios.RepositorioUsuarios;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 
 public class ServicioDeUsuarios {
 
@@ -48,6 +51,25 @@ public class ServicioDeUsuarios {
     if (wa != null) {
       persona.agregarContacto(wa);
     }
+    persona.setUsuarioId(usuario.getId());
+    em.persist(persona);
+
+    return usuario;
+  }
+
+  // El email institucional es el usuario y el único medio de contacto por ahora.
+  public Usuario registrarDonanteJuridica(EntityManager em, String razonSocial, String tipoRazonSocial,
+                                          String rubro, String email, String contrasena) {
+    if (repositorio.existeEmail(em, email)) {
+      throw new IllegalStateException("Ya existe una cuenta con ese email");
+    }
+
+    Usuario usuario = new Usuario(email, contrasena, Rol.DONANTE);
+    repositorio.guardar(em, usuario);
+
+    PersonaJuridica persona = new PersonaJuridica(razonSocial, TipoRazonSocial.valueOf(tipoRazonSocial),
+        rubro, new ArrayList<>());
+    persona.agregarContacto(new Mail(usuario.getEmail()));
     persona.setUsuarioId(usuario.getId());
     em.persist(persona);
 

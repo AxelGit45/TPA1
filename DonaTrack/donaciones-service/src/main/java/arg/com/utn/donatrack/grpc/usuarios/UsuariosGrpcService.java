@@ -60,6 +60,46 @@ public class UsuariosGrpcService extends UsuariosServiceGrpc.UsuariosServiceImpl
   }
 
   @Override
+  public void registrarDonanteJuridica(RegistrarDonanteJuridicaRequest request,
+                                       StreamObserver<RegistrarDonanteResponse> responseObserver) {
+    EntityManager em = Persistencia.crearEntityManager();
+    EntityTransaction tx = em.getTransaction();
+    RegistrarDonanteResponse respuesta;
+    try {
+      tx.begin();
+      Usuario usuario = servicio.registrarDonanteJuridica(
+          em,
+          request.getRazonSocial(),
+          request.getTipoRazonSocial(),
+          request.getRubro(),
+          request.getEmail(),
+          request.getContrasena());
+      tx.commit();
+      respuesta = RegistrarDonanteResponse.newBuilder()
+          .setOk(true)
+          .setUsuarioId(usuario.getId())
+          .build();
+    } catch (IllegalStateException e) {
+      if (tx.isActive()) tx.rollback();
+      respuesta = RegistrarDonanteResponse.newBuilder()
+          .setOk(false)
+          .setError(e.getMessage())
+          .build();
+    } catch (RuntimeException e) {
+      if (tx.isActive()) tx.rollback();
+      e.printStackTrace();
+      respuesta = RegistrarDonanteResponse.newBuilder()
+          .setOk(false)
+          .setError("No se pudo registrar el usuario")
+          .build();
+    } finally {
+      em.close();
+    }
+    responseObserver.onNext(respuesta);
+    responseObserver.onCompleted();
+  }
+
+  @Override
   public void autenticar(AutenticarRequest request,
                          StreamObserver<AutenticarResponse> responseObserver) {
     EntityManager em = Persistencia.crearEntityManager();
