@@ -1,4 +1,4 @@
-package arg.com.utn.donatrack.seguridad;
+package arg.com.utn.donatrack.web.seguridad;
 
 import io.javalin.http.ForbiddenResponse;
 import io.javalin.http.Handler;

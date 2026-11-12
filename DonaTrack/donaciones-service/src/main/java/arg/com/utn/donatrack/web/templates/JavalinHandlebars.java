@@ -1,4 +1,4 @@
-package arg.com.utn.donatrack.templates;
+package arg.com.utn.donatrack.web.templates;
 
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;

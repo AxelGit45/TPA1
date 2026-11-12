@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Registro de donante - DonaTrack</title>
+  <title>Registro de persona donante - DonaTrack</title>
 </head>
 <body>
   <h1>Registro de persona donante</h1>
@@ -15,7 +15,8 @@
     </ul>
   {{/if}}
 
-  <form method="POST" action="/registro">
+  <form method="POST" action="/registro/humana">
+    <h3>Datos personales</h3>
     <p>
       <label>Nombre</label><br>
       <input type="text" name="nombre" value="{{nombre}}" required>
@@ -26,12 +27,11 @@
     </p>
     <p>
       <label>Edad</label><br>
-      <input type="number" name="edad" value="{{edad}}">
+      <input type="number" name="edad" value="{{edad}}" min="1" required>
     </p>
     <p>
       <label>Número de documento</label><br>
-      <input type="text" name="numeroDeDocumento" value="{{numeroDeDocumento}}"
-             inputmode="numeric" pattern="[0-9]{7,8}" title="7 u 8 dígitos" required>
+      <input type="text" name="numeroDeDocumento" value="{{numeroDeDocumento}}" inputmode="numeric" required>
     </p>
     <p>
       <label>Género</label><br>
@@ -66,14 +66,16 @@
       {{/each}}
     </p>
 
+    <h3>Contraseña</h3>
     <p>
       <label>Contraseña (mínimo 8 caracteres)</label><br>
-      <input type="password" name="contrasena" minlength="8" required>
+      <input type="password" name="contrasena" required>
     </p>
     <p>
       <label>Repetir contraseña</label><br>
       <input type="password" name="confirmacion" required>
     </p>
+
     <input type="submit" value="Registrarme">
   </form>
 </body>

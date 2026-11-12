@@ -1,10 +1,10 @@
-package arg.com.utn.donatrack.controllers;
+package arg.com.utn.donatrack.web.controllers;
 
-import arg.com.utn.donatrack.clientes.ClienteUsuarios;
-import arg.com.utn.donatrack.grpc.usuarios.RegistrarDonanteResponse;
-import io.grpc.StatusRuntimeException;
+import arg.com.utn.donatrack.clients.UsuariosClient;
+import arg.com.utn.donatrack.clients.UsuariosClient.RegistroResultado;
 import io.javalin.http.Context;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +14,10 @@ public class RegistroController {
 
   private static final List<String> GENEROS =
       List.of("Femenino", "Masculino", "No binario", "Otro", "Prefiero no decir");
-  private static final String FORMATO_EMAIL = "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$";
 
-  private final ClienteUsuarios usuarios;
+  private final UsuariosClient usuarios;
 
-  public RegistroController(ClienteUsuarios usuarios) {
+  public RegistroController(UsuariosClient usuarios) {
     this.usuarios = usuarios;
   }
 
@@ -26,19 +25,33 @@ public class RegistroController {
     ctx.render("registro-humana.html.hbs", modelo(ctx, List.of()));
   }
 
+  // Acá solo se valida lo que es de la pantalla (números y contraseña repetida);
+  // el resto de las reglas las valida el back y su mensaje se muestra tal cual.
   public void crearPersonaHumana(Context ctx) {
-    List<String> errores = validar(ctx);
+    Integer edad = aEntero(texto(ctx, "edad"));
+    Integer documento = aEntero(texto(ctx, "numeroDeDocumento"));
+
+    List<String> errores = new ArrayList<>();
+    if (edad == null) {
+      errores.add("La edad tiene que ser un número.");
+    }
+    if (documento == null) {
+      errores.add("El número de documento tiene que ser un número.");
+    }
+    if (!campo(ctx, "contrasena").equals(campo(ctx, "confirmacion"))) {
+      errores.add("Las contraseñas no coinciden.");
+    }
     if (!errores.isEmpty()) {
       ctx.status(400).render("registro-humana.html.hbs", modelo(ctx, errores));
       return;
     }
 
     try {
-      RegistrarDonanteResponse respuesta = usuarios.registrarDonante(
+      RegistroResultado resultado = usuarios.registrarPersonaHumana(
           texto(ctx, "nombre"),
           texto(ctx, "apellido"),
-          entero(texto(ctx, "edad")),
-          entero(texto(ctx, "numeroDeDocumento")),
+          edad,
+          documento,
           texto(ctx, "genero"),
           texto(ctx, "direccion"),
           texto(ctx, "email"),
@@ -47,46 +60,18 @@ public class RegistroController {
           texto(ctx, "predeterminado"),
           campo(ctx, "contrasena"));
 
-      if (respuesta.getOk()) {
-        ctx.redirect("/login");
+      if (resultado.ok()) {
+        ctx.redirect("/registro/exito");
       } else {
-        ctx.status(400).render("registro-humana.html.hbs", modelo(ctx, List.of(respuesta.getError())));
+        ctx.status(400).render("registro-humana.html.hbs", modelo(ctx, List.of(resultado.error())));
       }
-    } catch (StatusRuntimeException e) {
+    } catch (IOException e) {
       ctx.status(503).render("registro-humana.html.hbs",
-          modelo(ctx, List.of("No se pudo conectar con el servicio de donaciones")));
+          modelo(ctx, List.of("No se pudo conectar con el servicio de donaciones.")));
     }
   }
 
-  private List<String> validar(Context ctx) {
-    List<String> errores = new ArrayList<>();
-
-    if (texto(ctx, "nombre").isBlank()) {
-      errores.add("El nombre es obligatorio.");
-    }
-    if (texto(ctx, "apellido").isBlank()) {
-      errores.add("El apellido es obligatorio.");
-    }
-    if (!texto(ctx, "numeroDeDocumento").matches("\\d{7,8}")) {
-      errores.add("El número de documento debe tener 7 u 8 dígitos.");
-    }
-    if (texto(ctx, "direccion").isBlank()) {
-      errores.add("La dirección es obligatoria.");
-    }
-    if (!texto(ctx, "email").matches(FORMATO_EMAIL)) {
-      errores.add("El correo electrónico no tiene un formato válido.");
-    }
-    if (campo(ctx, "contrasena").length() < 8) {
-      errores.add("La contraseña debe tener al menos 8 caracteres.");
-    }
-    if (!campo(ctx, "contrasena").equals(campo(ctx, "confirmacion"))) {
-      errores.add("Las contraseñas no coinciden.");
-    }
-
-    return errores;
-  }
-
-  // Lo que se le vuelve a mostrar a la persona: errores y lo que ya había escrito (sin contraseñas)
+  // Lo que se le muestra a la persona: errores y lo que ya había escrito (nunca las contraseñas)
   private Map<String, Object> modelo(Context ctx, List<String> errores) {
     Map<String, Object> modelo = new HashMap<>();
     modelo.put("errores", errores);
@@ -111,19 +96,20 @@ public class RegistroController {
     return opciones;
   }
 
+  // Si todavía no eligió ninguno, el predeterminado es el email
   private List<Map<String, Object>> medios(String elegido) {
     String actual = elegido.isBlank() ? "EMAIL" : elegido;
     return List.of(
-        opcionMedio("EMAIL", "Email", actual),
-        opcionMedio("TELEFONO", "Teléfono", actual),
-        opcionMedio("WHATSAPP", "WhatsApp", actual));
+        medio("EMAIL", "Email", actual),
+        medio("TELEFONO", "Teléfono", actual),
+        medio("WHATSAPP", "WhatsApp", actual));
   }
 
-  private Map<String, Object> opcionMedio(String codigo, String etiqueta, String actual) {
+  private Map<String, Object> medio(String codigo, String etiqueta, String actual) {
     return Map.of("codigo", codigo, "etiqueta", etiqueta, "seleccionado", codigo.equals(actual));
   }
 
-  // Valor tal cual llegó (para contraseñas, que no se recortan)
+  // Valor tal cual llegó (para las contraseñas, que no se recortan)
   private String campo(Context ctx, String nombre) {
     String valor = ctx.formParam(nombre);
     return valor == null ? "" : valor;
@@ -134,11 +120,12 @@ public class RegistroController {
     return campo(ctx, nombre).trim();
   }
 
-  private int entero(String texto) {
+  // null si no es un número válido
+  private Integer aEntero(String texto) {
     try {
       return Integer.parseInt(texto);
     } catch (NumberFormatException e) {
-      return 0;
+      return null;
     }
   }
 }

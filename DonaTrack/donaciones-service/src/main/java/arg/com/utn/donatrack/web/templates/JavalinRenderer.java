@@ -1,4 +1,4 @@
-package arg.com.utn.donatrack.templates;
+package arg.com.utn.donatrack.web.templates;
 
 import io.javalin.http.Context;
 import io.javalin.rendering.FileRenderer;

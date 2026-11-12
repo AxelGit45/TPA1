@@ -6,7 +6,13 @@
 </head>
 <body>
   <h1>DonaTrack</h1>
-  <p>Sesión iniciada. Rol: {{rol}} (usuario n° {{id}})</p>
+  <p>Sesión iniciada. {{texto}} (rol: {{rol}}, n° {{id}})</p>
+
+  {{#if variosPerfiles}}
+    <form method="POST" action="/cambiar-perfil">
+      <input type="submit" value="Cambiar perfil">
+    </form>
+  {{/if}}
 
   <form method="POST" action="/logout">
     <input type="submit" value="Cerrar sesión">

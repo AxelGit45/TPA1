@@ -1,4 +1,4 @@
-package arg.com.utn.donatrack.controllers;
+package arg.com.utn.donatrack.web.controllers;
 
 import io.javalin.http.Context;
 import java.util.Map;
