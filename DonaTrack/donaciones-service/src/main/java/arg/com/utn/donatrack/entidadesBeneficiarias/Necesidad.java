@@ -58,4 +58,8 @@ public abstract class Necesidad {
     return satisfecha;
   }
 
+  public Subcategoria getSubcategoria() {
+    return necesidad;
+  }
+
 }

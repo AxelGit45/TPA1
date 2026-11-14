@@ -73,4 +73,15 @@ public class Entregada extends EstadoDonacion {
     throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");
   }
 
+  @javax.persistence.ManyToOne
+  @javax.persistence.JoinColumn(name = "entidad_beneficiaria_id")
+  private EntidadBeneficiaria entidadBeneficiaria;
+
+  public EntidadBeneficiaria getEntidadBeneficiaria() {
+    return entidadBeneficiaria;
+  }
+  public void setEntidadBeneficiaria(EntidadBeneficiaria entidad) {
+    this.entidadBeneficiaria = entidad;
+  }
+
 }

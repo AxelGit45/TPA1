@@ -35,7 +35,7 @@
 
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
             <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/donaciones_db"/>
-            <property name="hibernate.connection.username" value="donatrack"/>
+            <property name="hibernate.connection.username" value="postgres"/>
             <property name="hibernate.connection.password" value="donatrack"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 

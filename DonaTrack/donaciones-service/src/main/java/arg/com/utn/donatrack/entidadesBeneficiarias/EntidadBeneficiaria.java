@@ -29,6 +29,8 @@ public class EntidadBeneficiaria {
   private Long id;
   private String razonSocial;
   private String direccion;
+  private Double latitud;
+  private Double longitud;
   private Long usuarioId;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -102,5 +104,10 @@ public class EntidadBeneficiaria {
 
   public Long getUsuarioId() { return usuarioId; }
   public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
+
+  public Double getLatitud() { return latitud; }
+  public void setLatitud(Double latitud) { this.latitud = latitud; }
+  public Double getLongitud() { return longitud; }
+  public void setLongitud(Double longitud) { this.longitud = longitud; }
 
 }

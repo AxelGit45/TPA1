@@ -2,7 +2,7 @@ package arg.com.utn.donatrack;
 
 import arg.com.utn.donatrack.clients.UsuariosClient;
 import arg.com.utn.donatrack.persistencia.Persistencia;
-import arg.com.utn.donatrack.web.controllers.RegistroController;
+import arg.com.utn.donatrack.web.controllers.*;
 import arg.com.utn.donatrack.web.templates.JavalinHandlebars;
 import arg.com.utn.donatrack.web.templates.JavalinRenderer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +26,6 @@ public class Main {
   public static final int PUERTO_WEB = 9000;
 
   public static void main(String[] args) {
-    // Conecta con Postgres al arrancar (si la base no está corriendo, falla acá y no a mitad de un registro)
     Persistencia.factory();
 
     HttpServer back = levantarBack();
@@ -38,11 +37,9 @@ public class Main {
     }));
   }
 
-  // Back: API REST con Jersey (acá viven los endpoints que le pegan a la base)
   private static HttpServer levantarBack() {
     final ResourceConfig config = new ResourceConfig();
 
-    // Jersey va a escanear este paquete buscando clases con @Path
     config.packages("arg.com.utn.donatrack.apis");
     config.register(JacksonFeature.class);
 
@@ -60,7 +57,6 @@ public class Main {
     return server;
   }
 
-  // Web: Javalin, le pega al back por HTTP
   private static Javalin levantarWeb() {
     JavalinRenderer renderer = new JavalinRenderer()
         .register("hbs", new JavalinHandlebars());
@@ -78,12 +74,46 @@ public class Main {
 
     UsuariosClient usuariosClient = new UsuariosClient(URL_BACK);
     RegistroController registro = new RegistroController(usuariosClient);
+    HomeController home = new HomeController();
+    SessionController session = new SessionController();
+    DonanteController donante = new DonanteController();
+    EntidadController entidad = new EntidadController();
+    LandingController landing = new LandingController();
 
-    app.get("/", ctx -> ctx.render("landing.html.hbs", Map.of()));
+    // Rutas públicas
+    app.get("/", home::index);
+    app.get("/mapa-entregas", home::mostrarMapaEntregas);
+    app.get("/legal", home::mostrarLegal);
 
+    // Login y Logout
+    app.get("/login", session::mostrarLogin);
+    app.post("/login", session::crearSesion);
+    app.post("/logout", session::cerrarSesion);
+    app.get("/logout", session::cerrarSesion);
+
+    // Registros
     app.get("/registro/humana", registro::mostrarFormularioHumana);
     app.post("/registro/humana", registro::crearPersonaHumana);
     app.get("/registro/exito", ctx -> ctx.render("registro-exitoso.html.hbs", Map.of()));
+
+    // Landings por rol
+    app.get("/donante", landing::mostrar);
+    app.get("/entidad", landing::mostrar);
+    app.get("/admin", landing::mostrar);
+
+    // Rutas Donante
+    app.get("/donante/donaciones", donante::listarDonaciones);
+    app.get("/donante/entidades", donante::listarEntidades);
+    app.get("/donante/seguimiento", donante::seguirEntregas);
+
+    // Rutas Entidad
+    app.get("/entidad/necesidades/nueva", entidad::mostrarFormularioNecesidad);
+    app.post("/entidad/necesidades", entidad::guardarNecesidad);
+    app.get("/entidad/donaciones", entidad::listarDonacionesAsignadas);
+    app.get("/entidad/confirmar/{id}", entidad::mostrarFormularioConfirmacion);
+    app.post("/entidad/confirmar/{id}", entidad::confirmarRecepcion);
+    app.get("/entidad/notificaciones", entidad::listarNotificaciones);
+    app.get("/entidad/seguimiento", entidad::seguirEntregas);
 
     System.out.println("[DONACIONES-SERVICE] Web (Javalin) levantada en http://localhost:" + PUERTO_WEB);
     return app;
