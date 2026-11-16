@@ -1,6 +1,7 @@
 package arg.com.utn.donatrack.personas;
 
 import arg.com.utn.donatrack.personas.contactos.Contacto;
+import arg.com.utn.donatrack.usuarios.Usuario;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Persona")
-public abstract class Persona {
+public abstract class Persona extends Usuario {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -73,12 +73,11 @@ public class Main {
     });
 
     UsuariosClient usuariosClient = new UsuariosClient(URL_BACK);
-    RegistroController registro = new RegistroController(usuariosClient);
     HomeController home = new HomeController();
-    SessionController session = new SessionController();
     DonanteController donante = new DonanteController();
     EntidadController entidad = new EntidadController();
     LandingController landing = new LandingController();
+    AdminController admin = new AdminController();
 
     // Rutas públicas
     app.get("/", home::index);
@@ -86,14 +85,8 @@ public class Main {
     app.get("/legal", home::mostrarLegal);
 
     // Login y Logout
-    app.get("/login", session::mostrarLogin);
-    app.post("/login", session::crearSesion);
-    app.post("/logout", session::cerrarSesion);
-    app.get("/logout", session::cerrarSesion);
 
     // Registros
-    app.get("/registro/humana", registro::mostrarFormularioHumana);
-    app.post("/registro/humana", registro::crearPersonaHumana);
     app.get("/registro/exito", ctx -> ctx.render("registro-exitoso.html.hbs", Map.of()));
 
     // Landings por rol
@@ -114,6 +107,12 @@ public class Main {
     app.post("/entidad/confirmar/{id}", entidad::confirmarRecepcion);
     app.get("/entidad/notificaciones", entidad::listarNotificaciones);
     app.get("/entidad/seguimiento", entidad::seguirEntregas);
+
+    app.get("/admin/recepcion", admin::mostrarRecepcion);
+    app.get("/admin/vencidas", admin::mostrarVencidas);
+    app.get("/admin/matchmaking", admin::mostrarMatchmaking);
+    app.get("/admin/camiones", admin::mostrarCamiones);
+    app.get("/admin/importar-csv", admin::mostrarImportarCsv);
 
     System.out.println("[DONACIONES-SERVICE] Web (Javalin) levantada en http://localhost:" + PUERTO_WEB);
     return app;

@@ -27,7 +27,12 @@ public class EnDeposito extends EstadoDonacion{
 
       ResultadoMatchmaking ranking = new ResultadoMatchmaking(donacion, resultadosDeAlgoritmos);
 
-      componenteExterno.obtenerResultadoDeAlgoritmosPorDonacion(ranking);
+    //EntidadBeneficiaria entidad = componenteExterno.obtenerResultadoDeAlgoritmosPorDonacion(ranking);
+                        // Entidad/ NULL
+    //Si hay concincidencias con la entiad
+    // MostrarAlAdmin(entidad, Donacion)
+    //Si no hay
+    //MostrarAlAdmin(ranking, Donacion)
   }
 
   @Override

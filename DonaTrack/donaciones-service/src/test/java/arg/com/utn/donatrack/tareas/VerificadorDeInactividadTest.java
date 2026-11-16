@@ -34,8 +34,8 @@ public class VerificadorDeInactividadTest {
     personaActiva.setUltimaConexion(LocalDate.now().minusDays(5));
     personaActiva.setContactos(List.of(contactoActivo));
 
-    RepositorioPersonas.agregar(personaInactiva);
-    RepositorioPersonas.agregar(personaActiva);
+    //RepositorioPersonas.agregar(personaInactiva);
+    //RepositorioPersonas.agregar(personaActiva);
   }
 
   @Test

@@ -8,8 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="logistica-service" />
         <module name="donaciones-service" />
-        <module name="cliente-web" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cliente-web" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
