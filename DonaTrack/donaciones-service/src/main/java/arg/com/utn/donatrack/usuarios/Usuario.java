@@ -1,6 +1,8 @@
 package arg.com.utn.donatrack.usuarios;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ public class Usuario {
   private Long id;
   private String email;
   private String contrasenia;
+  @Enumerated(EnumType.STRING)
   private Rol rol;
 
   public Usuario() {

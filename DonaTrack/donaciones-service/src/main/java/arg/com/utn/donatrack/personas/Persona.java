@@ -20,7 +20,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "Persona")
-public abstract class Persona extends Usuario {
+public abstract class Persona {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
