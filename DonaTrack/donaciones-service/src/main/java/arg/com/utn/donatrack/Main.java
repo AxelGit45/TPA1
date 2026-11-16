@@ -41,6 +41,9 @@ public class Main {
     EntidadController entidad = new EntidadController();
     LandingController landing = new LandingController();
     AdminController admin = new AdminController();
+    RegistroController registro = new RegistroController();
+
+    app.get("/registro", registro::index);
 
     // Rutas públicas
     app.get("/", home::index);

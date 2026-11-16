@@ -1,7 +1,6 @@
 package arg.com.utn.donatrack.personas;
 
 import arg.com.utn.donatrack.personas.contactos.Contacto;
-import arg.com.utn.donatrack.usuarios.Usuario;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
