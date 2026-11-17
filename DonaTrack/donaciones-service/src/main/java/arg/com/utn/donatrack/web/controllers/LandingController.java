@@ -7,7 +7,7 @@ import java.util.Map;
 public class LandingController {
 
   public void mostrar(Context ctx) {
-    Long id = ctx.sessionAttribute("user_id");
+    Long id = ctx.sessionAttribute("usuarioId");
     String rol = ctx.sessionAttribute("rol");
 
     if (id == null) {

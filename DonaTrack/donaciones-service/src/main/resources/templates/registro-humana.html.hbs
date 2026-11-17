@@ -36,17 +36,16 @@
                inputmode="numeric" required>
         <p class="ayuda">Solo números, sin puntos.</p>
       </div>
-    <div class="campo">
-          <label for="genero">Género</label>
-          <select id="genero" name="genero" required>
-            <option value="Femenino">Femenino</option>
-            <option value="Masculino">Masculino</option>
-            <option value="No binario">No binario</option>
-            <option value="Otro">Otro</option>
-            <option value="Prefiero no decir">Prefiero no decir</option>
-          </select>
+      <div class="campo">
+        <label for="genero">Género</label>
+        <select id="genero" name="genero" required>
+          <option value="Femenino">Femenino</option>
+          <option value="Masculino">Masculino</option>
+          <option value="No binario">No binario</option>
+          <option value="Otro">Otro</option>
+          <option value="Prefiero no decir">Prefiero no decir</option>
+        </select>
       </div>
-
       <div class="campo">
         <label for="direccion">Dirección</label>
         <input type="text" id="direccion" name="direccion" value="{{direccion}}" autocomplete="street-address" required>
@@ -70,12 +69,9 @@
       </div>
       <fieldset>
         <legend>¿Por dónde querés recibir las notificaciones?</legend>
-        {{#each medios}}
-          <label>
-            <input type="radio" name="predeterminado" value="{{codigo}}" {{#if seleccionado}}checked{{/if}}>
-            {{etiqueta}}
-          </label><br>
-        {{/each}}
+        <label><input type="radio" name="predeterminado" value="EMAIL" checked> Email</label><br>
+        <label><input type="radio" name="predeterminado" value="TELEFONO"> Teléfono</label><br>
+        <label><input type="radio" name="predeterminado" value="WHATSAPP"> WhatsApp</label><br>
         <p class="ayuda">Si elegís un medio que no cargaste, te avisamos por email.</p>
       </fieldset>
     </fieldset>
@@ -84,12 +80,14 @@
       <legend>Contraseña</legend>
       <div class="campo">
         <label for="contrasenia">Contraseña</label>
-        <input type="password" id="contrasenia" name="contrasenia" minlength="8" autocomplete="new-password" required>
-        <p class="ayuda">Mínimo 8 caracteres.</p>
+        <input type="password" id="contrasenia" name="contrasenia" minlength="8" pattern="\S+"
+               title="Sin espacios" autocomplete="new-password" required>
+        <p class="ayuda">Mínimo 8 caracteres, sin espacios.</p>
       </div>
       <div class="campo">
         <label for="confirmacion">Repetir contraseña</label>
-        <input type="password" id="confirmacion" name="confirmacion" minlength="8" autocomplete="new-password" required>
+        <input type="password" id="confirmacion" name="confirmacion" minlength="8" pattern="\S+"
+               title="Sin espacios" autocomplete="new-password" required>
       </div>
     </fieldset>
 

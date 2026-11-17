@@ -48,7 +48,7 @@ public class EntidadController {
     try {
       em.getTransaction().begin();
 
-      Long usuarioId = ctx.sessionAttribute("user_id");
+      Long usuarioId = ctx.sessionAttribute("usuarioId");
       EntidadBeneficiaria entidad = null;
       if (usuarioId != null) {
         entidad = repoEntidades.buscarPorUsuarioId(em, usuarioId);
@@ -163,7 +163,7 @@ public class EntidadController {
         return;
       }
 
-      Long usuarioId = ctx.sessionAttribute("user_id");
+      Long usuarioId = ctx.sessionAttribute("usuarioId");
       EntidadBeneficiaria entidad = null;
       if (usuarioId != null) {
         entidad = repoEntidades.buscarPorUsuarioId(em, usuarioId);

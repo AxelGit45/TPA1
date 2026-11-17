@@ -42,21 +42,28 @@ public class Main {
     LandingController landing = new LandingController();
     AdminController admin = new AdminController();
     RegistroController registro = new RegistroController();
+    SessionController sesion = new SessionController();
 
-    app.get("/registro", registro::registroJuridica);
+    //Registros
+    app.get("/registro/juridica", registro::registroJuridica);
+    app.post("/registro/juridica", registro::crearPersonaJuridica);
     app.get("/registro/entidad", registro::registroEntidad);
     app.post("/registro/entidad", registro::crearEntidadBeneficiaria);
     app.get("/registro/humana", registro::registroPersonaHumana);
     app.post("/registro/humana", registro::crearPersonaHumana);
     app.get("/registro/exito", ctx -> ctx.render("exito.html.hbs", Map.of()));
-    app.post("/registro", registro::crearPersonaJuridica);
+    app.get("/registro", ctx -> ctx.render("registro-opciones.html.hbs", Map.of()));
+    //Inicio y cierre de sesion
+    app.get("/login", sesion::mostrarLogin);
+    app.post("/login", sesion::iniciarSesion);
+    app.post("/logout", sesion::cerrarSesion);
 
     // Rutas públicas
     app.get("/", home::index);
     app.get("/mapa-entregas", home::mostrarMapaEntregas);
     app.get("/legal", home::mostrarLegal);
 
-    // Login y Logout
+
 
 
     // Landings por rol

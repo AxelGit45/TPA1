@@ -80,7 +80,7 @@ public class RegistroController {
     RepositorioPersonas repositorioPersonas = new RepositorioPersonas();
     repositorioPersonas.guardarPersona(personaJuridica);
 
-    ctx.redirect("/registro/exito");
+    ctx.redirect("/donante/donaciones");
 
   }
 
@@ -127,7 +127,7 @@ public class RegistroController {
     RepositorioEntidadesBeneficiarias repositorioEntidadesBeneficiarias = new RepositorioEntidadesBeneficiarias();
     repositorioEntidadesBeneficiarias.guardarEntidad(entidadBeneficiaria);
 
-    ctx.redirect("/registro/exito");
+    ctx.redirect("/entidad/donaciones");
 
   }
 
@@ -155,7 +155,8 @@ public class RegistroController {
     if (nombre.isEmpty()) {errores.add("El campo 'Nombre' es obligatorio.");}
     if (apellido.isEmpty()) {errores.add("El campo 'Apellido' es obligatorio.");}
     if (edad == null || edad <= 0) {errores.add("El campo 'Edad' es obligatorio y debe ser un número positivo.");}
-
+    if (predeterminado.equals("TELEFONO") && telefono.isEmpty()) {errores.add("Elegiste el teléfono como medio de contacto pero no cargaste ningún teléfono.");}
+    if (predeterminado.equals("WHATSAPP") && whatsapp.isEmpty()) {errores.add("Elegiste WhatsApp como medio de contacto pero no cargaste ningún número de WhatsApp.");}
 
     if (direccion.isEmpty()) {errores.add("El campo 'Dirección' es obligatorio.");}
 
@@ -204,18 +205,18 @@ public class RegistroController {
 
     RepositorioPersonas repositorioPersonas = new RepositorioPersonas();
     PersonaHumana personaHumana = new PersonaHumana(nombre, apellido, edad, documento, genero, direccion, new ArrayList<>(), contactoPredeterminado);
-    if (telefono != null && !telefono.isEmpty()) {
-      personaHumana.getContactos().add(tel);
+    personaHumana.agregarContacto(mail);
+    if (tel != null) {
+      personaHumana.agregarContacto(tel);
     }
-    if (whatsapp != null && !whatsapp.isEmpty()) {
-      personaHumana.getContactos().add(whatsApp);
+    if (whatsApp != null) {
+      personaHumana.agregarContacto(whatsApp);
     }
-    personaHumana.getContactos().add(mail);
     personaHumana.setUsuarioId(usuario.getId());
 
     repositorioPersonas.guardarPersona(personaHumana);
 
-    ctx.redirect("/registro/exito");
+    ctx.redirect("/donante/donaciones");
 
   }
 
