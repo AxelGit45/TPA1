@@ -44,4 +44,5 @@ public abstract class Contacto {
   public void setPersona(Persona persona) {
     this.persona = persona;
   }
+
 }

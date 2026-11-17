@@ -1,18 +1,24 @@
 package arg.com.utn.donatrack.repositorios;
 
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.persistencia.Persistencia;
+import arg.com.utn.donatrack.usuarios.Usuario;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class RepositorioEntidadesBeneficiarias {
 
-  public void guardar(EntityManager em, EntidadBeneficiaria entidad) {
-    if (entidad.getId() == null) {
-      em.persist(entidad);
-    } else {
-      em.merge(entidad);
-    }
+  private EntityManager entityManager; // = Persistencia.crearEntityManager();
+
+  public RepositorioEntidadesBeneficiarias() {
+    this.entityManager = Persistencia.crearEntityManager();
+  }
+
+  public void guardarEntidad(EntidadBeneficiaria entidad) {
+    entityManager.getTransaction().begin();
+    entityManager.persist(entidad);
+    entityManager.getTransaction().commit();
   }
 
   public EntidadBeneficiaria buscarPorId(EntityManager em, Long id) {

@@ -70,6 +70,14 @@ public class EntidadBeneficiaria {
     this.peticionesEntregadas = new ArrayList<>();
   }
 
+  public EntidadBeneficiaria(String razonSocial, String direccion, List<Contacto> contactos){
+    this.razonSocial = razonSocial;
+    this.direccion = direccion;
+    this.contactos = contactos;
+    this.peticionesEntregadas = new ArrayList<>();
+  }
+
+
   public List<Necesidad> getNecesidades(){
     return necesidades;
   }
@@ -93,6 +101,8 @@ public class EntidadBeneficiaria {
   public void cargarFotosDeEntrega() {
     // TODO
   }
+
+
 
   public List<Contacto> getContactos() { return contactos; }
   public void setContactos(List<Contacto> contactos) { this.contactos = contactos; }

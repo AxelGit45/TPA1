@@ -43,9 +43,13 @@ public class Main {
     AdminController admin = new AdminController();
     RegistroController registro = new RegistroController();
 
-    app.get("/registro", registro::index);
+    app.get("/registro", registro::registroJuridica);
+    app.get("/registro/entidad", registro::registroEntidad);
+    app.post("/registro/entidad", registro::crearEntidadBeneficiaria);
+    app.get("/registro/humana", registro::registroPersonaHumana);
+    app.post("/registro/humana", registro::crearPersonaHumana);
     app.get("/registro/exito", ctx -> ctx.render("exito.html.hbs", Map.of()));
-    app.post("/registro", registro::crearUsuario);
+    app.post("/registro", registro::crearPersonaJuridica);
 
     // Rutas públicas
     app.get("/", home::index);

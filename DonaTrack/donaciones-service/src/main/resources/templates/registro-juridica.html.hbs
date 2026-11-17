@@ -1,51 +1,66 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Registro de persona jurídica - DonaTrack</title>
-</head>
-<body>
+{{> partials/header}}
+
+<div class="formulario">
+  <p><a href="/registro">&larr; Volver</a></p>
   <h1>Registro de persona jurídica donante</h1>
 
   {{#if errores}}
-    <ul style="color: red;">
-      {{#each errores}}
-        <li>{{this}}</li>
-      {{/each}}
-    </ul>
+    <div role="alert" style="color: red;">
+      <p>Revisá estos datos:</p>
+      <ul>
+        {{#each errores}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
   {{/if}}
 
-  <form method="POST" action="/registro/juridica">
-    <p>
-      <label>Razón social</label><br>
-      <input type="text" name="razonSocial" value="{{razonSocial}}" required>
-    </p>
-    <div class="campo">
-                <label for="tipoRazonSocial">Tipo de organización</label>
-                <select id="tipoRazonSocial" name="tipoRazonSocial" required>
-                  <option value="GUBERNAMENTAL">Gubernamental</option>
-                  <option value="ONG">ONG</option>
-                  <option value="EMPRESA">Empresa</option>
-                  <option value="INSTITUCION">Institución</option>
-                </select>
-              </div>
-    <p>
-      <label>Rubro</label><br>
-      <input type="text" name="rubro" value="{{rubro}}" required>
-    </p>
-    <p>
-      <label>Email institucional</label><br>
-      <input type="email" name="email" value="{{email}}" required>
-    </p>
-    <p>
-      <label>Contraseña (mínimo 8 caracteres)</label><br>
-      <input type="password" name="contrasena" minlength="8" required>
-    </p>
-    <p>
-      <label>Repetir contraseña</label><br>
-      <input type="password" name="confirmacion" required>
-    </p>
-    <input type="submit" value="Registrar organización">
+  <form method="POST" action="/registro">
+    <fieldset>
+      <legend>Datos de la organización</legend>
+      <div class="campo">
+        <label for="razonSocial">Razón social</label>
+        <input type="text" id="razonSocial" name="razonSocial" value="{{razonSocial}}" autocomplete="organization" required>
+      </div>
+      <div class="campo">
+        <label for="tipoRazonSocial">Tipo de organización</label>
+        <select id="tipoRazonSocial" name="tipoRazonSocial" required>
+          <option value="GUBERNAMENTAL">Gubernamental</option>
+          <option value="ONG">ONG</option>
+          <option value="EMPRESA">Empresa</option>
+          <option value="INSTITUCION">Institución</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="rubro">Rubro</label>
+        <input type="text" id="rubro" name="rubro" value="{{rubro}}" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Cuenta de la organización</legend>
+      <div class="campo">
+        <label for="email">Email institucional</label>
+        <input type="email" id="email" name="email" value="{{email}}" autocomplete="email" required>
+        <p class="ayuda">Es el medio de contacto de la organización y el que usa para iniciar sesión.</p>
+      </div>
+      <div class="campo">
+        <label for="contrasenia">Contraseña</label>
+        <input type="password" id="contrasenia" name="contrasenia" minlength="8" pattern="\S+"
+               title="Sin espacios" autocomplete="new-password" required>
+        <p class="ayuda">Mínimo 8 caracteres, sin espacios.</p>
+      </div>
+      <div class="campo">
+        <label for="confirmacion">Repetir contraseña</label>
+        <input type="password" id="confirmacion" name="confirmacion" minlength="8" pattern="\S+"
+               title="Sin espacios" autocomplete="new-password" required>
+      </div>
+    </fieldset>
+
+    <button type="submit">Registrar organización</button>
   </form>
-</body>
-</html>
+
+  <p>¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a></p>
+</div>
+
+{{> partials/footer}}

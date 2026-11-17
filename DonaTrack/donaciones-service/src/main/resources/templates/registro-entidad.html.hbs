@@ -1,0 +1,59 @@
+{{> partials/header}}
+
+<div class="formulario">
+  <p><a href="/registro">&larr; Volver</a></p>
+  <h1>Registro de entidad beneficiaria</h1>
+
+  {{#if errores}}
+    <div role="alert" style="color: red;">
+      <p>Revisá estos datos:</p>
+      <ul>
+        {{#each errores}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+
+  <form method="POST" action="/registro/entidad">
+    <fieldset>
+      <legend>Datos de la entidad</legend>
+      <div class="campo">
+        <label for="razonSocial">Razón social</label>
+        <input type="text" id="razonSocial" name="razonSocial" value="{{razonSocial}}" autocomplete="organization" required>
+      </div>
+      <div class="campo">
+        <label for="direccion">Dirección completa</label>
+        <input type="text" id="direccion" name="direccion" value="{{direccion}}" autocomplete="street-address" required>
+        <p class="ayuda">Calle, número y localidad. Es donde se van a entregar las donaciones.</p>
+      </div>
+      <div class="campo">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" id="telefono" name="telefono" value="{{telefono}}" autocomplete="tel" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Cuenta de la entidad</legend>
+      <div class="campo">
+        <label for="email">Email institucional</label>
+        <input type="email" id="email" name="email" value="{{email}}" autocomplete="email" required>
+        <p class="ayuda">Es el medio de contacto de la entidad y el que usa para iniciar sesión.</p>
+      </div>
+      <div class="campo">
+        <label for="contrasenia">Contraseña</label>
+        <input type="password" id="contrasenia" name="contrasenia" minlength="8" autocomplete="new-password" required>
+        <p class="ayuda">Mínimo 8 caracteres.</p>
+      </div>
+      <div class="campo">
+        <label for="confirmacion">Repetir contraseña</label>
+        <input type="password" id="confirmacion" name="confirmacion" minlength="8" autocomplete="new-password" required>
+      </div>
+    </fieldset>
+
+    <button type="submit">Registrar entidad</button>
+  </form>
+
+</div>
+
+{{> partials/footer}}
