@@ -1,5 +1,5 @@
 package arg.com.utn.donatrack.dtos;
-
+/*
 public class CamionDTO {
     private Long id;
     private String patente;
@@ -29,3 +29,4 @@ public class CamionDTO {
     public void setLatitud(Double latitud) { this.latitud = latitud; }
     public void setLongitud(Double longitud) { this.longitud = longitud; }
 }
+*/

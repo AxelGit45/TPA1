@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.apis;
 
 import arg.com.utn.donatrack.logistica.Camion;
@@ -497,3 +498,4 @@ public class LogisticaAPI {
     return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).build();
   }
 }
+*/

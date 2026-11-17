@@ -1,5 +1,5 @@
 package arg.com.utn.donatrack.apis;
-
+/*
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.estados.*;
@@ -24,11 +24,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-
+*/
 /* CRUD PARA DONACIONES
 Al todavía no tener persistencia, se mockea guardando en memoria
 * */
-@Path("/donaciones")
+/*@Path("/donaciones")
 public class DonacionesApi {
 
   private static final List<Donacion> donaciones = new ArrayList<>();
@@ -216,7 +216,7 @@ public class DonacionesApi {
     public Long entregaId;
     public String justificacion;
   }
-}
+}*/
 
 /*
   Ejemplos para probar todas las rutas (Postman)

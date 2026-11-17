@@ -1,5 +1,5 @@
 package arg.com.utn.donatrack.tareas;
-
+/*
 import arg.com.utn.donatrack.apis.DonacionesApi;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
@@ -38,7 +38,7 @@ public class AsignadorDeEntidadesParaDonaciones {
         }
     }
 }
-
+*/
 /*
 public class AsignadorDeEntidadesParaDonaciones {
 

@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.dtos;
 
 import java.util.List;
@@ -23,3 +24,4 @@ public class DonacionDTO {
     public void setEstado(String estado) { this.estado = estado; }
     public void setDonadores(List<PersonaDTO> donadores) { this.donadores = donadores; }
 }
+*/

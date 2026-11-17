@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.apis;
 
 import jakarta.ws.rs.GET;
@@ -22,3 +23,4 @@ public class HealthCheck {
     return status;
   }
 }
+*/

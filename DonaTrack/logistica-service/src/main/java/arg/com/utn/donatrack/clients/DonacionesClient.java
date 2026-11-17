@@ -1,4 +1,6 @@
+/*
 package arg.com.utn.donatrack.clients;
+
 
 import arg.com.utn.donatrack.dtos.*;
 
@@ -211,3 +213,4 @@ public class DonacionesClient {
         return json.substring(start, end);
     }
 }
+*/

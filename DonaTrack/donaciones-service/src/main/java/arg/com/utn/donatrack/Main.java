@@ -29,7 +29,7 @@ public class Main {
       config.fileRenderer(renderer);
       config.staticFiles.add("/public");
     }).start(PUERTO_WEB);
-
+//------------fin-inicio-server---------------
     app.exception(ForbiddenResponse.class, (e, ctx) -> {
       ctx.status(403)
           .contentType("text/plain; charset=utf-8")
@@ -44,6 +44,8 @@ public class Main {
     RegistroController registro = new RegistroController();
 
     app.get("/registro", registro::index);
+    app.get("/registro/exito", ctx -> ctx.render("exito.html.hbs", Map.of()));
+    app.post("/registro", registro::crearUsuario);
 
     // Rutas públicas
     app.get("/", home::index);
@@ -52,8 +54,6 @@ public class Main {
 
     // Login y Logout
 
-    // Registros
-    app.get("/registro/exito", ctx -> ctx.render("registro-exitoso.html.hbs", Map.of()));
 
     // Landings por rol
     app.get("/donante", landing::mostrar);

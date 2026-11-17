@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.apis;
 
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
@@ -21,11 +22,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+*/
 
 /* CRUD PARA ENTIDADES BENEFICIARIAS
 Al todavía no tener persistencia, se mockea guardando en memoria
 * */
-@Path("/entidades")
+/*@Path("/entidades")
 public class EntidadesApi {
 
   private static final List<EntidadBeneficiaria> entidades = new ArrayList<>();

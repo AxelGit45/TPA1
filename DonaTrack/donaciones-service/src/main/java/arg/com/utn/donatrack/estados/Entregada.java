@@ -1,9 +1,9 @@
 package arg.com.utn.donatrack.estados;
 
-import arg.com.utn.donatrack.clients.LogisticaClient;
+//import arg.com.utn.donatrack.clients.LogisticaClient;
 import arg.com.utn.donatrack.donaciones.Donacion;
-import arg.com.utn.donatrack.dtos.CamionDTO;
-import arg.com.utn.donatrack.dtos.EntregaDTO;
+//import arg.com.utn.donatrack.dtos.CamionDTO;
+//import arg.com.utn.donatrack.dtos.EntregaDTO;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
@@ -33,20 +33,20 @@ public class Entregada extends EstadoDonacion {
 
   @Override
   public void notificar() {
-    LogisticaClient logisticaClient = new LogisticaClient();
+    /*LogisticaClient logisticaClient = new LogisticaClient();
     EntregaDTO entrega = logisticaClient.obtenerEntrega(entregaId);
-    CamionDTO camion = logisticaClient.obtenerCamion(camionId);
+    CamionDTO camion = logisticaClient.obtenerCamion(camionId);*/
 
     LocalDateTime ahora = LocalDateTime.now();
     String fecha = ahora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     String hora = ahora.format(DateTimeFormatter.ofPattern("HH:mm"));
-    String datosCamion = camion != null ? camion.getPatente() : "N/A";
-    String comprobante = "COMPROBANTE DE ENTREGA - Fecha: " + fecha +
-        " | Hora: " + hora + " | Camión: " + datosCamion;
+    //String datosCamion = camion != null ? camion.getPatente() : "N/A";
+    /*String comprobante = "COMPROBANTE DE ENTREGA - Fecha: " + fecha +
+        " | Hora: " + hora + " | Camión: " + datosCamion;*/
 
-    System.out.println("[NOTIFICACIÓN ENTREGA] " + comprobante + " - Los bienes ya están en su establecimiento.");
+    /*System.out.println("[NOTIFICACIÓN ENTREGA] " + comprobante + " - Los bienes ya están en su establecimiento.");
     System.out.println("[NOTIFICACIÓN DONADOR] " + comprobante + " - Su donación ha sido entregada exitosamente.");
-
+*/
 //    for (Contacto c : entrega.getEntidadBeneficiaria().getContactos()) {
 //
 //      c.contactar(comprobante + " - Los bienes ya están en su establecimiento.");

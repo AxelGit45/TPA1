@@ -1,7 +1,7 @@
 package arg.com.utn.donatrack.logistica;
 
-import arg.com.utn.donatrack.clients.DonacionesClient;
-import arg.com.utn.donatrack.dtos.DonacionDTO;
+// import arg.com.utn.donatrack.clients.DonacionesClient;
+// import arg.com.utn.donatrack.dtos.DonacionDTO;
 
 import javax.persistence.*;
 
@@ -52,27 +52,33 @@ public class Entrega {
   public void iniciarTraslado(Long camionId) {
     this.camionId = camionId;
     this.cambiarEstado(EstadoEntrega.ENTRASLADO);
+    /*
     DonacionesClient client = new DonacionesClient();
     for (Long donacionId : donacionIds) {
       client.cambiarEstadoDonacion(donacionId, "EN_TRASLADO", camionId, null, null);
     }
+     */
   }
 
   public void confirmarRecepcionDeEntrega(Long camionId) {
     this.cambiarEstado(EstadoEntrega.ENTREGADA);
+    /*
     DonacionesClient client = new DonacionesClient();
     for (Long donacionId : donacionIds) {
       client.cambiarEstadoDonacion(donacionId, "ENTREGADA", camionId, this.id, null);
     }
+     */
   }
 
   public void informarNoRecepcion(Long camionId) {
     if (this.entregaTardia()) {
       this.cambiarEstado(EstadoEntrega.NORECIBIDA);
+      /*
       DonacionesClient client = new DonacionesClient();
       for (Long donacionId : donacionIds) {
         client.cambiarEstadoDonacion(donacionId, "ENTREGA_FALLIDA", camionId, this.id, null);
       }
+       */
     }
   }
 
@@ -82,7 +88,8 @@ public class Entrega {
   }
 
   public void volverAPendiente() {
-    DonacionesClient client = new DonacionesClient();
+    // DonacionesClient client = new DonacionesClient();
+    /*
     boolean algunaEnDeposito = donacionIds.stream()
         .map(client::obtenerDonacion)
         .filter(d -> d != null)
@@ -90,6 +97,7 @@ public class Entrega {
     if (algunaEnDeposito) {
       this.cambiarEstado(EstadoEntrega.PENDIENTE);
     }
+    */
   }
 
   public String getDireccionEntidadBeneficiaria() { return direccionEntidadBeneficiaria; }

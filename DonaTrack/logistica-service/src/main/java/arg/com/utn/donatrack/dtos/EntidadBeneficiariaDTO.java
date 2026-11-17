@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.dtos;
 
 import java.util.List;
@@ -27,3 +28,4 @@ public class EntidadBeneficiariaDTO {
     public void setDireccion(String direccion) { this.direccion = direccion; }
     public void setContactos(List<ContactoDTO> contactos) { this.contactos = contactos; }
 }
+*/

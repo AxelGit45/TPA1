@@ -6,10 +6,10 @@ import javax.persistence.EntityManager;
 
 public class RepositorioUsuarios {
 
-  private EntityManager entityManager = Persistencia.crearEntityManager();
+  private EntityManager entityManager; // = Persistencia.crearEntityManager();
 
-  public RepositorioUsuarios(EntityManager entityManager) {
-    this.entityManager = entityManager;
+  public RepositorioUsuarios() {
+    this.entityManager = Persistencia.crearEntityManager();
   }
 
   public void guardarUsuario(Usuario usuario) {
@@ -19,9 +19,8 @@ public class RepositorioUsuarios {
   }
 
   public Usuario buscarUsuarioPorEmail(String email) {
-    return entityManager.createQuery("SELECT u FROM usuarios u WHERE u.email = :email", Usuario.class).
+    return entityManager.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class).
             setParameter("email", email)
             .getResultStream().findFirst().orElse(null);
   }
-
 }

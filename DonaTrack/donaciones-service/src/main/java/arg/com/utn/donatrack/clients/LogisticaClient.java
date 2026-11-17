@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.clients;
 
 import arg.com.utn.donatrack.dtos.*;
@@ -121,4 +122,4 @@ public class LogisticaClient {
         if (end == start) return null;
         return Double.parseDouble(json.substring(start, end));
     }
-}
+}*/

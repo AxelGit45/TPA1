@@ -1,5 +1,5 @@
 package arg.com.utn.donatrack.apis;
-
+/*
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -21,4 +21,4 @@ public class HealthCheck {
     status.put("timestamp", Instant.now().toString());
     return status;
   }
-}
+}*/

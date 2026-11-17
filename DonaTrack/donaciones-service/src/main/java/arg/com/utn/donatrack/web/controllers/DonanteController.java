@@ -1,6 +1,6 @@
 package arg.com.utn.donatrack.web.controllers;
 
-import arg.com.utn.donatrack.clients.LogisticaClient;
+// import arg.com.utn.donatrack.clients.LogisticaClient;
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
@@ -18,7 +18,7 @@ public class DonanteController {
 
   private final RepositorioDonaciones repositorioDonaciones = new RepositorioDonaciones();
   private final RepositorioEntidadesBeneficiarias repositorioEntidades = new RepositorioEntidadesBeneficiarias();
-  private final LogisticaClient logisticaClient = new LogisticaClient();
+  // private final LogisticaClient logisticaClient = new LogisticaClient();
 
   public void listarDonaciones(Context ctx) {
 
@@ -126,6 +126,7 @@ public class DonanteController {
         Double lat = null;
         Double lon = null;
         String patente = "Camión #" + (camionId != null ? camionId : "S/A");
+        /*
         if (camionId != null && camionId > 0) {
           arg.com.utn.donatrack.dtos.CamionDTO camion = logisticaClient.obtenerCamion(camionId);
           if (camion != null) {
@@ -136,6 +137,8 @@ public class DonanteController {
             }
           }
         }
+         */
+
         fila.put("patenteCamion", patente);
         fila.put("ultimaActualizacion", d.getEstado() != null && d.getEstado().getFechaDeAsignacion() != null
             ? d.getEstado().getFechaDeAsignacion().toString()

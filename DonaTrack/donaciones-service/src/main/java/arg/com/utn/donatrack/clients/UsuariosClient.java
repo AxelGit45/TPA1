@@ -1,5 +1,5 @@
 package arg.com.utn.donatrack.clients;
-
+/*
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -80,4 +80,4 @@ public class UsuariosClient {
       return mapper.createObjectNode();
     }
   }
-}
+}*/

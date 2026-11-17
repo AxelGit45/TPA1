@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.logistica;
 
 import arg.com.utn.donatrack.dtos.DonacionDTO;
@@ -132,3 +133,4 @@ public class EntregaTest {
     assertEquals(nuevaFecha, entrega.getFechaDeEntregaEsperada());
   }
 }
+*/

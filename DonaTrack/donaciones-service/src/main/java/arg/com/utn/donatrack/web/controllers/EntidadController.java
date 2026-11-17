@@ -1,10 +1,10 @@
 package arg.com.utn.donatrack.web.controllers;
 
-import arg.com.utn.donatrack.clients.LogisticaClient;
+// import arg.com.utn.donatrack.clients.LogisticaClient;
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
-import arg.com.utn.donatrack.dtos.CamionDTO;
+// import arg.com.utn.donatrack.dtos.CamionDTO;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.entidadesBeneficiarias.Necesidad;
 import arg.com.utn.donatrack.entidadesBeneficiarias.NecesidadExtraordinaria;
@@ -28,7 +28,7 @@ public class EntidadController {
   private final RepositorioEntidadesBeneficiarias repoEntidades = new RepositorioEntidadesBeneficiarias();
   private final RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
   private final RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
-  private final LogisticaClient logisticaClient = new LogisticaClient();
+  // private final LogisticaClient logisticaClient = new LogisticaClient();
 
   public void mostrarFormularioNecesidad(Context ctx) {
     Map<String, Object> modelo = new HashMap<>();
@@ -266,6 +266,7 @@ public class EntidadController {
         Double lat = null;
         Double lon = null;
         String patente = "Camión #" + (camionId != null ? camionId : "S/A");
+        /*
         if (camionId != null && camionId > 0) {
           CamionDTO camion = logisticaClient.obtenerCamion(camionId);
           if (camion != null) {
@@ -276,6 +277,7 @@ public class EntidadController {
             }
           }
         }
+         */
         fila.put("patenteCamion", patente);
         fila.put("ultimaActualizacion", d.getEstado().getFechaDeAsignacion() != null
             ? d.getEstado().getFechaDeAsignacion().toString()

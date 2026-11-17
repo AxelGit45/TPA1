@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.apis;
 
 import arg.com.utn.donatrack.donaciones.Subcategoria;
@@ -21,11 +22,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+ */
 
 /* CRUD PARA NECESIDADES
 Al todavía no tener persistencia, se mockea guardando en memoria
 * */
-@Path("/necesidades")
+/*@Path("/necesidades")
 public class NecesidadesAPI {
 
   //Arrays de necesidades para mockear a falta de persistencia
@@ -208,7 +210,7 @@ public class NecesidadesAPI {
     public Boolean satisfecha;
     public Integer recibidos;
   }
-}
+}*/
 
 /*
   Ejemplos para probar todas las rutas (Postman)

@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.dtos;
 
 public class EntregaDTO {
@@ -28,4 +29,4 @@ public class EntregaDTO {
     public void setFechaDeEntregaEsperada(String f) { this.fechaDeEntregaEsperada = f; }
     public void setEstadoEntrega(String e) { this.estadoEntrega = e; }
     public void setEntidadBeneficiariaId(Long e) { this.entidadBeneficiariaId = e; }
-}
+}*/

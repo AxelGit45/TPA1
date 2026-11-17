@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.dtos;
 
 public class ContactoDTO {
@@ -17,3 +18,4 @@ public class ContactoDTO {
     public void setTipo(String tipo) { this.tipo = tipo; }
     public void setValor(String valor) { this.valor = valor; }
 }
+*/

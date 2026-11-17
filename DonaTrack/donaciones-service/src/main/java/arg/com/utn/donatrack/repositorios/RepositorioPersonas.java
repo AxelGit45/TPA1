@@ -2,19 +2,32 @@ package arg.com.utn.donatrack.repositorios;
 
 import arg.com.utn.donatrack.persistencia.Persistencia;
 import arg.com.utn.donatrack.personas.Persona;
+import arg.com.utn.donatrack.usuarios.Usuario;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class RepositorioPersonas {
 
-  public void guardar(EntityManager em, Persona persona) {
-    if (persona.getId() == null) {
-      em.persist(persona);
-    } else {
-      em.merge(persona);
-    }
+  private EntityManager entityManager;
+
+  public  RepositorioPersonas() {
+    this.entityManager = Persistencia.crearEntityManager();
   }
+
+  public void guardarPersona(Persona persona) {
+    entityManager.getTransaction().begin();
+    entityManager.persist(persona);
+    entityManager.getTransaction().commit();
+  }
+
+  /*public void guardar(Persona persona) {
+    if (persona.getId() == null) {
+      entityManager.persist(persona);
+    } else {
+      entityManager.merge(persona);
+    }
+  }*/
 
   public Persona buscarPorId(EntityManager em, Long id) {
     if (id == null) {

@@ -1,3 +1,4 @@
+/*
 package arg.com.utn.donatrack.apis;
 
 import arg.com.utn.donatrack.personas.PersonaHumana;
@@ -25,11 +26,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+*/
 
 /* CRUD PARA PERSONAS
 Al todavía no tener persistencia, se mockea guardando en memoria
 * */
-@Path("/personas")
+/*@Path("/personas")
 public class PersonasAPI {
 
   private static final List<PersonaHumana> personasHumanas = new ArrayList<>();
@@ -227,7 +229,7 @@ public class PersonasAPI {
     public String rubro;
     public List<ContactoRequest> contactos;
   }
-}
+}*/
 
 /*
   Ejemplos para probar todas las rutas (Postman)

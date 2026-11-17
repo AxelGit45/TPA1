@@ -1,6 +1,6 @@
 package arg.com.utn.donatrack.personas.contactos;
 
-import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
+// import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

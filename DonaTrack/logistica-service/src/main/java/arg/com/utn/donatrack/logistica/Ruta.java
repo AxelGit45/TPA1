@@ -1,7 +1,7 @@
 package arg.com.utn.donatrack.logistica;
 
-import arg.com.utn.donatrack.clients.DonacionesClient;
-import arg.com.utn.donatrack.dtos.*;
+// import arg.com.utn.donatrack.clients.DonacionesClient;
+// import arg.com.utn.donatrack.dtos.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +47,9 @@ public class Ruta {
     }
 
     public void notificar(List<Entrega> entregasRepositorio) {
-      DonacionesClient donacionesClient = new DonacionesClient();
+      // DonacionesClient donacionesClient = new DonacionesClient();
 
+      /*
       for (Entrega entregaLocal : entregasRepositorio) {
         if (!entregaIds.contains(entregaLocal.getId())) continue;
 
@@ -69,11 +70,14 @@ public class Ruta {
           }
         }
       }
+       */
     }
 
+    /*
     private void enviarContacto(ContactoDTO contacto, String mensaje) {
       System.out.println("[NOTIFICACIÓN " + contacto.getTipo() + "] " + contacto.getValor() + ": " + mensaje);
     }
+    */
 
     public Long getCamionId() { return camionId; }
     public Long getId() { return id; }
