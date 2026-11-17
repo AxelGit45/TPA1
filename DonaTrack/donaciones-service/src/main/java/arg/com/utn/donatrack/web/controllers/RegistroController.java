@@ -21,10 +21,6 @@ import java.util.Map;
 
 public class RegistroController {
 
- /* public void registrarUsuario(Usuario usuario) {
-    // Lógica para registrar un nuevo usuario
-  }*/
-
   //GET -> Lleva al formulario vacío
   public void registroJuridica(Context ctx) {
     ctx.render("registro-juridica.html.hbs", Map.of());
@@ -141,7 +137,7 @@ public class RegistroController {
     String nombre = texto(ctx, "nombre");
     String apellido = texto(ctx, "apellido");
     Integer edad = pasarAEntero(texto(ctx, "edad"));
-    Integer documento = pasarAEntero(texto(ctx, "documento"));
+    Integer documento = pasarAEntero(texto(ctx, "numeroDeDocumento"));
     String genero = texto(ctx, "genero");
     String direccion = texto(ctx, "direccion");
     String email = texto(ctx, "email");
@@ -153,8 +149,6 @@ public class RegistroController {
     String contrasenia = texto(ctx, "contrasenia");
     String confirmacion = texto(ctx, "confirmacion");
 
-/*String nombre, String apellido, Integer edad, Integer numeroDeDocumento, String genero,
-                       String direccion, List<Contacto> contactos, Contacto predeterminado*/
     // Validaciones del form
 
     List<String> errores = new ArrayList<>();
@@ -210,6 +204,15 @@ public class RegistroController {
 
     RepositorioPersonas repositorioPersonas = new RepositorioPersonas();
     PersonaHumana personaHumana = new PersonaHumana(nombre, apellido, edad, documento, genero, direccion, new ArrayList<>(), contactoPredeterminado);
+    if (telefono != null && !telefono.isEmpty()) {
+      personaHumana.getContactos().add(tel);
+    }
+    if (whatsapp != null && !whatsapp.isEmpty()) {
+      personaHumana.getContactos().add(whatsApp);
+    }
+    personaHumana.getContactos().add(mail);
+    personaHumana.setUsuarioId(usuario.getId());
+
     repositorioPersonas.guardarPersona(personaHumana);
 
     ctx.redirect("/registro/exito");
@@ -241,10 +244,11 @@ public class RegistroController {
     formulario.put("nombre", texto(ctx, "nombre"));
     formulario.put("apellido", texto(ctx, "apellido"));
     formulario.put("edad", texto(ctx, "edad"));
-    formulario.put("documento", texto(ctx, "documento"));
+    formulario.put("numeroDeDocumento", texto(ctx, "numeroDeDocumento"));
     formulario.put("genero", texto(ctx, "genero"));
     formulario.put("direccion", texto(ctx, "direccion"));
     formulario.put("telefono", texto(ctx, "telefono"));
+    formulario.put("whatsapp", texto(ctx, "whatsapp"));
     formulario.put("email", texto(ctx, "email"));
     return formulario;
   }
