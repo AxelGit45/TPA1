@@ -80,6 +80,9 @@ public class RegistroController {
     RepositorioPersonas repositorioPersonas = new RepositorioPersonas();
     repositorioPersonas.guardarPersona(personaJuridica);
 
+    ctx.sessionAttribute("usuarioId", usuario.getId());
+    ctx.sessionAttribute("rol", usuario.getRol().name());
+
     ctx.redirect("/donante/donaciones");
 
   }
@@ -126,6 +129,9 @@ public class RegistroController {
     entidadBeneficiaria.setUsuarioId(usuario.getId());
     RepositorioEntidadesBeneficiarias repositorioEntidadesBeneficiarias = new RepositorioEntidadesBeneficiarias();
     repositorioEntidadesBeneficiarias.guardarEntidad(entidadBeneficiaria);
+
+    ctx.sessionAttribute("usuarioId", usuario.getId());
+    ctx.sessionAttribute("rol", usuario.getRol().name());
 
     ctx.redirect("/entidad/donaciones");
 
@@ -213,8 +219,10 @@ public class RegistroController {
       personaHumana.agregarContacto(whatsApp);
     }
     personaHumana.setUsuarioId(usuario.getId());
-
     repositorioPersonas.guardarPersona(personaHumana);
+
+    ctx.sessionAttribute("usuarioId", usuario.getId());
+    ctx.sessionAttribute("rol", usuario.getRol().name());
 
     ctx.redirect("/donante/donaciones");
 

@@ -108,7 +108,15 @@
             <a href="/">Inicio</a>
             <a href="/mapa-entregas">Mapa de Entregas</a>
             {{#if logueado}}
-                <form method="POST" action="/logout" style="display:inline; margin:0;">
+                <!--para tener un boton para ver mis donaciones una vez loggeado-->
+                {{#if esDonante}}
+                    <a href="/donante/donaciones" class="btn-donaciones">Mis donaciones</a>
+                {{/if}}
+                {{#if esEntidadBeneficiaria}}
+                    <a href="/entidad/donaciones" class="btn-donaciones">Donaciones Asignadas</a>
+                {{/if}}
+                <!--para tener un boton para ver mis donaciones una vez loggeado-->
+                <form method="POST" action="/logout" style="display:inline; margin:0";>
                     <button type="submit" class="btn-logout">Cerrar sesión</button>
                 </form>
             {{else}}

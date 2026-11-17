@@ -29,6 +29,12 @@ public class JavalinHandlebars implements FileRenderer {
       modeloCompleto.put("logueado", rolSesion != null);
       modeloCompleto.put("rolSesion", rolSesion);
 
+      /*PARA IDENTIFICAR EL ROL DEL USUARIO LOGUEADO*/
+      modeloCompleto.put("esDonante", "DONANTE".equals(rolSesion));
+      modeloCompleto.put("esEntidadBeneficiaria", "ENTIDAD_BENEFICIARIA".equals(rolSesion));
+      modeloCompleto.put("esAdministrador", "ADMINISTRADOR".equals(rolSesion));
+      /*PARA IDENTIFICAR EL ROL DEL USUARIO LOGUEADO*/
+
       return template.apply(modeloCompleto);
     } catch (IOException e) {
       e.printStackTrace();
