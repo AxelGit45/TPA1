@@ -2,6 +2,60 @@
 
 <h1>Recepción de Donaciones en Almacén</h1>
 
+  <!-- POR TERMINAR -->
+
+<div class="formulario">
+  <p><a href="/admin">&larr; Volver</a></p>
+  <h1>Registro de donación y sus bienes</h1>
+  <!-- POR TERMINAR -->
+  <form method="POST" action="/registro/juridica">
+    <fieldset>
+      <legend>Datos de la organización</legend>
+      <div class="campo">
+        <label for="razonSocial">Razón social</label>
+        <input type="text" id="razonSocial" name="razonSocial" value="{{razonSocial}}" autocomplete="organization" required>
+      </div>
+      <div class="campo">
+        <label for="tipoRazonSocial">Tipo de organización</label>
+        <select id="tipoRazonSocial" name="tipoRazonSocial" required>
+          <option value="GUBERNAMENTAL">Gubernamental</option>
+          <option value="ONG">ONG</option>
+          <option value="EMPRESA">Empresa</option>
+          <option value="INSTITUCION">Institución</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="rubro">Rubro</label>
+        <input type="text" id="rubro" name="rubro" value="{{rubro}}" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Cuenta de la organización</legend>
+      <div class="campo">
+        <label for="email">Email institucional</label>
+        <input type="email" id="email" name="email" value="{{email}}" autocomplete="email" required>
+        <p class="ayuda">Es el medio de contacto de la organización y el que usa para iniciar sesión.</p>
+      </div>
+      <div class="campo">
+        <label for="contrasenia">Contraseña</label>
+        <input type="password" id="contrasenia" name="contrasenia" minlength="8" pattern="\S+"
+               title="Sin espacios" autocomplete="new-password" required>
+        <p class="ayuda">Mínimo 8 caracteres, sin espacios.</p>
+      </div>
+      <div class="campo">
+        <label for="confirmacion">Repetir contraseña</label>
+        <input type="password" id="confirmacion" name="confirmacion" minlength="8" pattern="\S+"
+               title="Sin espacios" autocomplete="new-password" required>
+      </div>
+    </fieldset>
+
+    <button type="submit">Registrar organización</button>
+  </form>
+
+  <p>¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a></p>
+</div>
+
 <p>Formulario de ingreso físico de bienes para pasar a estado En Depósito.</p>
 
 {{> partials/footer}}

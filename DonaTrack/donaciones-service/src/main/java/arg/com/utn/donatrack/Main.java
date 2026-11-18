@@ -63,9 +63,6 @@ public class Main {
     app.get("/mapa-entregas", home::mostrarMapaEntregas);
     app.get("/legal", home::mostrarLegal);
 
-
-
-
     // Landings por rol
     app.get("/donante", landing::mostrar);
     app.get("/entidad", landing::mostrar);
@@ -85,6 +82,7 @@ public class Main {
     app.get("/entidad/notificaciones", entidad::listarNotificaciones);
     app.get("/entidad/seguimiento", entidad::seguirEntregas);
 
+    // Rutas Admin
     app.get("/admin/recepcion", admin::mostrarRecepcion);
     app.get("/admin/vencidas", admin::mostrarVencidas);
     app.get("/admin/matchmaking", admin::mostrarMatchmaking);

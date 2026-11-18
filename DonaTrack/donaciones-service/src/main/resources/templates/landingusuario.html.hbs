@@ -1,9 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>DonaTrack</title>
-</head>
+{{> partials/header}}
+
 <body>
   <h1>DonaTrack</h1>
   <p>Sesión iniciada. {{texto}} (rol: {{rol}}, n° {{id}})</p>
@@ -14,8 +10,13 @@
     </form>
   {{/if}}
 
+  <p>
+      <a href="/admin/recepcion"> Registrar donación</a>
+  </p>
+
   <form method="POST" action="/logout">
     <input type="submit" value="Cerrar sesión">
   </form>
 </body>
-</html>
+
+{{> partials/footer}}
