@@ -89,6 +89,13 @@ public class Main {
     app.get("/admin/camiones", admin::mostrarCamiones);
     app.get("/admin/importar-csv", admin::mostrarImportarCsv);
 
+    /*Rutas para cargar una donacion*/
+    // Recepción de donaciones en almacén (Paso 1: crear donación / Paso 2: cargar bienes)
+    //app.get("/admin/recepcion", admin::mostrarRecepcion);
+    app.post("/admin/recepcion", admin::crearDonacion);
+    app.get("/admin/recepcion/{id}/bienes", admin::mostrarCargaBienes);
+    app.post("/admin/recepcion/{id}/bienes", admin::agregarBien);
+
     System.out.println("[DONACIONES-SERVICE] Web (Javalin) levantada en http://localhost:" + PUERTO_WEB);
     return app;
   }

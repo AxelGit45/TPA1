@@ -2,11 +2,18 @@ package arg.com.utn.donatrack.repositorios;
 
 import arg.com.utn.donatrack.donaciones.Categoria;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
+import arg.com.utn.donatrack.persistencia.Persistencia;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class RepositorioSubcategorias {
+
+  private EntityManager entityManager;
+
+  public  RepositorioSubcategorias() {
+    this.entityManager = Persistencia.crearEntityManager();
+  }
 
   /** Devuelve la subcategoría guardada con ese nombre; si no existe, la crea (con su categoría). */
   public Subcategoria obtenerOCrear(EntityManager em, Subcategoria buscada) {

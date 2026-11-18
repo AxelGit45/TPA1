@@ -1,12 +1,93 @@
 package arg.com.utn.donatrack.web.controllers;
 
+import arg.com.utn.donatrack.donaciones.Donacion;
+import arg.com.utn.donatrack.estados.EnDeposito;
+import arg.com.utn.donatrack.personas.Persona;
+import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
+import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
 import io.javalin.http.Context;
+import java.util.HashMap;
 import java.util.Map;
 
 public class AdminController {
 
   public void mostrarRecepcion(Context ctx) {
     ctx.render("admin-recepcion.html.hbs", Map.of());
+  }
+
+  //POST /admin/recepcion
+  public void crearDonacion(Context ctx) {
+    String emailDonante = ctx.formParam("emailDonante");
+    RepositorioPersonas repoPersonas = new RepositorioPersonas();
+    Persona donante = repoPersonas.buscarPorEmail(emailDonante);
+
+    if (donante == null) {
+      ctx.status(400).result("No se encontró ningún donante registrado con el email: " + emailDonante);
+      return;
+    }
+
+    Donacion donacion = new Donacion();
+    donacion.cambiarEstado(new EnDeposito());
+
+    RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+    repoDonaciones.guardar(donacion);
+
+    // Pasamos el donanteId en la URL para asociarlo a cada Bien en el paso 2
+    ctx.redirect("/admin/recepcion/" + donacion.getId() + "/bienes?donanteId=" + donante.getId());
+  }
+
+  //GET /admin/recepcion/{id}/bienes
+  public void mostrarCargaBienes(Context ctx) {
+    Long donacionId = Long.parseLong(ctx.pathParam("id"));
+    String donanteId = ctx.queryParam("donanteId");
+
+    RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+
+    //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
+
+    Map<String, Object> model = new HashMap<>();
+
+    /*model.put("donacion", donacion);
+    model.put("donanteId", donanteId);
+    model.put("subcategorias", repoSubcategorias.listarTodas());
+    */
+    ctx.render("admin-recepcion-bienes.html.hbs", model);
+  }
+
+  //POST /admin/recepcion/{id}/bienes
+  public void agregarBien(Context ctx) {
+    Long donacionId = Long.parseLong(ctx.pathParam("id"));
+    Long donanteId = Long.parseLong(ctx.formParam("donanteId"));
+    Long subcategoriaId = Long.parseLong(ctx.formParam("subcategoriaId"));
+
+    RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+    RepositorioPersonas repoPersonas = new RepositorioPersonas();
+    /*RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
+    Donacion donacion = repoDonaciones.buscarPorId(donacionId);
+    Persona donante = repoPersonas.buscarPorId(donanteId);
+    Subcategoria sub = repoSubcategorias.buscarPorId(subcategoriaId);
+
+    Bien bien = new Bien();
+    bien.setDonador(donante);
+    bien.setSubcategoria(sub);
+    bien.setDescripcion(ctx.formParam("descripcionBien"));
+    bien.setCantidad(Integer.parseInt(ctx.formParam("cantidad")));
+    bien.setUnidad(Unidad.valueOf(ctx.formParam("unidad")));
+
+    String estadoUso = ctx.formParam("estadoUso");
+    if (estadoUso != null && !estadoUso.isBlank()) {
+      bien.setEstadoUso(EstadoUso.valueOf(estadoUso));
+    }
+
+    String vencimiento = ctx.formParam("fechaVencimiento");
+    if (vencimiento != null && !vencimiento.isBlank()) {
+      bien.setFechaVencimiento(LocalDate.parse(vencimiento));
+    }
+
+    donacion.agregarBien(bien);
+    repoDonaciones.guardar(donacion);
+    */
+    ctx.redirect("/admin/recepcion/" + donacionId + "/bienes?donanteId=" + donanteId);
   }
 
   public void mostrarVencidas(Context ctx) {

@@ -21,6 +21,20 @@ public class RepositorioPersonas {
     entityManager.getTransaction().commit();
   }
 
+  public Persona buscarPorEmail(String email) {
+    if (email == null || email.isBlank()) {
+      return null;
+    }
+    return entityManager
+        .createQuery(
+            "SELECT p FROM Persona p, Usuario u WHERE p.usuarioId = u.id AND u.email = :email",
+            Persona.class)
+        .setParameter("email", email)
+        .getResultStream()
+        .findFirst()
+        .orElse(null);
+  }
+
   /*public void guardar(Persona persona) {
     if (persona.getId() == null) {
       entityManager.persist(persona);

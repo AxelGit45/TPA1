@@ -4,19 +4,32 @@ import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.estados.EnTraslado;
 import arg.com.utn.donatrack.estados.Entregada;
+import arg.com.utn.donatrack.persistencia.Persistencia;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 public class RepositorioDonaciones {
 
-  public void guardar(EntityManager em, Donacion donacion) {
+  private EntityManager entityManager;
+
+  public RepositorioDonaciones() {
+    this.entityManager = Persistencia.crearEntityManager();
+  }
+
+  public void guardar(Donacion donacion) {
+    entityManager.getTransaction().begin();
+    entityManager.persist(donacion);
+    entityManager.getTransaction().commit();
+  }
+
+  /*public void guardar(EntityManager em, Donacion donacion) {
     if (donacion.getId() == null) {
       em.persist(donacion);
     } else {
       em.merge(donacion);
     }
-  }
+  }*/
 
   public Donacion buscarPorId(EntityManager em, Long id) {
     if (id == null) {

@@ -8,13 +8,35 @@
   <p><a href="/admin">&larr; Volver</a></p>
   <h1>Registro de donación y sus bienes</h1>
   <!-- POR TERMINAR -->
-  <form method="POST" action="/registro/juridica">
+  <form method="POST" action="/admin/recepcion">
     <fieldset>
-      <legend>Datos de la organización</legend>
+      <legend>Datos de la donacion</legend>
+
       <div class="campo">
-        <label for="razonSocial">Razón social</label>
-        <input type="text" id="razonSocial" name="razonSocial" value="{{razonSocial}}" autocomplete="organization" required>
+        <label for="emailDonante">Email del donante:</label>
+        <input type="email" id="emailDonante" name="emailDonante" placeholder="donante@ejemplo.com" required>
       </div>
+
+      <div class="campo">
+        <form action="/enviar" method="post">
+          <label for="descripcion">Descripción general</label>
+          <textarea
+            id="descripcion"
+            name="descripcion"
+            rows="5"
+            cols="40"
+            maxlength="500"
+            placeholder="Escribe aquí una descripción..."
+            required
+          ></textarea>
+
+          <button type="submit">Continuar y cargar bienes →</button>
+        </form>
+      </div>
+
+<!-- POR TERMINAR -->
+
+  <!--
       <div class="campo">
         <label for="tipoRazonSocial">Tipo de organización</label>
         <select id="tipoRazonSocial" name="tipoRazonSocial" required>
@@ -52,8 +74,8 @@
 
     <button type="submit">Registrar organización</button>
   </form>
+ -->
 
-  <p>¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a></p>
 </div>
 
 <p>Formulario de ingreso físico de bienes para pasar a estado En Depósito.</p>

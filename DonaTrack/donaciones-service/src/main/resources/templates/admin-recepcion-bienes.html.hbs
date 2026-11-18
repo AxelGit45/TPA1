@@ -1,0 +1,75 @@
+{{> partials/header}}
+
+<h2>Recepción de Donaciones en Almacén</h2>
+
+<h3>Paso 2: Bienes de la Donación #{{donacion.id}}</h3>
+
+<fieldset style="margin-bottom: 20px;">
+    <legend>Bienes cargados hasta ahora</legend>
+    {{#if donacion.bienes}}
+        <ul>
+            {{#each donacion.bienes}}
+                <li><strong>{{cantidad}} {{unidad}}</strong> — {{descripcion}} ({{subcategoria.nombre}})</li>
+            {{/each}}
+        </ul>
+    {{else}}
+        <p>Todavía no agregaste ningún bien a esta donación.</p>
+    {{/if}}
+</fieldset>
+
+<form method="POST" action="/admin/recepcion/{{donacion.id}}/bienes" class="formulario">
+    <!-- Mantiene el ID del donante entre recargas sin usar JS ni columnas extra -->
+    <input type="hidden" name="donanteId" value="{{donanteId}}">
+
+    <fieldset>
+        <legend>¿Qué dona?</legend>
+
+        <div class="campo">
+            <label for="subcategoriaId">Subcategoría:</label>
+            <select id="subcategoriaId" name="subcategoriaId" required>
+                <option value="">-- Seleccioná una subcategoría --</option>
+                {{#each subcategorias}}
+                    <option value="{{id}}">{{nombre}}</option>
+                {{/each}}
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="descripcionBien">Descripción del bien:</label>
+            <input type="text" id="descripcionBien" name="descripcionBien" placeholder="Ej: Fideos secos 500g" required>
+        </div>
+
+        <div class="campo">
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" min="1" required>
+        </div>
+
+        <div class="campo">
+            <label for="unidad">Unidad:</label>
+            <select id="unidad" name="unidad" required>
+                <option value="UNIDADES">Unidades</option>
+                <option value="KILOGRAMOS">Kilogramos</option>
+                <option value="LITROS">Litros</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="estadoUso">Estado de uso (opcional - ropa/mobiliario):</label>
+            <select id="estadoUso" name="estadoUso">
+                <option value="">No aplica</option>
+                <option value="NUEVO">Nuevo</option>
+                <option value="USADO">Usado</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="fechaVencimiento">Fecha de vencimiento (opcional - alimentos):</label>
+            <input type="date" id="fechaVencimiento" name="fechaVencimiento">
+        </div>
+    </fieldset>
+
+    <button type="submit">+ Agregar bien</button>
+    <a href="/admin" style="margin-left: 16px;">✓ Finalizar</a>
+</form>
+
+{{> partials/footer}}
