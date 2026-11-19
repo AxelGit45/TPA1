@@ -5,6 +5,7 @@ import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
+import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
 import io.javalin.http.Context;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,13 @@ public class AdminController {
     model.put("donanteId", donanteId);
     model.put("subcategorias", repoSubcategorias.listarTodas());
     */
+    ctx.render("admin-recepcion-bienes.html.hbs", model);
+  }
+
+  public void mostrarCategorias(Context ctx){
+    RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
+    Map<String, Object> model = new HashMap<>();
+    model.put("categorias", repoSubcategorias.listarCategorias());
     ctx.render("admin-recepcion-bienes.html.hbs", model);
   }
 

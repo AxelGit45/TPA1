@@ -36,6 +36,33 @@ public class Main {
           .result(e.getMessage());
     });
 
+
+// Manejo de sesiones
+
+app.before(ctx -> {
+  String path = ctx.path();
+  String rolRequerido = null;
+
+  if(path.startsWith("/admin")) {
+    rolRequerido = "ADMINISTRADOR";
+  } else if(path.startsWith("/donante")) {
+    rolRequerido = "DONANTE";
+  } else if(path.startsWith("/entidad")) {
+    rolRequerido = "ENTIDAD_BENEFICIARIA";
+  }
+
+  if (rolRequerido == null){
+    return;
+  }
+
+  String rol = ctx.sessionAttribute("rol");
+  if (!rol.equals(rolRequerido)) {
+    ctx.status(404).result("Not Found");
+    ctx.skipRemainingHandlers();
+  }
+});
+
+
     HomeController home = new HomeController();
     DonanteController donante = new DonanteController();
     EntidadController entidad = new EntidadController();

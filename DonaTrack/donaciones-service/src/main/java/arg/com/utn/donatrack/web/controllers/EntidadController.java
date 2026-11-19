@@ -61,7 +61,7 @@ public class EntidadController {
       }
 
       if (entidad != null) {
-        Subcategoria subcategoria = repoSubcategorias.obtenerOCrear(em,
+        Subcategoria subcategoria = repoSubcategorias.obtenerOCrear(
             new Subcategoria(nombreSubcategoria != null ? nombreSubcategoria : "General", null, false, false));
 
         Necesidad necesidad;

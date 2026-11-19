@@ -38,6 +38,26 @@
             <label for="descripcionBien">Descripción del bien:</label>
             <input type="text" id="descripcionBien" name="descripcionBien" placeholder="Ej: Fideos secos 500g" required>
         </div>
+        <!--
+        <div class="campo">
+            <label for="unidad">Categoria</label>
+            <select id="unidad" name="unidad" required>
+                <option value="UNIDAD">Mobiliario</option>
+                <option value="KILOGRAMOS">Vestimenta</option>
+                <option value="LITROS">Litros</option>
+           </select>
+        </div> -->
+
+        <div class="campo">
+            <label for="categoriaId">Categoría:</label>
+            <select id="categoriaId" name="categoriaId" required>
+                <option value=""> -- Seleccioná una categoría --</option>
+                {{#each categorias}}
+                    <option value="{{id}}">{{nombre}}</option>
+                {{/each}}
+            </select>
+        </div>
+
 
         <div class="campo">
             <label for="cantidad">Cantidad:</label>
@@ -47,7 +67,7 @@
         <div class="campo">
             <label for="unidad">Unidad:</label>
             <select id="unidad" name="unidad" required>
-                <option value="UNIDADES">Unidades</option>
+                <option value="UNIDAD">Unidades</option>
                 <option value="KILOGRAMOS">Kilogramos</option>
                 <option value="LITROS">Litros</option>
             </select>

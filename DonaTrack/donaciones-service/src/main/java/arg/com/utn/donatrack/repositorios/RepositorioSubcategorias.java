@@ -16,11 +16,11 @@ public class RepositorioSubcategorias {
   }
 
   /** Devuelve la subcategoría guardada con ese nombre; si no existe, la crea (con su categoría). */
-  public Subcategoria obtenerOCrear(EntityManager em, Subcategoria buscada) {
+  public Subcategoria obtenerOCrear(Subcategoria buscada) {
     if (buscada == null) {
       return null;
     }
-    List<Subcategoria> existentes = em
+    List<Subcategoria> existentes = entityManager
         .createQuery("select s from Subcategoria s where s.nombre = :nombre", Subcategoria.class)
         .setParameter("nombre", buscada.getNombre())
         .getResultList();
@@ -29,18 +29,19 @@ public class RepositorioSubcategorias {
     }
     Subcategoria nueva = new Subcategoria(
         buscada.getNombre(),
-        obtenerOCrearCategoria(em, buscada.getCategoriaPadre()),
+        new Categoria("ejemplo"),
+        // obtenerOCrearCategoria(buscada.getCategoriaPadre()),
         buscada.getExigeFechaVencimiento(),
         buscada.getExigeEstadoUso());
-    em.persist(nueva);
+    entityManager.persist(nueva);
     return nueva;
   }
 
-  public Categoria obtenerOCrearCategoria(EntityManager em, Categoria buscada) {
+  /*public Categoria obtenerOCrearCategoria(Categoria buscada) {
     if (buscada == null) {
       return null;
     }
-    List<Categoria> existentes = em
+    List<Categoria> existentes = entityManager
         .createQuery("select c from Categoria c where c.nombre = :nombre", Categoria.class)
         .setParameter("nombre", buscada.getNombre())
         .getResultList();
@@ -48,7 +49,11 @@ public class RepositorioSubcategorias {
       return existentes.get(0);
     }
     Categoria nueva = new Categoria(buscada.getNombre());
-    em.persist(nueva);
+    entityManager.persist(nueva);
     return nueva;
+  }*/
+
+  public List<Categoria> listarCategorias() {
+    return entityManager.createQuery("select c from Categoria c", Categoria.class).getResultList();
   }
 }
