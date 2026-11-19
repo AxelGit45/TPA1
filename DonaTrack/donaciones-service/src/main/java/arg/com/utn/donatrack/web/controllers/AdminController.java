@@ -43,10 +43,12 @@ public class AdminController {
     String donanteId = ctx.queryParam("donanteId");
 
     RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+    RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
 
     //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
 
     Map<String, Object> model = new HashMap<>();
+    model.put("categorias", repoSubcategorias.listarCategorias());
 
     /*model.put("donacion", donacion);
     model.put("donanteId", donanteId);
@@ -55,12 +57,6 @@ public class AdminController {
     ctx.render("admin-recepcion-bienes.html.hbs", model);
   }
 
-  public void mostrarCategorias(Context ctx){
-    RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
-    Map<String, Object> model = new HashMap<>();
-    model.put("categorias", repoSubcategorias.listarCategorias());
-    ctx.render("admin-recepcion-bienes.html.hbs", model);
-  }
 
   //POST /admin/recepcion/{id}/bienes
   public void agregarBien(Context ctx) {
