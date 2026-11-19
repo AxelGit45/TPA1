@@ -1,6 +1,10 @@
 package arg.com.utn.donatrack;
 
 import arg.com.utn.donatrack.persistencia.Persistencia;
+import arg.com.utn.donatrack.repositorios.RepositorioUsuarios;
+import arg.com.utn.donatrack.seguridad.SeguridadPassword;
+import arg.com.utn.donatrack.usuarios.Rol;
+import arg.com.utn.donatrack.usuarios.Usuario;
 import arg.com.utn.donatrack.web.controllers.*;
 import arg.com.utn.donatrack.web.templates.JavalinHandlebars;
 import arg.com.utn.donatrack.web.templates.JavalinRenderer;
@@ -14,12 +18,28 @@ public class Main {
 
   public static void main(String[] args) {
     Persistencia.factory();
+    //inicializarAdmin();
     Javalin web = levantarWeb();
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       web.stop();
     }));
   }
+
+
+  // Podés llamar a este método en Main.java antes de levantar Javalin
+  /*private static void inicializarAdmin() {
+    RepositorioUsuarios repoUsuarios = new RepositorioUsuarios();
+    String emailAdmin = "admin@donatrack.com";
+
+    // Verifica si ya existe para no duplicarlo cada vez que reiniciás el servidor
+    if (repoUsuarios.buscarUsuarioPorEmail(emailAdmin) == null) {
+      String passwordHasheada = SeguridadPassword.hashear("admin123");
+      Usuario admin = new Usuario(emailAdmin, passwordHasheada, Rol.ADMINISTRADOR);
+      repoUsuarios.guardarUsuario(admin);
+      System.out.println("Usuario administrador creado: " + emailAdmin);
+    }
+  }*/
 
   private static Javalin levantarWeb() {
     JavalinRenderer renderer = new JavalinRenderer()

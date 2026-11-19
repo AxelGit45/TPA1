@@ -11,6 +11,7 @@ import arg.com.utn.donatrack.personas.contactos.WhatsApp;
 import arg.com.utn.donatrack.repositorios.RepositorioEntidadesBeneficiarias;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
 import arg.com.utn.donatrack.repositorios.RepositorioUsuarios;
+import arg.com.utn.donatrack.seguridad.SeguridadPassword;
 import arg.com.utn.donatrack.usuarios.Rol;
 import arg.com.utn.donatrack.usuarios.Usuario;
 import io.javalin.http.Context;
@@ -67,8 +68,11 @@ public class RegistroController {
       ctx.render("registro-juridica.html.hbs", Map.of("errores", errores));
       return;
     }
+
+    String passwordHasheada = SeguridadPassword.hashear(contrasenia);
+
     /*Creo el usuario */
-    Usuario usuario = new Usuario(email, contrasenia, Rol.DONANTE);
+    Usuario usuario = new Usuario(email, passwordHasheada, Rol.DONANTE);
     repositorioUsuarios.guardarUsuario(usuario);
 
     /*Creo la PersonaJuridica */
@@ -119,8 +123,11 @@ public class RegistroController {
       ctx.render("registro-entidad.html.hbs", Map.of("errores", errores));
       return;
     }
+
+    String passwordHasheada = SeguridadPassword.hashear(contrasenia);
+
     /*Creo el usuario */
-    Usuario usuario = new Usuario(email, contrasenia, Rol.ENTIDAD_BENEFICIARIA);
+    Usuario usuario = new Usuario(email, passwordHasheada, Rol.ENTIDAD_BENEFICIARIA);
     repositorioUsuarios.guardarUsuario(usuario);
 
     EntidadBeneficiaria entidadBeneficiaria = new EntidadBeneficiaria(razonSocial, direccion, new ArrayList<>());
@@ -183,8 +190,10 @@ public class RegistroController {
       ctx.render("registro-humana.html.hbs", Map.of("errores", errores));
       return;
     }
+
+    String passwordHasheada = SeguridadPassword.hashear(contrasenia);
     /*Creo el usuario */
-    Usuario usuario = new Usuario(email, contrasenia, Rol.DONANTE);
+    Usuario usuario = new Usuario(email, passwordHasheada, Rol.DONANTE);
     repositorioUsuarios.guardarUsuario(usuario);
 
 

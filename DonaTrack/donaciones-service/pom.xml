@@ -80,6 +80,15 @@
             <artifactId>slf4j-simple</artifactId>
             <version>2.0.11</version>
         </dependency>
+
+        <!-- SEGURIDAD-->
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <!-- SEGURIDAD-->
+
     </dependencies>
 
     <build>

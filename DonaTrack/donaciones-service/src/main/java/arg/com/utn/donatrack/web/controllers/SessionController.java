@@ -1,6 +1,7 @@
 package arg.com.utn.donatrack.web.controllers;
 
 import arg.com.utn.donatrack.repositorios.RepositorioUsuarios;
+import arg.com.utn.donatrack.seguridad.SeguridadPassword;
 import arg.com.utn.donatrack.usuarios.Usuario;
 import io.javalin.http.Context;
 
@@ -18,13 +19,22 @@ public class SessionController {
 
     Usuario usuario = new RepositorioUsuarios().buscarUsuarioPorEmail(email);
 
-    if (usuario == null || !usuario.getContrasenia().equals(contrasenia)) {
+
+    if (usuario != null && SeguridadPassword.verificar(contrasenia, usuario.getContrasenia())) {
+      ctx.sessionAttribute("usuarioId", usuario.getId());
+      ctx.sessionAttribute("rol", usuario.getRol().name());
+      ctx.redirect("/");
+    } else {
+      ctx.status(401).result("Email o contraseña incorrectos");
+    }
+
+    /*if (usuario == null || !usuario.getContrasenia().equals(contrasenia)) {
       Map<String, Object> formulario = new HashMap<>();
       formulario.put("error", "Email o contraseña incorrectos.");
       formulario.put("email", email);
       ctx.status(401).render("login.html.hbs", formulario);
       return;
-    }
+    }*/
 
 
     ctx.sessionAttribute("usuarioId", usuario.getId());
