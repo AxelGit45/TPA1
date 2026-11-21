@@ -135,6 +135,7 @@ app.before(ctx -> {
     app.get("/admin/matchmaking", admin::mostrarMatchmaking);
     app.get("/admin/camiones", admin::mostrarCamiones);
     app.get("/admin/importar-csv", admin::mostrarImportarCsv);
+    app.post("/admin/importar-csv", admin::importarCsv);
 
     /*Rutas para cargar una donacion*/
     // Recepción de donaciones en almacén (Paso 1: crear donación / Paso 2: cargar bienes)

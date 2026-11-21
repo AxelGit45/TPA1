@@ -29,7 +29,7 @@
             <select id="subcategoriaId" name="subcategoriaId" required>
                 <option value="">-- Seleccioná una subcategoría --</option>
                 {{#each subcategorias}}
-                    <option value="{{id}}">{{nombre}}</option>
+                    <option value="{{id}}" data-nombre="{{nombre}}">{{nombre}}</option>
                 {{/each}}
             </select>
         </div>
@@ -73,16 +73,15 @@
             </select>
         </div>
 
-        <div class="campo">
-            <label for="estadoUso">Estado de uso (opcional - ropa/mobiliario):</label>
-            <select id="estadoUso" name="estadoUso">
-                <option value="">No aplica</option>
+        <div class="campo" id="campoEstadoUso" style="display: none;">
+            <label for="estadoUso"> Estado de uso: </label>
+            <select id="estadoUso" name="estadoUso"
                 <option value="NUEVO">Nuevo</option>
                 <option value="USADO">Usado</option>
             </select>
         </div>
 
-        <div class="campo">
+        <div class="campo" id="campoVencimiento" style="display: none;">
             <label for="fechaVencimiento">Fecha de vencimiento (opcional - alimentos):</label>
             <input type="date" id="fechaVencimiento" name="fechaVencimiento">
         </div>

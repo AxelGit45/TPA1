@@ -1,7 +1,20 @@
 {{> partials/header}}
 
-<h1>Importación Masiva de Datos (CSV)</h1>
+<h1>Importación Masiva de Donantes (CSV)</h1>
 
-<p>Subida y procesamiento de padrón histórico de donantes y donaciones.</p>
+{{#if exito}}
+<p>Éxito: {{mensaje}}</p>
+{{/if}}
+
+{{#if error}}
+<p>Error: {{error}}</p>
+{{/if}}
+
+<form method="POST" action="/admin/importar-csv" enctype="multipart/forma-data">
+    <label for="archivoCsv">Seleccionar archivo CSV:</label>
+    <input type="file" id="archivoCsv" name="archivoCsv" accept=".csv" required>
+
+    <button type="submit">Importar Donantes</button>
+</form>
 
 {{> partials/footer}}

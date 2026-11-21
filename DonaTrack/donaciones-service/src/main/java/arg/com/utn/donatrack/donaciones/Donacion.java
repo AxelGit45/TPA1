@@ -29,6 +29,8 @@ public class Donacion {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  private String descripcion;
+
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "donacion_id")
   private List<Bien> bienes = new ArrayList<>();
@@ -139,6 +141,10 @@ public class Donacion {
     this.id = id;
   }
 
+  public String getDescripcion() { return descripcion; }
+
+  public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+
   public List<EstadoDonacion> getHistorialDeCambiosDeEstado() {
     return historialDeCambiosDeEstado;
   }
@@ -148,5 +154,7 @@ public class Donacion {
   }
 
   public void setDonadores(List<Persona> donadores) { this.donadores = donadores; }
+
+
 
 }

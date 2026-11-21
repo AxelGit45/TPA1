@@ -25,7 +25,13 @@ public class SessionController {
       ctx.sessionAttribute("rol", usuario.getRol().name());
       ctx.redirect("/");
     } else {
-      ctx.status(401).result("Email o contraseña incorrectos");
+      /*ctx.status(401).result("Email o contraseña incorrectos");*/
+      Map<String, Object> formulario = new HashMap<>();
+      formulario.put("error", "Email o contraseña incorrectos.");
+      formulario.put("email", email);
+      ctx.status(401).render("login.html.hbs", formulario);
+
+      return;
     }
 
     /*if (usuario == null || !usuario.getContrasenia().equals(contrasenia)) {

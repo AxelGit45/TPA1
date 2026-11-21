@@ -3,6 +3,7 @@ package arg.com.utn.donatrack.donaciones;
 import arg.com.utn.donatrack.personas.Persona;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Formulario {
 
@@ -17,6 +18,15 @@ public class Formulario {
     this.bienes = bienes;
 
   }
+
+  /*public List <Donacion> separarDonacion() {
+
+    Map<String, List<Bien>> bienesPorSubcategoria;
+  }*/
+
+
+
+
 
   public List<Donacion> segmentarDonaciones(){
 
@@ -33,5 +43,6 @@ public class Formulario {
     return  donacionesSegmentadas;
 
   }
+
 
 }

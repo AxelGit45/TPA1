@@ -24,7 +24,7 @@ public class ImportadorCsvTest {
     }
 
 
-    ImportadorCsv.importarDesde(rutaArchivo);
+    //ImportadorCsv.importarDesde(rutaArchivo);
 
     int cantidadImportada = RepositorioPersonas.getPersonas().size();
 

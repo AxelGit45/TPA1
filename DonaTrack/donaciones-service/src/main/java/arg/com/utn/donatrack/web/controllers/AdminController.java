@@ -6,7 +6,9 @@ import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
 import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
+import arg.com.utn.donatrack.tareas.ImportadorCsv;
 import io.javalin.http.Context;
+import io.javalin.http.UploadedFile;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,6 +95,26 @@ public class AdminController {
     */
     ctx.redirect("/admin/recepcion/" + donacionId + "/bienes?donanteId=" + donanteId);
   }
+
+  public void importarCsv(Context ctx) {
+    UploadedFile archivo = ctx.uploadedFile("archivoCsv");
+    if (archivo == null || archivo.size() == 0) {
+      ctx.render("admin-importar-csv.html.hbs", Map.of("error", "Debe seleccionar un archivo CSV válido."));
+      return;
+    }
+    try {
+      int cantidad = ImportadorCsv.importar(archivo.content());
+      ctx.render("admin-importar-csv.html.hbs", Map.of(
+          "exito", true,
+          "mensaje", "Se importaron / actualizaron correctamente " + cantidad + " donantes."
+      ));
+    } catch (Exception e) {
+      ctx.render("admin-importar-csv.html.hbs", Map.of(
+          "error", "Ocurrió un error al procesar el archivo CSV: " + e.getMessage()
+      ));
+    }
+  }
+
 
   public void mostrarVencidas(Context ctx) {
     ctx.render("admin-vencidas.html.hbs", Map.of());
