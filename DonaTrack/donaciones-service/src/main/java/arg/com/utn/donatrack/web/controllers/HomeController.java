@@ -22,7 +22,7 @@ public class HomeController {
   public void mostrarMapaEntregas(Context ctx) {
     EntityManager em = Persistencia.crearEntityManager();
     try {
-      List<Donacion> entregadasDb = repoDonaciones.listarEntregadas();
+      List<Donacion> entregadasDb = repoDonaciones.listarEntregadas(em);
       List<Map<String, Object>> listaParaMapa = new ArrayList<>();
       for (Donacion d : entregadasDb) {
         Map<String, Object> pin = new HashMap<>();

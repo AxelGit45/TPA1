@@ -32,7 +32,7 @@ public class EntidadController {
   // private final LogisticaClient logisticaClient = new LogisticaClient();
 
   public void mostrarFormularioNecesidad(Context ctx) {
-
+    EntityManager em = Persistencia.crearEntityManager();
     RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
 
     //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
@@ -40,7 +40,7 @@ public class EntidadController {
     //SUBCATEGORIA
 
     Map<String, List<Subcategoria>> subcategoriasPorCategoria = new LinkedHashMap<>();
-    for (Subcategoria subcategoria : repoSubcategorias.listarSubcategorias()) {
+    for (Subcategoria subcategoria : repoSubcategorias.listarSubcategorias(em)) {
       subcategoriasPorCategoria
           .computeIfAbsent(subcategoria.getCategoriaPadre().getNombre(), k -> new ArrayList<>())
           .add(subcategoria);
@@ -48,7 +48,7 @@ public class EntidadController {
 
     //CATEGORIAS
     Map<String, Object> model = new HashMap<>();
-    model.put("categorias", repoSubcategorias.listarCategorias());
+    model.put("categorias", repoSubcategorias.listarCategorias(em));
     model.put("subcategorias", subcategoriasPorCategoria);
 
     ctx.render("beneficiaria-necesidad.html.hbs", model);
@@ -80,7 +80,7 @@ public class EntidadController {
       }
 
       if (entidad != null) {
-        Subcategoria subcategoria = repoSubcategorias.obtenerOCrear(
+        Subcategoria subcategoria = repoSubcategorias.obtenerOCrear(em,
             new Subcategoria(nombreSubcategoria != null ? nombreSubcategoria : "General", null, false, false));
 
         Necesidad necesidad;
@@ -117,7 +117,7 @@ public class EntidadController {
     EntityManager em = Persistencia.crearEntityManager();
     try {
 
-      List<Donacion> donacionesDb = repoDonaciones.listarTodas();
+      List<Donacion> donacionesDb = repoDonaciones.listarTodas(em);
 
       List<Map<String, Object>> donacionesParaVista = new ArrayList<>();
       for (Donacion d : donacionesDb) {
@@ -176,7 +176,7 @@ public class EntidadController {
     try {
       em.getTransaction().begin();
 
-      Donacion donacion = repoDonaciones.buscarPorId(donacionId);
+      Donacion donacion = repoDonaciones.buscarPorId(em, donacionId);
       if (donacion == null) {
         ctx.status(404).result("Donación no encontrada.");
         return;
@@ -240,7 +240,7 @@ public class EntidadController {
     EntityManager em = Persistencia.crearEntityManager();
     try {
 
-      List<Donacion> donacionesDb = repoDonaciones.listarTodas();
+      List<Donacion> donacionesDb = repoDonaciones.listarTodas(em);
       List<Map<String, Object>> notificacionesParaVista = new ArrayList<>();
 
       for (Donacion d : donacionesDb) {
@@ -266,9 +266,9 @@ public class EntidadController {
   }
 
   public void seguirEntregas(Context ctx) {
-    EntityManager em = Persistencia.crearEntityManager(); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    EntityManager em = Persistencia.crearEntityManager();
     try {
-      List<Donacion> enViajeDb = repoDonaciones.listarEnTraslado();
+      List<Donacion> enViajeDb = repoDonaciones.listarEnTraslado(em);
       List<Map<String, Object>> entregasParaVista = new ArrayList<>();
       for (Donacion d : enViajeDb) {
         Map<String, Object> fila = new HashMap<>();

@@ -9,30 +9,30 @@ import java.util.List;
 
 public class RepositorioSubcategorias {
 
-  private EntityManager entityManager;
+  // private EntityManager entityManager;
 
   public  RepositorioSubcategorias() {
-    this.entityManager = Persistencia.crearEntityManager();
+    // this.entityManager = Persistencia.crearEntityManager();
   }
 
-  public List<Subcategoria> listarSubcategorias() {
-    return entityManager.createQuery("select s from Subcategoria s", Subcategoria.class).getResultList();
+  public List<Subcategoria> listarSubcategorias(EntityManager em) {
+    return em.createQuery("select s from Subcategoria s", Subcategoria.class).getResultList();
   }
 
-  public Subcategoria buscarSubcategoriaPorId (Long id) {
+  public Subcategoria buscarSubcategoriaPorId (EntityManager em, Long id) {
     if (id == null) {
       return null;
     }
-    return entityManager.find(Subcategoria.class, id);
+    return em.find(Subcategoria.class, id);
   }
 
 
   /** Devuelve la subcategoría guardada con ese nombre; si no existe, la crea (con su categoría). */
-  public Subcategoria obtenerOCrear(Subcategoria buscada) {
+  public Subcategoria obtenerOCrear(EntityManager em, Subcategoria buscada) {
     if (buscada == null) {
       return null;
     }
-    List<Subcategoria> existentes = entityManager
+    List<Subcategoria> existentes = em
         .createQuery("select s from Subcategoria s where s.nombre = :nombre", Subcategoria.class)
         .setParameter("nombre", buscada.getNombre())
         .getResultList();
@@ -45,7 +45,7 @@ public class RepositorioSubcategorias {
         // obtenerOCrearCategoria(buscada.getCategoriaPadre()),
         buscada.getExigeFechaVencimiento(),
         buscada.getExigeEstadoUso());
-    entityManager.persist(nueva);
+    em.persist(nueva);
     return nueva;
   }
 
@@ -65,7 +65,7 @@ public class RepositorioSubcategorias {
     return nueva;
   }*/
 
-  public List<Categoria> listarCategorias() {
-    return entityManager.createQuery("select c from Categoria c", Categoria.class).getResultList();
+  public List<Categoria> listarCategorias(EntityManager em) {
+    return em.createQuery("select c from Categoria c", Categoria.class).getResultList();
   }
 }

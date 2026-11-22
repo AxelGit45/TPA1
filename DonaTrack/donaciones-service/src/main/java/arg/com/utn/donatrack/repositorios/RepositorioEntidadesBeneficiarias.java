@@ -9,16 +9,16 @@ import java.util.List;
 
 public class RepositorioEntidadesBeneficiarias {
 
-  private EntityManager entityManager; // = Persistencia.crearEntityManager();
+  // private EntityManager entityManager; // = Persistencia.crearEntityManager();
 
   public RepositorioEntidadesBeneficiarias() {
-    this.entityManager = Persistencia.crearEntityManager();
+    // this.entityManager = Persistencia.crearEntityManager();
   }
 
-  public void guardarEntidad(EntidadBeneficiaria entidad) {
-    entityManager.getTransaction().begin();
-    entityManager.persist(entidad);
-    entityManager.getTransaction().commit();
+  public void guardarEntidad(EntityManager em, EntidadBeneficiaria entidad) {
+    em.getTransaction().begin();
+    em.persist(entidad);
+    em.getTransaction().commit();
   }
 
   public EntidadBeneficiaria buscarPorId(EntityManager em, Long id) {

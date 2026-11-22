@@ -20,6 +20,10 @@ public class Formulario {
 
   }
 
+  public void agregarBien(Bien bien) {
+    this.bienes.add(bien);
+  }
+
   public List<Donacion> separarDonacion() {
 
     Map<String, List<Bien>> bienesPorSubcategoria = new LinkedHashMap<>();
@@ -35,7 +39,7 @@ public class Formulario {
 
     }
 
-    List<Donacion> donacionesSegmentadas = new ArrayList();
+    List<Donacion> donacionesSegmentadas = new ArrayList<>();
 
     for (List<Bien> grupo : bienesPorSubcategoria.values()) {
       Donacion nuevaDonacion = new Donacion(grupo);
@@ -56,14 +60,8 @@ public class Formulario {
   public List<Bien> getBienes() {
     return bienes;
   }
-}
 
-
-
-
-
-
-/*  public List<Donacion> segmentarDonaciones(){
+  /*  public List<Donacion> segmentarDonaciones(){
 
     List<Donacion> donacionesSegmentadas = new ArrayList<>();
 
@@ -78,7 +76,5 @@ public class Formulario {
     return  donacionesSegmentadas;
 
   }
-
-
+  */
 }
-*/

@@ -6,20 +6,20 @@ import javax.persistence.EntityManager;
 
 public class RepositorioUsuarios {
 
-  private EntityManager entityManager; // = Persistencia.crearEntityManager();
+  // private EntityManager entityManager; // = Persistencia.crearEntityManager();
 
   public RepositorioUsuarios() {
-    this.entityManager = Persistencia.crearEntityManager();
+    // this.entityManager = Persistencia.crearEntityManager();
   }
 
-  public void guardarUsuario(Usuario usuario) {
-    entityManager.getTransaction().begin();
-    entityManager.persist(usuario);
-    entityManager.getTransaction().commit();
+  public void guardarUsuario(EntityManager em, Usuario usuario) {
+    em.getTransaction().begin();
+    em.persist(usuario);
+    em.getTransaction().commit();
   }
 
-  public Usuario buscarUsuarioPorEmail(String email) {
-    return entityManager.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class).
+  public Usuario buscarUsuarioPorEmail(EntityManager em, String email) {
+    return em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class).
             setParameter("email", email)
             .getResultStream().findFirst().orElse(null);
   }

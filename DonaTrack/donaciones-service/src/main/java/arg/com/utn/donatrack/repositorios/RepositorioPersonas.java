@@ -9,23 +9,23 @@ import java.util.List;
 
 public class RepositorioPersonas {
 
-  private EntityManager entityManager;
+  // private EntityManager entityManager;
 
   public  RepositorioPersonas() {
-    this.entityManager = Persistencia.crearEntityManager();
+    // this.entityManager = Persistencia.crearEntityManager();
   }
 
-  public void guardarPersona(Persona persona) {
-    entityManager.getTransaction().begin();
-    entityManager.persist(persona);
-    entityManager.getTransaction().commit();
+  public void guardarPersona(EntityManager em, Persona persona) {
+    em.getTransaction().begin();
+    em.persist(persona);
+    em.getTransaction().commit();
   }
 
-  public Persona buscarPorEmail(String email) {
+  public Persona buscarPorEmail(EntityManager em, String email) {
     if (email == null || email.isBlank()) {
       return null;
     }
-    return entityManager
+    return em
         .createQuery(
             "SELECT p FROM Persona p, Usuario u WHERE p.usuarioId = u.id AND u.email = :email",
             Persona.class)
@@ -43,26 +43,26 @@ public class RepositorioPersonas {
     }
   }*/
 
-  public Persona buscarPorId(Long id) {
+  public Persona buscarPorId(EntityManager em, Long id) {
     if (id == null) {
       return null;
     }
-    return entityManager.find(Persona.class, id);
+    return em.find(Persona.class, id);
   }
 
-  public Persona buscarPorUsuarioId(Long usuarioId) {
+  public Persona buscarPorUsuarioId(EntityManager em, Long usuarioId) {
     if (usuarioId == null) {
       return null;
     }
-    List<Persona> resultados = entityManager
+    List<Persona> resultados = em
         .createQuery("select p from Persona p where p.usuarioId = :usuarioId", Persona.class)
         .setParameter("usuarioId", usuarioId)
         .getResultList();
     return resultados.isEmpty() ? null : resultados.get(0);
   }
 
-  public List<Persona> listarTodas() {
-    return entityManager.createQuery("select p from Persona p", Persona.class)
+  public List<Persona> listarTodas(EntityManager em) {
+    return em.createQuery("select p from Persona p", Persona.class)
         .getResultList();
   }
 

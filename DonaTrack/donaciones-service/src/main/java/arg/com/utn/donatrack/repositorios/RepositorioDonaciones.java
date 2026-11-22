@@ -11,16 +11,16 @@ import java.util.List;
 
 public class RepositorioDonaciones {
 
-  private EntityManager entityManager;
+  // private EntityManager entityManager;
 
   public RepositorioDonaciones() {
-    this.entityManager = Persistencia.crearEntityManager();
+    // this.entityManager = Persistencia.crearEntityManager();
   }
 
-  public void guardar(Donacion donacion) {
-    entityManager.getTransaction().begin();
-    entityManager.persist(donacion);
-    entityManager.getTransaction().commit();
+  public void guardar(EntityManager em, Donacion donacion) {
+    em.getTransaction().begin();
+    em.persist(donacion);
+    em.getTransaction().commit();
   }
 
   /*public void guardar(EntityManager em, Donacion donacion) {
@@ -31,42 +31,42 @@ public class RepositorioDonaciones {
     }
   }*/
 
-  public Donacion buscarPorId(Long id) {
+  public Donacion buscarPorId(EntityManager em, Long id) {
     if (id == null) {
       return null;
     }
-    return entityManager.find(Donacion.class, id);
+    return em.find(Donacion.class, id);
   }
 
-  public List<Donacion> listarTodas() {
-    return entityManager.createQuery("select distinct d from Donacion d", Donacion.class)
+  public List<Donacion> listarTodas(EntityManager em) {
+    return em.createQuery("select distinct d from Donacion d", Donacion.class)
         .getResultList();
   }
 
-  public List<Donacion> listarPorDonante(Long personaId) {
+  public List<Donacion> listarPorDonante(EntityManager em, Long personaId) {
     if (personaId == null) {
       return List.of();
     }
-    return entityManager.createQuery(
+    return em.createQuery(
             "select distinct d from Donacion d join d.bienes b where b.donador.id = :personaId", Donacion.class)
         .setParameter("personaId", personaId)
         .getResultList();
   }
 
-  public List<Donacion> listarEntregadas() {
-    return entityManager.createQuery(
+  public List<Donacion> listarEntregadas(EntityManager em) {
+    return em.createQuery(
             "select distinct d from Donacion d where TYPE(d.estadoDonacion) = Entregada", Donacion.class)
         .getResultList();
   }
 
-  public List<Donacion> listarEnDeposito() {
-    return entityManager.createQuery(
+  public List<Donacion> listarEnDeposito(EntityManager em) {
+    return em.createQuery(
             "select distinct d from Donacion d where TYPE(d.estadoDonacion) = EnDeposito", Donacion.class)
         .getResultList();
   }
 
-  public List<Donacion> listarEnTraslado() {
-    return entityManager.createQuery(
+  public List<Donacion> listarEnTraslado(EntityManager em) {
+    return em.createQuery(
             "select distinct d from Donacion d where TYPE(d.estadoDonacion) = EnTraslado", Donacion.class)
         .getResultList();
   }

@@ -2,7 +2,7 @@
 
 <h2>Recepción de Donaciones en Almacén</h2>
 
-<h3>Paso 2: Bienes de la donación de {{donante.nombre}} {{donante.apellido}}{{donante.razonSocial}}</h3>
+<h3>Paso 2: Bienes de la donación de {{donacion.persona.nombre}} {{donacion.persona.apellido}}{{donacion.persona.razonSocial}}</h3>
 <p><strong>Descripción:</strong> {{donacion.descripcion}}</p>
 
 <fieldset style="margin-bottom: 20px;">
@@ -18,8 +18,7 @@
     {{/if}}
 </fieldset>
 
-<form method="POST" action="/admin/recepcion/{{donacionId}}/bienes" class="formulario">
-     <input type="hidden" name="donanteId" value="{{donanteId}}">
+<form method="POST" action="/admin/recepcion/bienes" class="formulario">
 
     <fieldset>
         <legend>¿Qué dona?</legend>

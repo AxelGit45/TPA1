@@ -10,16 +10,16 @@ import java.util.List;
 
 public class RepositorioNecesidades {
 
-  private EntityManager entityManager; // = Persistencia.crearEntityManager();
+  // private EntityManager entityManager; // = Persistencia.crearEntityManager();
 
   public RepositorioNecesidades() {
-    this.entityManager = Persistencia.crearEntityManager();
+    // this.entityManager = Persistencia.crearEntityManager();
   }
 
-  public void guardarNecesidad(Necesidad necesidad) {
-    entityManager.getTransaction().begin();
-    entityManager.persist(necesidad);
-    entityManager.getTransaction().commit();
+  public void guardarNecesidad(EntityManager em, Necesidad necesidad) {
+    em.getTransaction().begin();
+    em.persist(necesidad);
+    em.getTransaction().commit();
   }
 
   /*public void guardar(EntityManager em, Necesidad necesidad) {
@@ -30,8 +30,8 @@ public class RepositorioNecesidades {
     }
   }*/
 
-  public Necesidad buscarNecesidadPorId(Long id) {
-    return entityManager.find(Necesidad.class, id);
+  public Necesidad buscarNecesidadPorId(EntityManager em, Long id) {
+    return em.find(Necesidad.class, id);
   }
   /*public Necesidad buscarPorId(EntityManager em, Long id) {
     if (id == null) {
@@ -40,22 +40,22 @@ public class RepositorioNecesidades {
     return em.find(Necesidad.class, id);
   }*/
 
-  public List<Necesidad> listarTodas() {
-    return entityManager.createQuery("select n from Necesidad n", Necesidad.class)
+  public List<Necesidad> listarTodas(EntityManager em) {
+    return em.createQuery("select n from Necesidad n", Necesidad.class)
         .getResultList();
   }
 
-  public List<Necesidad> listarPendientes() {
-    return entityManager.createQuery(
+  public List<Necesidad> listarPendientes(EntityManager em) {
+    return em.createQuery(
             "select n from Necesidad n where n.satisfecha = false or n.satisfecha is null", Necesidad.class)
         .getResultList();
   }
 
-  public List<Necesidad> listarPorEntidad(Long entidadId) {
+  public List<Necesidad> listarPorEntidad(EntityManager em, Long entidadId) {
     if (entidadId == null) {
       return List.of();
     }
-    return entityManager.createQuery(
+    return em.createQuery(
             "select n from EntidadBeneficiaria e join e.necesidades n where e.id = :entidadId", Necesidad.class)
         .setParameter("entidadId", entidadId)
         .getResultList();

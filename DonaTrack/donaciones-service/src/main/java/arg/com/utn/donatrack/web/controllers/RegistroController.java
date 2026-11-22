@@ -1,6 +1,7 @@
 package arg.com.utn.donatrack.web.controllers;
 
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.persistencia.Persistencia;
 import arg.com.utn.donatrack.personas.PersonaHumana;
 import arg.com.utn.donatrack.personas.PersonaJuridica;
 import arg.com.utn.donatrack.personas.TipoRazonSocial;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
 
 public class RegistroController {
 
@@ -46,6 +48,8 @@ public class RegistroController {
     String contrasenia = texto(ctx, "contrasenia");
     String confirmacion = texto(ctx, "confirmacion");
 
+    EntityManager em = Persistencia.crearEntityManager();
+
   // Validaciones del form
 
     List<String> errores = new ArrayList<>();
@@ -63,7 +67,7 @@ public class RegistroController {
 
     RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios();
 
-    if (repositorioUsuarios.buscarUsuarioPorEmail(email) != null) {
+    if (repositorioUsuarios.buscarUsuarioPorEmail(em ,email) != null) {
       errores.add("Ya existe un usuario con ese email.");
       ctx.render("registro-juridica.html.hbs", Map.of("errores", errores));
       return;
@@ -73,7 +77,7 @@ public class RegistroController {
 
     /*Creo el usuario */
     Usuario usuario = new Usuario(email, passwordHasheada, Rol.DONANTE);
-    repositorioUsuarios.guardarUsuario(usuario);
+    repositorioUsuarios.guardarUsuario(em, usuario);
 
     /*Creo la PersonaJuridica */
     PersonaJuridica personaJuridica = new PersonaJuridica(razonSocial, tipo, rubro, new ArrayList<>());
@@ -82,7 +86,7 @@ public class RegistroController {
     personaJuridica.setUsuarioId(usuario.getId());
     /*Instancio el Repositorio*/
     RepositorioPersonas repositorioPersonas = new RepositorioPersonas();
-    repositorioPersonas.guardarPersona(personaJuridica);
+    repositorioPersonas.guardarPersona(em, personaJuridica);
 
     ctx.sessionAttribute("usuarioId", usuario.getId());
     ctx.sessionAttribute("rol", usuario.getRol().name());
@@ -100,6 +104,7 @@ public class RegistroController {
     String contrasenia = texto(ctx, "contrasenia");
     String confirmacion = texto(ctx, "confirmacion");
 
+    EntityManager em = Persistencia.crearEntityManager();
     // Validaciones del form
 
     List<String> errores = new ArrayList<>();
@@ -118,7 +123,7 @@ public class RegistroController {
 
     RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios();
 
-    if (repositorioUsuarios.buscarUsuarioPorEmail(email) != null) {
+    if (repositorioUsuarios.buscarUsuarioPorEmail(em, email) != null) {
       errores.add("Ya existe un usuario con ese email.");
       ctx.render("registro-entidad.html.hbs", Map.of("errores", errores));
       return;
@@ -128,14 +133,14 @@ public class RegistroController {
 
     /*Creo el usuario */
     Usuario usuario = new Usuario(email, passwordHasheada, Rol.ENTIDAD_BENEFICIARIA);
-    repositorioUsuarios.guardarUsuario(usuario);
+    repositorioUsuarios.guardarUsuario(em, usuario);
 
     EntidadBeneficiaria entidadBeneficiaria = new EntidadBeneficiaria(razonSocial, direccion, new ArrayList<>());
     entidadBeneficiaria.getContactos().add(new Mail(email));
     entidadBeneficiaria.getContactos().add(new Telefono(telefono));
     entidadBeneficiaria.setUsuarioId(usuario.getId());
     RepositorioEntidadesBeneficiarias repositorioEntidadesBeneficiarias = new RepositorioEntidadesBeneficiarias();
-    repositorioEntidadesBeneficiarias.guardarEntidad(entidadBeneficiaria);
+    repositorioEntidadesBeneficiarias.guardarEntidad(em, entidadBeneficiaria);
 
     ctx.sessionAttribute("usuarioId", usuario.getId());
     ctx.sessionAttribute("rol", usuario.getRol().name());
@@ -162,6 +167,8 @@ public class RegistroController {
     String contrasenia = texto(ctx, "contrasenia");
     String confirmacion = texto(ctx, "confirmacion");
 
+    EntityManager em = Persistencia.crearEntityManager();
+
     // Validaciones del form
 
     List<String> errores = new ArrayList<>();
@@ -185,7 +192,7 @@ public class RegistroController {
 
     RepositorioUsuarios repositorioUsuarios = new RepositorioUsuarios();
 
-    if (repositorioUsuarios.buscarUsuarioPorEmail(email) != null) {
+    if (repositorioUsuarios.buscarUsuarioPorEmail(em, email) != null) {
       errores.add("Ya existe un usuario con ese email.");
       ctx.render("registro-humana.html.hbs", Map.of("errores", errores));
       return;
@@ -194,7 +201,7 @@ public class RegistroController {
     String passwordHasheada = SeguridadPassword.hashear(contrasenia);
     /*Creo el usuario */
     Usuario usuario = new Usuario(email, passwordHasheada, Rol.DONANTE);
-    repositorioUsuarios.guardarUsuario(usuario);
+    repositorioUsuarios.guardarUsuario(em, usuario);
 
 
     Mail mail = new Mail(email);
@@ -228,7 +235,7 @@ public class RegistroController {
       personaHumana.agregarContacto(whatsApp);
     }
     personaHumana.setUsuarioId(usuario.getId());
-    repositorioPersonas.guardarPersona(personaHumana);
+    repositorioPersonas.guardarPersona(em ,personaHumana);
 
     ctx.sessionAttribute("usuarioId", usuario.getId());
     ctx.sessionAttribute("rol", usuario.getRol().name());
@@ -286,5 +293,4 @@ public class RegistroController {
       return null;
     }
   }
-
 }

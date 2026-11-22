@@ -3,9 +3,11 @@ package arg.com.utn.donatrack.web.controllers;
 import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.EstadoUso;
+import arg.com.utn.donatrack.donaciones.Formulario;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import arg.com.utn.donatrack.donaciones.Unidad;
 import arg.com.utn.donatrack.estados.EnDeposito;
+import arg.com.utn.donatrack.persistencia.Persistencia;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
@@ -19,8 +21,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
 
 public class AdminController {
+
+  private static final String DONACION_EN_CURSO = "donacionEnCurso";
 
   public void mostrarRecepcion(Context ctx) {
     ctx.render("admin-recepcion.html.hbs", Map.of());
@@ -29,6 +34,26 @@ public class AdminController {
   //POST /admin/recepcion
 
   public void crearDonacion(Context ctx) {
+    String emailDonante = ctx.formParam("emailDonante");
+    RepositorioPersonas repositorioPersonas = new RepositorioPersonas();
+    EntityManager em = Persistencia.crearEntityManager();
+    Persona donante = repositorioPersonas.buscarPorEmail(em, emailDonante);
+
+    if (donante == null) {
+      ctx.status(400).result("No se encontró ningún donante registrado con el email: " + emailDonante);
+      return;
+    }
+
+    Formulario donacionEnCurso = new Formulario(donante, ctx.formParam("descripcion"), new ArrayList<>());
+    ctx.sessionAttribute(DONACION_EN_CURSO, donacionEnCurso);
+
+    ctx.redirect("/admin/recepcion/bienes");
+
+
+  }
+
+
+ /* public void crearDonacion(Context ctx) {
     String emailDonante = ctx.formParam("emailDonante");
     RepositorioPersonas repoPersonas = new RepositorioPersonas();
     Persona donante = repoPersonas.buscarPorEmail(emailDonante);
@@ -46,27 +71,34 @@ public class AdminController {
 
     // Pasamos el donanteId en la URL para asociarlo a cada Bien en el paso 2
     ctx.redirect("/admin/recepcion/" + donacion.getId() + "/bienes?donanteId=" + donante.getId());
-  }
+  } */
 
 
 
 
   //GET /admin/recepcion/{id}/bienes
   public void mostrarCargaBienes(Context ctx) {
-    Long donacionId = Long.parseLong(ctx.pathParam("id"));
-    String donanteId = ctx.queryParam("donanteId");
+   // Long donacionId = Long.parseLong(ctx.pathParam("id"));
+    // String donanteId = ctx.queryParam("donanteId");
+    EntityManager em = Persistencia.crearEntityManager();
+    Formulario donacionEnCurso = ctx.sessionAttribute(DONACION_EN_CURSO);
 
-    RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+    if(donacionEnCurso == null) {
+      ctx.redirect("/admin/recepcion");
+      return;
+    }
+
+    //RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
     RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
 
-    Donacion donacion = repoDonaciones.buscarPorId(donacionId);
+    //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
 
-    donacion.setDescripcion(ctx.formParam("descripcion"));
+    //donacion.setDescripcion(ctx.formParam("descripcion"));
 
     //SUBCATEGORIA
 
     Map<String, List<Subcategoria>> subcategoriasPorCategoria = new LinkedHashMap<>();
-    for (Subcategoria subcategoria : repoSubcategorias.listarSubcategorias()) {
+    for (Subcategoria subcategoria : repoSubcategorias.listarSubcategorias(em)) {
       subcategoriasPorCategoria
           .computeIfAbsent(subcategoria.getCategoriaPadre().getNombre(), k -> new ArrayList<>())
           .add(subcategoria);
@@ -74,40 +106,49 @@ public class AdminController {
 
     //CATEGORIAS
     Map<String, Object> model = new HashMap<>();
-    model.put("categorias", repoSubcategorias.listarCategorias());
+    model.put("categorias", repoSubcategorias.listarCategorias(em));
     model.put("subcategorias", subcategoriasPorCategoria);
 
-
-
-
-
-    model.put("donacion", donacion);
-    model.put("donacionId",donacionId);
-    model.put("donanteId", donanteId);
-    model.put("donante", new RepositorioPersonas().buscarPorId(Long.parseLong(donanteId)));
+    //model.put("donacion", donacion);
+    //model.put("donacionId",donacionId);
+    //model.put("donanteId", donanteId);
+    //model.put("donante", new RepositorioPersonas().buscarPorId(Long.parseLong(donanteId)));
 
     /*
     model.put("subcategorias", repoSubcategorias.listarSubcategorias());
     */
+
+    model.put("donacion", donacionEnCurso);
+
     ctx.render("admin-recepcion-bienes.html.hbs", model);
   }
 
 
   //POST /admin/recepcion/{id}/bienes
   public void agregarBien(Context ctx) {
-    Long donacionId = Long.parseLong(ctx.pathParam("id"));
-    Long donanteId = Long.parseLong(ctx.formParam("donanteId"));
+    Formulario donacionEnCurso = ctx.sessionAttribute(DONACION_EN_CURSO);
+    EntityManager em = Persistencia.crearEntityManager();
+
+    if(donacionEnCurso == null) {
+      ctx.redirect("/admin/recepcion");
+      return;
+    }
+
+    //Long donacionId = Long.parseLong(ctx.pathParam("id"));
+    //Long donanteId = Long.parseLong(ctx.formParam("donanteId"));
     Long subcategoriaId = Long.parseLong(ctx.formParam("subcategoriaId"));
 
-    RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
-    RepositorioPersonas repoPersonas = new RepositorioPersonas();
+
+   // RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+   // RepositorioPersonas repoPersonas = new RepositorioPersonas();
     RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
-    Donacion donacion = repoDonaciones.buscarPorId(donacionId);
-    Persona donante = repoPersonas.buscarPorId(donanteId);
-    Subcategoria sub = repoSubcategorias.buscarSubcategoriaPorId(subcategoriaId);
+    //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
+    //Persona donante = repoPersonas.buscarPorId(donanteId);
+    Subcategoria sub = repoSubcategorias.buscarSubcategoriaPorId(em, subcategoriaId);
 
     Bien bien = new Bien();
-    bien.setDonador(donante);
+    //bien.setDonador(donante);
+    bien.setDonador(donacionEnCurso.getPersona());
     bien.setSubcategoria(sub);
     bien.setDescripcion(ctx.formParam("descripcionBien"));
     bien.setCantidad(Integer.parseInt(ctx.formParam("cantidad")));
@@ -120,14 +161,45 @@ public class AdminController {
 
     String vencimiento = ctx.formParam("fechaVencimiento");
     if (vencimiento != null && !vencimiento.isBlank()) {
-      bien.setFechaVencimiento(java.sql.Date.valueOf(LocalDate.parse(vencimiento))/*LocalDate.parse(vencimiento)*/);
+      bien.setFechaVencimiento(java.sql.Date.valueOf(LocalDate.parse(vencimiento)));
+      bien.setPerecedero(true);
     }
 
-    donacion.agregarBien(bien);
-    repoDonaciones.guardar(donacion);
+    //donacion.agregarBien(bien);
+    //repoDonaciones.guardar(donacion);
 
-    ctx.redirect("/admin/recepcion/" + donacionId + "/bienes?donanteId=" + donanteId);
+    donacionEnCurso.agregarBien(bien);
+
+    //ctx.redirect("/admin/recepcion/" + donacionId + "/bienes?donanteId=" + donanteId);
+    ctx.redirect("/admin/recepcion/bienes");
   }
+
+  public void finalizarDonacion(Context ctx) {
+    Formulario donacionEnCurso = ctx.sessionAttribute(DONACION_EN_CURSO);
+    EntityManager em = Persistencia.crearEntityManager();
+
+    if(donacionEnCurso == null) {
+      ctx.redirect("/admin/recepcion");
+      return;
+    }
+
+    if (donacionEnCurso.getBienes().isEmpty()) {
+      ctx.status(400).result("La donación no tiene bienes cargados");
+      return;
+    }
+
+    RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+    for (Donacion donacion : donacionEnCurso.separarDonacion()) {
+      repoDonaciones.guardar(em ,donacion);
+    }
+
+    ctx.sessionAttribute(DONACION_EN_CURSO, null);
+
+    ctx.redirect("/admin");
+
+
+  }
+
 
   public void importarCsv(Context ctx) {
     UploadedFile archivo = ctx.uploadedFile("archivoCsv");

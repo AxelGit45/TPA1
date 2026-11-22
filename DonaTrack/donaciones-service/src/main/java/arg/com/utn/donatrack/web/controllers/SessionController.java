@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack.web.controllers;
 
+import arg.com.utn.donatrack.persistencia.Persistencia;
 import arg.com.utn.donatrack.repositorios.RepositorioUsuarios;
 import arg.com.utn.donatrack.seguridad.SeguridadPassword;
 import arg.com.utn.donatrack.usuarios.Usuario;
@@ -7,6 +8,7 @@ import io.javalin.http.Context;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.EntityManager;
 
 public class SessionController {
 
@@ -16,9 +18,9 @@ public class SessionController {
   public void iniciarSesion(Context ctx) {
     String email = texto(ctx, "email");
     String contrasenia = texto(ctx, "contrasenia");
+    EntityManager em = Persistencia.crearEntityManager();
 
-    Usuario usuario = new RepositorioUsuarios().buscarUsuarioPorEmail(email);
-
+    Usuario usuario = new RepositorioUsuarios().buscarUsuarioPorEmail(em, email);
 
     if (usuario != null && SeguridadPassword.verificar(contrasenia, usuario.getContrasenia())) {
       ctx.sessionAttribute("usuarioId", usuario.getId());
