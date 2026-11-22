@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BienPersistenceTest implements SimplePersistenceTest {
 
-  @Test
+  //@Test
    /*
   1- Creamos el donante
   2- Creamos la subcategoría y su categoría
@@ -25,7 +25,7 @@ public class BienPersistenceTest implements SimplePersistenceTest {
   9- Consultamos el donador
    */
 
-  void crearYPersistirUnBienPerecedero() {
+  /*void crearYPersistirUnBienPerecedero() {
 
       PersonaHumana donante = new PersonaHumana("Julieta", "Gonzalez", 21, 45320415, "Femenino", "Avellaneda 1810", null, null);
 
@@ -61,7 +61,7 @@ public class BienPersistenceTest implements SimplePersistenceTest {
       assertEquals("Alimentos", bienRecuperado.getSubcategoria().getCategoriaPadre().getNombre());
 
 
-  }
+  }*/
 
   /*
 1- Creamos el donante

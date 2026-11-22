@@ -23,9 +23,9 @@ public class EnTraslado extends EstadoDonacion{
     return camionId;
   }
 
-  @Override
+  /*@Override
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
     throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");
-  }
+  }*/
 
 }

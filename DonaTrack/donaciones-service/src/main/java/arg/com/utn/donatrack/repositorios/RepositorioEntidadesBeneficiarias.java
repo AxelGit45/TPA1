@@ -52,4 +52,11 @@ public class RepositorioEntidadesBeneficiarias {
       em.close();
     }
   }
+
+  public List<EntidadBeneficiaria> listarConNecesidades(EntityManager em) {
+    return em.createQuery(
+            "select e from EntidadBeneficiaria e where e.necesidades is not empty", EntidadBeneficiaria.class)
+        .getResultList();
+  }
+
 }

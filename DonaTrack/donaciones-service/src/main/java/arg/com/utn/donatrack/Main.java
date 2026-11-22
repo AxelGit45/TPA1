@@ -132,6 +132,7 @@ app.before(ctx -> {
     // Rutas Admin
     app.get("/admin/recepcion", admin::mostrarRecepcion);
     app.get("/admin/vencidas", admin::mostrarVencidas);
+    app.post("/admin/vencidas/{id}", admin::marcarVencida);
     app.get("/admin/matchmaking", admin::mostrarMatchmaking);
     app.get("/admin/camiones", admin::mostrarCamiones);
     app.get("/admin/importar-csv", admin::mostrarImportarCsv);

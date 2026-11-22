@@ -4,4 +4,49 @@
 
 <p>Listado y descarte de donaciones perecederas con fecha de vencimiento cumplida.</p>
 
+<p><a href="/admin">Volver al panel</a></p>
+
+{{#if actualizada}}
+    <p>La donación #{{actualizada}} se marcó como vencida.</p>
+{{/if}}
+
+<h3>Donaciones en depósito con bienes vencidos</h3>
+
+{{#if donaciones}}
+    <table border="1" cellpadding="6">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Ingreso al depósito</th>
+            <th>Descripción</th>
+            <th>Bienes</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each donaciones}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{estado.fechaDeAsignacion}}</td>
+                <td>{{descripcion}}</td>
+                <td>
+                    <ul>
+                        {{#each bienes}}
+                            <li>{{cantidad}} {{unidad}} — {{descripcion}} ({{subcategoria.nombre}}){{#if fechaVencimiento}} — vence {{fechaVencimiento}}{{/if}}</li>
+                        {{/each}}
+                    </ul>
+                </td>
+                <td>
+                    <form method="POST" action="/admin/vencidas/{{id}}">
+                        <button type="submit">Marcar como vencida</button>
+                    </form>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p>No hay donaciones vencidas en el depósito.</p>
+{{/if}}
+
 {{> partials/footer}}

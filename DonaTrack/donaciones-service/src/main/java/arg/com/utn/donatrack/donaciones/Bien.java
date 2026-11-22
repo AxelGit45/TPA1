@@ -13,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "bien")
@@ -30,7 +30,7 @@ public class Bien {
   private Integer cantidad;
   @Enumerated(EnumType.STRING)
   private Unidad unidad;
-  private Date fechaVencimiento;
+  private LocalDate  fechaVencimiento;
   @Enumerated(EnumType.STRING)
   private EstadoUso estadoUso;
   private boolean perecedero;
@@ -41,7 +41,7 @@ public class Bien {
   public Bien(){}
 
   public Bien(String descripcion, String foto, Subcategoria subcategoria, Integer cantidad, Unidad unidad,
-              Date fechaVencimiento, EstadoUso estadoUso, boolean perecedero, Persona donador){
+              LocalDate  fechaVencimiento, EstadoUso estadoUso, boolean perecedero, Persona donador){
 
     this.descripcion = descripcion;
     this.foto = foto;
@@ -61,6 +61,11 @@ public class Bien {
 
   public boolean esPerecedero(){
     return perecedero;
+  }
+
+  public boolean estaVencido(){
+    return perecedero && fechaVencimiento != null
+        && fechaVencimiento.isBefore(LocalDate.now());
   }
 
   public Subcategoria getSubcategoria(){return subcategoria;}
@@ -110,11 +115,11 @@ public class Bien {
     this.unidad = unidad;
   }
 
-  public Date getFechaVencimiento() {
+  public LocalDate  getFechaVencimiento() {
     return fechaVencimiento;
   }
 
-  public void setFechaVencimiento(Date fechaVencimiento) {
+  public void setFechaVencimiento(LocalDate  fechaVencimiento) {
     this.fechaVencimiento = fechaVencimiento;
   }
 

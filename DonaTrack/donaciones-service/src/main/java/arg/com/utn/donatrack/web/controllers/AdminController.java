@@ -4,12 +4,16 @@ import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.EstadoUso;
 import arg.com.utn.donatrack.donaciones.Formulario;
+import arg.com.utn.donatrack.donaciones.ResultadoMatchmaking;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import arg.com.utn.donatrack.donaciones.Unidad;
+import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.estados.EnDeposito;
+import arg.com.utn.donatrack.estados.Vencida;
 import arg.com.utn.donatrack.persistencia.Persistencia;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
+import arg.com.utn.donatrack.repositorios.RepositorioEntidadesBeneficiarias;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
 import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
 import arg.com.utn.donatrack.tareas.ImportadorCsv;
@@ -161,7 +165,7 @@ public class AdminController {
 
     String vencimiento = ctx.formParam("fechaVencimiento");
     if (vencimiento != null && !vencimiento.isBlank()) {
-      bien.setFechaVencimiento(java.sql.Date.valueOf(LocalDate.parse(vencimiento)));
+      bien.setFechaVencimiento(LocalDate.parse(vencimiento));
       bien.setPerecedero(true);
     }
 
@@ -220,12 +224,70 @@ public class AdminController {
     }
   }
 
-  public void mostrarHome(Context ctx) {
-    ctx.render("admin-home.html.hbs", Map.of());
+
+  /*ESTO ES PARA PROBAR LOS ALGORITMOS*/
+
+  public void correrAlgoritmos(Context ctx){
+
+    EntityManager em = Persistencia.crearEntityManager();
+    /*Repositorios*/
+    RepositorioDonaciones repoDonacion = new RepositorioDonaciones();
+    RepositorioEntidadesBeneficiarias repoEntidades = new RepositorioEntidadesBeneficiarias();
+    /*Repositorios*/
+
+    String id = "29";
+    Long donacionId = Long.parseLong(id);
+    Donacion donacion = repoDonacion.buscarPorId(em,donacionId);
+
+    List<EntidadBeneficiaria> entidades = repoEntidades.listarTodas(em);
+    ResultadoMatchmaking resultados = donacion.getEstado().asignacionDonaciones(entidades, donacion);
+    /*hasta aca, con todo esto, no rompe*/
+    //repoDonacion.
+
+    ctx.render("admin-matchmaking.html.hbs", Map.of());
   }
 
+  /*ESTO ES PARA PROBAR LOS ALGORITMOS*/
+
+
   public void mostrarVencidas(Context ctx) {
-    ctx.render("admin-vencidas.html.hbs", Map.of());
+    EntityManager em = Persistencia.crearEntityManager();
+    try {
+      RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+      List<Donacion> vencidas = repoDonaciones.listarVencidasEnDeposito(em);
+
+      Map<String, Object> model = new HashMap<>();
+      model.put("donaciones", vencidas);
+      model.put("actualizada", ctx.queryParam("actualizada"));
+      ctx.render("admin-vencidas.html.hbs", model);
+    } finally {
+      em.close();
+    }
+  }
+
+  public void marcarVencida(Context ctx) {
+    Long donacionId = Long.parseLong(ctx.pathParam("id"));
+    EntityManager em = Persistencia.crearEntityManager();
+    try {
+      RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+      Donacion donacion = repoDonaciones.buscarPorId(em, donacionId);
+
+      if (donacion == null || !(donacion.getEstado() instanceof EnDeposito) || !donacion.estaVencida()) {
+        ctx.status(400).result("La donación no está en depósito o no está vencida.");
+        return;
+      }
+
+      donacion.cambiarEstado(new Vencida());
+      repoDonaciones.actualizar(em, donacion);
+
+      ctx.redirect("/admin/vencidas?actualizada=" + donacionId);
+    } finally {
+      em.close();
+    }
+  }
+
+  public void mostrarHome(Context ctx) {
+    ctx.render("admin-home.html.hbs", Map.of());
   }
 
   public void mostrarMatchmaking(Context ctx) {

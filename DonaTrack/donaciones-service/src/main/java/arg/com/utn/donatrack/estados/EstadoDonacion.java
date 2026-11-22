@@ -3,6 +3,7 @@ package arg.com.utn.donatrack.estados;
 import arg.com.utn.donatrack.donaciones.Algoritmo;
 import arg.com.utn.donatrack.donaciones.ComponenteAsignadorDeDestinatarios;
 import arg.com.utn.donatrack.donaciones.Donacion;
+import arg.com.utn.donatrack.donaciones.ResultadoMatchmaking;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -35,7 +37,8 @@ public abstract class EstadoDonacion {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private LocalDate fechaDeAsignacion;
-
+  @Transient
+  private ResultadoMatchmaking resultados;
   public EstadoDonacion() {
     this.fechaDeAsignacion = LocalDate.now();
   }
@@ -44,7 +47,10 @@ public abstract class EstadoDonacion {
     return fechaDeAsignacion;
   }
 
-  public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){}
+  /*cambie asignacionDonaciones, ahora devuelve ResultadoMatchmaking*/
+  /**PRESTAR ATENCION A LOS DEMAS METODOS SOBREESCRITOS EN LOS DEMAS ESTADOS!!! ESTAN COMENTADOS!!!**/
+
+  public ResultadoMatchmaking asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){return resultados;}
   public void setAlgoritmo(Algoritmo algoritmo){}
   public void notificar() {};
   public void setComponenteExterno(ComponenteAsignadorDeDestinatarios componenteExterno){}

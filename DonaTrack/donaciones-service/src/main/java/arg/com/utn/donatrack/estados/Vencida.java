@@ -13,8 +13,8 @@ public class Vencida extends EstadoDonacion{
 
   public Vencida() { }
 
-  @Override
+  /*@Override
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
     throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");
-  }
+  }*/
 }

@@ -106,9 +106,13 @@ public class Donacion {
     return bienes.stream().anyMatch(necesidad::esSatisfechaPor);
   }
 
-  public void realizarProcesoDeMtachmaking(List<EntidadBeneficiaria> entidades){
-    this.estadoDonacion.asignacionDonaciones(entidades, this);
+  public boolean estaVencida(){
+    return bienes.stream().anyMatch(Bien::estaVencido);
   }
+
+ /*public void realizarProcesoDeMtachmaking(List<EntidadBeneficiaria> entidades){
+    this.estadoDonacion.asignacionDonaciones(entidades, this);
+  }*/
 
   /* //METODO PARA QUE UNA DONACION REALICE EL PROCESO DE MATCHMAKING
    public void matchmakin(List<EntidadBeneficiaria> entidades){  //BIEN

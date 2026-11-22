@@ -5,7 +5,7 @@ import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.estados.EnTraslado;
 import arg.com.utn.donatrack.estados.Entregada;
 import arg.com.utn.donatrack.persistencia.Persistencia;
-
+import java.time.LocalDate;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -20,6 +20,12 @@ public class RepositorioDonaciones {
   public void guardar(EntityManager em, Donacion donacion) {
     em.getTransaction().begin();
     em.persist(donacion);
+    em.getTransaction().commit();
+  }
+
+  public void actualizar(EntityManager em, Donacion donacion) {
+    em.getTransaction().begin();
+    em.merge(donacion);
     em.getTransaction().commit();
   }
 
@@ -62,6 +68,17 @@ public class RepositorioDonaciones {
   public List<Donacion> listarEnDeposito(EntityManager em) {
     return em.createQuery(
             "select distinct d from Donacion d where TYPE(d.estadoDonacion) = EnDeposito", Donacion.class)
+        .getResultList();
+  }
+
+  public List<Donacion> listarVencidasEnDeposito(EntityManager em) {
+    return em.createQuery(
+            "select distinct d from Donacion d "
+                + "join d.estadoDonacion e "
+                + "join d.bienes b "
+                + "where TYPE(e) = EnDeposito "
+                + "and b.perecedero = true and b.fechaVencimiento < :hoy", Donacion.class)
+        .setParameter("hoy", LocalDate.now())
         .getResultList();
   }
 

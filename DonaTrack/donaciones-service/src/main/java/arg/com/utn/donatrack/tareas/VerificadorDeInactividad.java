@@ -7,7 +7,6 @@ import arg.com.utn.donatrack.repositorios.RepositorioEntidadesBeneficiarias;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 public class VerificadorDeInactividad {
 

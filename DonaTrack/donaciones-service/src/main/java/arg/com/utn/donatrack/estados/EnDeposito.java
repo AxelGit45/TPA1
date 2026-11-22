@@ -21,12 +21,12 @@ public class EnDeposito extends EstadoDonacion{
   public EnDeposito() { }
 
   @Override
-  public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
+  public ResultadoMatchmaking asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
 
       List<ResultadoAlgoritmo> resultadosDeAlgoritmos = algoritmos.stream().map(algoritmo -> algoritmo.ejecutar(donacion,entidades)).toList();
 
       ResultadoMatchmaking ranking = new ResultadoMatchmaking(donacion, resultadosDeAlgoritmos);
-
+      return ranking;
     //EntidadBeneficiaria entidad = componenteExterno.obtenerResultadoDeAlgoritmosPorDonacion(ranking);
                         // Entidad/ NULL
     //Si hay concincidencias con la entiad

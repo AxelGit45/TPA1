@@ -32,10 +32,10 @@ public class EntregaFallida extends EstadoDonacion{
     this.justificacion = justificacion;
   }
 
-  @Override
+  /*@Override
   public void asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
     throw new RuntimeException("No es posible realizar el matchmaking, estado incorrecto");
-  }
+  }*/
 
   @Override
   public void notificar() {
