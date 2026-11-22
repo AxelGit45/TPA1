@@ -50,13 +50,14 @@ public class EntidadController {
     Map<String, Object> model = new HashMap<>();
     model.put("categorias", repoSubcategorias.listarCategorias(em));
     model.put("subcategorias", subcategoriasPorCategoria);
+    model.put("exito", ctx.queryParam("exito") != null);
 
     ctx.render("beneficiaria-necesidad.html.hbs", model);
   }
 
   public void guardarNecesidad(Context ctx) {
     String tipo = ctx.formParam("tipo");
-    String nombreSubcategoria = ctx.formParam("subcategoria");
+    String subcategoriaId = ctx.formParam( "subcategoriaId");
     String cantidadStr = ctx.formParam("cantidad");
     String descripcion = ctx.formParam("descripcion");
     String fechaLimiteStr = ctx.formParam("fechaLimite");
@@ -80,9 +81,9 @@ public class EntidadController {
       }
 
       if (entidad != null) {
-        Subcategoria subcategoria = repoSubcategorias.obtenerOCrear(em,
-            new Subcategoria(nombreSubcategoria != null ? nombreSubcategoria : "General", null, false, false));
-
+       // Subcategoria subcategoria = repoSubcategorias.obtenerOCrear(em,
+            //new Subcategoria(nombreSubcategoria != null ? nombreSubcategoria : "General", null, false, false));
+        Subcategoria subcategoria = repoSubcategorias.buscarSubcategoriaPorId(em, Long.parseLong(subcategoriaId));
         Necesidad necesidad;
         if ("EXTRAORDINARIA".equalsIgnoreCase(tipo)) {
           necesidad = new NecesidadExtraordinaria(null, subcategoria, cantidad, descripcion, false, 0);
@@ -99,8 +100,8 @@ public class EntidadController {
       }
 
       Map<String, Object> modelo = new HashMap<>();
-      modelo.put("exito", true);
-      ctx.render("beneficiaria-necesidad.html.hbs", modelo);
+
+      ctx.redirect("/entidad/necesidades/nueva?exito=true");
 
     } catch (Exception e) {
       if (em.getTransaction().isActive()) {
