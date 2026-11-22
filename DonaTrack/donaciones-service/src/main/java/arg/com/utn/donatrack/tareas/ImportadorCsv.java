@@ -26,6 +26,8 @@ public class ImportadorCsv {
     try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
       em.getTransaction().begin();
 
+      String passwordDefault = SeguridadPassword.hashear("donatrack123");
+
       String linea = br.readLine();
       while ((linea = br.readLine()) != null) {
         if (linea.isBlank()) continue;
@@ -43,8 +45,7 @@ public class ImportadorCsv {
             .getResultList();
         Usuario usuario;
         if (usuarios.isEmpty()) {
-
-          usuario = new Usuario(email, SeguridadPassword.hashear("donatrack123"), Rol.DONANTE);
+          usuario = new Usuario(email, passwordDefault, Rol.DONANTE);
           em.persist(usuario);
         } else {
           usuario = usuarios.get(0);
@@ -62,22 +63,23 @@ public class ImportadorCsv {
           }
           em.merge(personaExistente);
         } else {
-          List<Contacto> contactos = new ArrayList<>();
-          contactos.add(new Mail(email));
-          if (!telefono.isBlank()) {
-            contactos.add(new Telefono(telefono));
-          }
           if (tipoPersona.equalsIgnoreCase("HUMANA")) {
             PersonaHumana nuevaHumana = new PersonaHumana();
             nuevaHumana.setNombre(nombreORazonSocial);
-            nuevaHumana.setContactos(contactos);
             nuevaHumana.setUsuarioId(usuario.getId());
+            nuevaHumana.agregarContacto(new Mail(email));
+            if (!telefono.isBlank()) {
+              nuevaHumana.agregarContacto(new Telefono(telefono));
+            }
             em.persist(nuevaHumana);
           } else {
             PersonaJuridica nuevaJuridica = new PersonaJuridica();
             nuevaJuridica.setRazonSocial(nombreORazonSocial);
-            nuevaJuridica.setContactos(contactos);
             nuevaJuridica.setUsuarioId(usuario.getId());
+            nuevaJuridica.agregarContacto(new Mail(email));
+            if (!telefono.isBlank()) {
+              nuevaJuridica.agregarContacto(new Telefono(telefono));
+            }
             em.persist(nuevaJuridica);
           }
         }

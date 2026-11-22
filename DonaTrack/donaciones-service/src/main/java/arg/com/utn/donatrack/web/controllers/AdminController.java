@@ -1,6 +1,7 @@
 package arg.com.utn.donatrack.web.controllers;
 
 import arg.com.utn.donatrack.donaciones.Donacion;
+import arg.com.utn.donatrack.donaciones.Subcategoria;
 import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
@@ -9,7 +10,10 @@ import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
 import arg.com.utn.donatrack.tareas.ImportadorCsv;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AdminController {
@@ -39,6 +43,9 @@ public class AdminController {
     ctx.redirect("/admin/recepcion/" + donacion.getId() + "/bienes?donanteId=" + donante.getId());
   }
 
+
+
+
   //GET /admin/recepcion/{id}/bienes
   public void mostrarCargaBienes(Context ctx) {
     Long donacionId = Long.parseLong(ctx.pathParam("id"));
@@ -49,8 +56,23 @@ public class AdminController {
 
     //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
 
+    //SUBCATEGORIA
+
+    Map<String, List<Subcategoria>> subcategoriasPorCategoria = new LinkedHashMap<>();
+    for (Subcategoria subcategoria : repoSubcategorias.listarSubcategorias()) {
+      subcategoriasPorCategoria
+          .computeIfAbsent(subcategoria.getCategoriaPadre().getNombre(), k -> new ArrayList<>())
+          .add(subcategoria);
+    }
+
+    //CATEGORIAS
     Map<String, Object> model = new HashMap<>();
     model.put("categorias", repoSubcategorias.listarCategorias());
+    model.put("subcategorias", subcategoriasPorCategoria);
+
+
+
+
 
     /*model.put("donacion", donacion);
     model.put("donanteId", donanteId);
@@ -115,6 +137,9 @@ public class AdminController {
     }
   }
 
+  public void mostrarHome(Context ctx) {
+    ctx.render("admin-home.html.hbs", Map.of());
+  }
 
   public void mostrarVencidas(Context ctx) {
     ctx.render("admin-vencidas.html.hbs", Map.of());

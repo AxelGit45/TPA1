@@ -19,16 +19,27 @@
         </select>
     </p>
 
-    <p>
-        <div class="campo">
-            <label for="unidad">Categoria</label>
-            <select id="unidad" name="unidad" required>
-                <option value="UNIDAD">Mobiliario</option>
-                <option value="KILOGRAMOS">Vestimenta</option>
-                <option value="LITROS">Litros</option>
 
+        <div class="campo">
+            <label for="categoriaId">Categoría:</label>
+            <select id="categoriaId" name="categoriaId" required>
+                <option value=""> -- Seleccioná una categoría --</option>
+                   {{#each categorias}}
+                        <option value="{{id}}">{{nombre}}</option>
+                   {{/each}}
             </select>
         </div>
+z
+            <div class="campo">
+                <label for="subcategoriaId">Subcategoría:</label>
+                <select id="subcategoriaId" name="subcategoriaId" required>
+                    <option value="">-- Seleccioná una subcategoría --</option>
+                    {{#each subcategorias}}
+                        <option value="{{id}}" data-nombre="{{nombre}}">{{nombre}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
 
         <!-- <label for="subcategoria">Categoría / Bien Necesitado:</label><br>
         <select id="subcategoria" name="subcategoria" required>
@@ -39,7 +50,7 @@
             <option value="Medicamentos">Medicamentos</option>
             <option value="Artículos de Limpieza">Artículos de Limpieza</option>
         </select> -->
-    </p>
+
 
     <p>
         <label for="cantidad">Cantidad necesaria (unidades / kg / litros):</label><br>

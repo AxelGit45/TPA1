@@ -15,6 +15,18 @@ public class RepositorioSubcategorias {
     this.entityManager = Persistencia.crearEntityManager();
   }
 
+  public List<Subcategoria> listarSubcategorias() {
+    return entityManager.createQuery("select s from Subcategoria s", Subcategoria.class).getResultList();
+  }
+
+  public Subcategoria buscarSubcategoriaPorId (Long id) {
+    if (id == null) {
+      return null;
+    }
+    return entityManager.find(Subcategoria.class, id);
+  }
+
+
   /** Devuelve la subcategoría guardada con ese nombre; si no existe, la crea (con su categoría). */
   public Subcategoria obtenerOCrear(Subcategoria buscada) {
     if (buscada == null) {

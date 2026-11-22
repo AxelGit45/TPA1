@@ -113,7 +113,7 @@ app.before(ctx -> {
     // Landings por rol
     app.get("/donante", landing::mostrar);
     app.get("/entidad", landing::mostrar);
-    app.get("/admin", landing::mostrar);
+    app.get("/admin", admin::mostrarHome);
 
     // Rutas Donante
     app.get("/donante/donaciones", donante::listarDonaciones);

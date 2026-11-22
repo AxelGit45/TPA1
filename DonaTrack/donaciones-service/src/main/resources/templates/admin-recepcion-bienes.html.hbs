@@ -2,14 +2,15 @@
 
 <h2>Recepción de Donaciones en Almacén</h2>
 
-<h3>Paso 2: Bienes de la Donación #{{donacion.id}}</h3>
+<h3>Paso 2: Bienes de la donación de {{donacion.persona.nombre}} {{donacion.persona.apellido}}{{donacion.persona.razonSocial}}</h3>
+<p><strong>Descripción:</strong> {{donacion.descripcion}}</p>
 
 <fieldset style="margin-bottom: 20px;">
     <legend>Bienes cargados hasta ahora</legend>
     {{#if donacion.bienes}}
         <ul>
             {{#each donacion.bienes}}
-                <li><strong>{{cantidad}} {{unidad}}</strong> — {{descripcion}} ({{subcategoria.nombre}})</li>
+                <li><strong>{{cantidad}} {{unidad}}</strong> — {{descripcion}} ({{subcategoria.nombre}}){{#if fechaVencimiento}} — vence {{fechaVencimiento}}{{/if}}{{#if estadoUso}} — {{estadoUso}}{{/if}}</li>
             {{/each}}
         </ul>
     {{else}}
@@ -17,46 +18,44 @@
     {{/if}}
 </fieldset>
 
-<form method="POST" action="/admin/recepcion/{{donacion.id}}/bienes" class="formulario">
-    <!-- Mantiene el ID del donante entre recargas sin usar JS ni columnas extra -->
-    <input type="hidden" name="donanteId" value="{{donanteId}}">
+<form method="POST" action="/admin/recepcion/bienes" class="formulario">
 
     <fieldset>
         <legend>¿Qué dona?</legend>
 
-        <div class="campo">
-            <label for="subcategoriaId">Subcategoría:</label>
-            <select id="subcategoriaId" name="subcategoriaId" required>
-                <option value="">-- Seleccioná una subcategoría --</option>
-                {{#each subcategorias}}
-                    <option value="{{id}}" data-nombre="{{nombre}}">{{nombre}}</option>
-                {{/each}}
-            </select>
-        </div>
+
+
+         <div class="campo">
+                   <label for="categoriaId">Categoría:</label>
+                   <select id="categoriaId" name="categoriaId" required>
+                       <option value=""> -- Seleccioná una categoría --</option>
+                       {{#each categorias}}
+                           <option value="{{id}}">{{nombre}}</option>
+                       {{/each}}
+                   </select>
+               </div>
+
+
+      <div class="campo">
+                      <label for="subcategoriaId">Subcategoría:</label>
+                      <select id="subcategoriaId" name="subcategoriaId" required>
+                          <option value=""> -- Seleccioná una subcategoría --</option>
+                          {{#each subcategorias}}
+                              <optgroup label="{{@key}}">
+                                  {{#each this}}
+                                      <option value="{{id}}">{{nombre}}</option>
+                                  {{/each}}
+                              </optgroup>
+                          {{/each}}
+                      </select>
+                  </div>
+
 
         <div class="campo">
             <label for="descripcionBien">Descripción del bien:</label>
             <input type="text" id="descripcionBien" name="descripcionBien" placeholder="Ej: Fideos secos 500g" required>
         </div>
-        <!--
-        <div class="campo">
-            <label for="unidad">Categoria</label>
-            <select id="unidad" name="unidad" required>
-                <option value="UNIDAD">Mobiliario</option>
-                <option value="KILOGRAMOS">Vestimenta</option>
-                <option value="LITROS">Litros</option>
-           </select>
-        </div> -->
 
-        <div class="campo">
-            <label for="categoriaId">Categoría:</label>
-            <select id="categoriaId" name="categoriaId" required>
-                <option value=""> -- Seleccioná una categoría --</option>
-                {{#each categorias}}
-                    <option value="{{id}}">{{nombre}}</option>
-                {{/each}}
-            </select>
-        </div>
 
 
         <div class="campo">
@@ -68,27 +67,59 @@
             <label for="unidad">Unidad:</label>
             <select id="unidad" name="unidad" required>
                 <option value="UNIDAD">Unidades</option>
-                <option value="KILOGRAMOS">Kilogramos</option>
-                <option value="LITROS">Litros</option>
+                <option value="KILOGRAMO">Kilogramos</option>
+                <option value="LITRO">Litros</option>
             </select>
+
+            <input type="hidden" id="unidadFija" name="unidad" value="UNIDAD" disabled>
         </div>
 
         <div class="campo" id="campoEstadoUso" style="display: none;">
-            <label for="estadoUso"> Estado de uso: </label>
-            <select id="estadoUso" name="estadoUso"
+            <label for="estadoUso">Estado de uso:</label>
+            <select id="estadoUso" name="estadoUso">
+                <option value="">-- Seleccioná el estado --</option>
                 <option value="NUEVO">Nuevo</option>
                 <option value="USADO">Usado</option>
             </select>
         </div>
 
+
         <div class="campo" id="campoVencimiento" style="display: none;">
-            <label for="fechaVencimiento">Fecha de vencimiento (opcional - alimentos):</label>
+            <label for="fechaVencimiento">Fecha de vencimiento:</label>
             <input type="date" id="fechaVencimiento" name="fechaVencimiento">
         </div>
     </fieldset>
 
     <button type="submit">+ Agregar bien</button>
-    <a href="/admin" style="margin-left: 16px;">✓ Finalizar</a>
+</form>
+
+<script>
+  // Alimentos e higiene muestran vencimiento; libros ,juguetes, mobiliario y vestimenta muestran estado de uso
+  const categoria = document.getElementById("categoriaId");
+
+  categoria.addEventListener("change", () => {
+     const nombre = categoria.options[categoria.selectedIndex].text;
+     const llevaVencimiento = nombre === "ALIMENTOS" || nombre === "HIGIENE";
+     const llevaEstadoUso = nombre === "JUGUETES" || nombre === "MOBILIARIO" || nombre === "VESTIMENTA" || nombre === "LIBROS";
+
+    document.getElementById("campoVencimiento").style.display = llevaVencimiento ? "" : "none";
+    document.getElementById("fechaVencimiento").required = llevaVencimiento;
+    if (!llevaVencimiento) document.getElementById("fechaVencimiento").value = "";
+
+    document.getElementById("campoEstadoUso").style.display = llevaEstadoUso ? "" : "none";
+    document.getElementById("estadoUso").required = llevaEstadoUso;
+    if (!llevaEstadoUso) document.getElementById("estadoUso").value = "";
+
+   //traba unidades
+    const unidad = document.getElementById("unidad");
+    if (llevaEstadoUso) unidad.value = "UNIDAD";
+    unidad.disabled = llevaEstadoUso;
+    document.getElementById("unidadFija").disabled = !llevaEstadoUso;
+  });
+</script>
+
+<form method="POST" action="/admin/recepcion/finalizar">
+    <button type="submit">✓ Finalizar</button>
 </form>
 
 {{> partials/footer}}
