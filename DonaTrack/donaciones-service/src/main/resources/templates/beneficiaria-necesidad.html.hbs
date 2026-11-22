@@ -20,25 +20,31 @@
     </p>
 
 
-        <div class="campo">
-            <label for="categoriaId">Categoría:</label>
-            <select id="categoriaId" name="categoriaId" required>
-                <option value=""> -- Seleccioná una categoría --</option>
-                   {{#each categorias}}
-                        <option value="{{id}}">{{nombre}}</option>
-                   {{/each}}
-            </select>
-        </div>
-z
-            <div class="campo">
-                <label for="subcategoriaId">Subcategoría:</label>
-                <select id="subcategoriaId" name="subcategoriaId" required>
-                    <option value="">-- Seleccioná una subcategoría --</option>
-                    {{#each subcategorias}}
-                        <option value="{{id}}" data-nombre="{{nombre}}">{{nombre}}</option>
-                    {{/each}}
-                </select>
-            </div>
+         <div class="campo">
+                   <label for="categoriaId">Categoría:</label>
+                   <select id="categoriaId" name="categoriaId" required>
+                       <option value=""> -- Seleccioná una categoría --</option>
+                       {{#each categorias}}
+                           <option value="{{id}}">{{nombre}}</option>
+                       {{/each}}
+                   </select>
+               </div>
+
+
+
+      <div class="campo">
+                      <label for="subcategoriaId">Subcategoría:</label>
+                      <select id="subcategoriaId" name="subcategoriaId" required disabled>
+                          <option value=""> -- Seleccioná una subcategoría --</option>
+                          {{#each subcategorias}}
+                             {{#each this}}
+                                <option value="{{id}}" data-categoria="{{categoriaPadre.nombre}}" hidden>{{nombre}}</option>
+                              {{/each}}
+                          {{/each}}
+                      </select>
+                  </div>
+
+
 
 
         <!-- <label for="subcategoria">Categoría / Bien Necesitado:</label><br>
@@ -72,5 +78,23 @@ z
     </p>
 
 </form>
+
+<script>
+  const categoria = document.getElementById("categoriaId");
+
+  categoria.addEventListener("change", () => {
+
+     const nombre = categoria.options[categoria.selectedIndex].text;
+
+     const selectSubcategoria = document.getElementById("subcategoriaId");
+         selectSubcategoria.value = "";
+         selectSubcategoria.disabled = categoria.value === "";
+         for (const opcion of selectSubcategoria.querySelectorAll("option[data-categoria]")) {
+           opcion.hidden = opcion.dataset.categoria !== nombre;
+         }
+});
+
+</script>
+
 
 {{> partials/footer}}

@@ -2,7 +2,7 @@
 
 <h2>Recepción de Donaciones en Almacén</h2>
 
-<h3>Paso 2: Bienes de la donación de {{donacion.persona.nombre}} {{donacion.persona.apellido}}{{donacion.persona.razonSocial}}</h3>
+<h3>Paso 2: Bienes de la donación de {{donante.nombre}} {{donante.apellido}}{{donante.razonSocial}}</h3>
 <p><strong>Descripción:</strong> {{donacion.descripcion}}</p>
 
 <fieldset style="margin-bottom: 20px;">
@@ -18,7 +18,8 @@
     {{/if}}
 </fieldset>
 
-<form method="POST" action="/admin/recepcion/bienes" class="formulario">
+<form method="POST" action="/admin/recepcion/{{donacionId}}/bienes" class="formulario">
+     <input type="hidden" name="donanteId" value="{{donanteId}}">
 
     <fieldset>
         <legend>¿Qué dona?</legend>
@@ -38,14 +39,12 @@
 
       <div class="campo">
                       <label for="subcategoriaId">Subcategoría:</label>
-                      <select id="subcategoriaId" name="subcategoriaId" required>
+                      <select id="subcategoriaId" name="subcategoriaId" required disabled>
                           <option value=""> -- Seleccioná una subcategoría --</option>
                           {{#each subcategorias}}
-                              <optgroup label="{{@key}}">
-                                  {{#each this}}
-                                      <option value="{{id}}">{{nombre}}</option>
-                                  {{/each}}
-                              </optgroup>
+                             {{#each this}}
+                                <option value="{{id}}" data-categoria="{{categoriaPadre.nombre}}" hidden>{{nombre}}</option>
+                              {{/each}}
                           {{/each}}
                       </select>
                   </div>
@@ -98,7 +97,16 @@
   const categoria = document.getElementById("categoriaId");
 
   categoria.addEventListener("change", () => {
+
      const nombre = categoria.options[categoria.selectedIndex].text;
+
+     const selectSubcategoria = document.getElementById("subcategoriaId");
+         selectSubcategoria.value = "";
+         selectSubcategoria.disabled = categoria.value === "";
+         for (const opcion of selectSubcategoria.querySelectorAll("option[data-categoria]")) {
+           opcion.hidden = opcion.dataset.categoria !== nombre;
+         }
+
      const llevaVencimiento = nombre === "ALIMENTOS" || nombre === "HIGIENE";
      const llevaEstadoUso = nombre === "JUGUETES" || nombre === "MOBILIARIO" || nombre === "VESTIMENTA" || nombre === "LIBROS";
 

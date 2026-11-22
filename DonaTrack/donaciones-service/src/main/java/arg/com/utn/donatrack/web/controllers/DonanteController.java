@@ -27,7 +27,7 @@ public class DonanteController {
 
     EntityManager em = Persistencia.crearEntityManager();
     try {
-      List<Donacion> donacionesDb = repositorioDonaciones.listarTodas(em);
+      List<Donacion> donacionesDb = repositorioDonaciones.listarTodas();
       List<Map<String, Object>> donacionesParaVista = new ArrayList<>();
       for (Donacion d : donacionesDb) {
         String estado = d.getEstado() != null ? d.getEstado().getClass().getSimpleName().toUpperCase() : "DESCONOCIDO";
@@ -107,7 +107,7 @@ public class DonanteController {
     EntityManager em = Persistencia.crearEntityManager();
     try {
 
-      List<Donacion> enViajeDb = repositorioDonaciones.listarEnTraslado(em);
+      List<Donacion> enViajeDb = repositorioDonaciones.listarEnTraslado();
       List<Map<String, Object>> entregasParaVista = new ArrayList<>();
       for (Donacion d : enViajeDb) {
         Map<String, Object> fila = new HashMap<>();

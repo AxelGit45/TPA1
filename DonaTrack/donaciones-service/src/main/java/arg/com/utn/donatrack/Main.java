@@ -143,6 +143,7 @@ app.before(ctx -> {
     app.post("/admin/recepcion", admin::crearDonacion);
     app.get("/admin/recepcion/{id}/bienes", admin::mostrarCargaBienes);
     app.post("/admin/recepcion/{id}/bienes", admin::agregarBien);
+    app.post("/admin/recepcion/finalizar", admin::);
 
     System.out.println("[DONACIONES-SERVICE] Web (Javalin) levantada en http://localhost:" + PUERTO_WEB);
     return app;

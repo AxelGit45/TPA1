@@ -83,4 +83,6 @@ public class Subcategoria {
     return nombre == null ? 0 : nombre.hashCode();
   }
 
+  public Long getId()  { return id;
+  }
 }

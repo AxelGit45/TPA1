@@ -129,4 +129,6 @@ public class Bien {
   public Persona getDonador() {
     return donador;
   }
+
+  public void setDonador(Persona donador){this.donador = donador;}
 }

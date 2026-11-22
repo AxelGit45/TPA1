@@ -155,6 +155,6 @@ public class Donacion {
 
   public void setDonadores(List<Persona> donadores) { this.donadores = donadores; }
 
-
+  public void agregarBien(Bien bien){ this.bienes.add(bien);}
 
 }

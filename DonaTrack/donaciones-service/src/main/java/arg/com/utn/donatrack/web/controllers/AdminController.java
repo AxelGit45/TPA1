@@ -1,7 +1,10 @@
 package arg.com.utn.donatrack.web.controllers;
 
+import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
+import arg.com.utn.donatrack.donaciones.EstadoUso;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
+import arg.com.utn.donatrack.donaciones.Unidad;
 import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
@@ -10,6 +13,7 @@ import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
 import arg.com.utn.donatrack.tareas.ImportadorCsv;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -23,6 +27,7 @@ public class AdminController {
   }
 
   //POST /admin/recepcion
+
   public void crearDonacion(Context ctx) {
     String emailDonante = ctx.formParam("emailDonante");
     RepositorioPersonas repoPersonas = new RepositorioPersonas();
@@ -54,7 +59,9 @@ public class AdminController {
     RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
     RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
 
-    //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
+    Donacion donacion = repoDonaciones.buscarPorId(donacionId);
+
+    donacion.setDescripcion(ctx.formParam("descripcion"));
 
     //SUBCATEGORIA
 
@@ -74,9 +81,13 @@ public class AdminController {
 
 
 
-    /*model.put("donacion", donacion);
+    model.put("donacion", donacion);
+    model.put("donacionId",donacionId);
     model.put("donanteId", donanteId);
-    model.put("subcategorias", repoSubcategorias.listarTodas());
+    model.put("donante", new RepositorioPersonas().buscarPorId(Long.parseLong(donanteId)));
+
+    /*
+    model.put("subcategorias", repoSubcategorias.listarSubcategorias());
     */
     ctx.render("admin-recepcion-bienes.html.hbs", model);
   }
@@ -90,10 +101,10 @@ public class AdminController {
 
     RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
     RepositorioPersonas repoPersonas = new RepositorioPersonas();
-    /*RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
+    RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
     Donacion donacion = repoDonaciones.buscarPorId(donacionId);
     Persona donante = repoPersonas.buscarPorId(donanteId);
-    Subcategoria sub = repoSubcategorias.buscarPorId(subcategoriaId);
+    Subcategoria sub = repoSubcategorias.buscarSubcategoriaPorId(subcategoriaId);
 
     Bien bien = new Bien();
     bien.setDonador(donante);
@@ -109,12 +120,12 @@ public class AdminController {
 
     String vencimiento = ctx.formParam("fechaVencimiento");
     if (vencimiento != null && !vencimiento.isBlank()) {
-      bien.setFechaVencimiento(LocalDate.parse(vencimiento));
+      bien.setFechaVencimiento(java.sql.Date.valueOf(LocalDate.parse(vencimiento))/*LocalDate.parse(vencimiento)*/);
     }
 
     donacion.agregarBien(bien);
     repoDonaciones.guardar(donacion);
-    */
+
     ctx.redirect("/admin/recepcion/" + donacionId + "/bienes?donanteId=" + donanteId);
   }
 

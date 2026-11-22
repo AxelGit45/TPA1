@@ -43,26 +43,26 @@ public class RepositorioPersonas {
     }
   }*/
 
-  public Persona buscarPorId(EntityManager em, Long id) {
+  public Persona buscarPorId(Long id) {
     if (id == null) {
       return null;
     }
-    return em.find(Persona.class, id);
+    return entityManager.find(Persona.class, id);
   }
 
-  public Persona buscarPorUsuarioId(EntityManager em, Long usuarioId) {
+  public Persona buscarPorUsuarioId(Long usuarioId) {
     if (usuarioId == null) {
       return null;
     }
-    List<Persona> resultados = em
+    List<Persona> resultados = entityManager
         .createQuery("select p from Persona p where p.usuarioId = :usuarioId", Persona.class)
         .setParameter("usuarioId", usuarioId)
         .getResultList();
     return resultados.isEmpty() ? null : resultados.get(0);
   }
 
-  public List<Persona> listarTodas(EntityManager em) {
-    return em.createQuery("select p from Persona p", Persona.class)
+  public List<Persona> listarTodas() {
+    return entityManager.createQuery("select p from Persona p", Persona.class)
         .getResultList();
   }
 

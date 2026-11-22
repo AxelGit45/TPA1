@@ -2,6 +2,7 @@ package arg.com.utn.donatrack.donaciones;
 
 import arg.com.utn.donatrack.personas.Persona;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,16 +20,50 @@ public class Formulario {
 
   }
 
-  /*public List <Donacion> separarDonacion() {
+  public List<Donacion> separarDonacion() {
 
-    Map<String, List<Bien>> bienesPorSubcategoria;
-  }*/
+    Map<String, List<Bien>> bienesPorSubcategoria = new LinkedHashMap<>();
+
+    for (Bien bien : this.bienes) {
+      String clave = bien.getSubcategoria().getNombre();
+
+      if (bien.esPerecedero() && bien.getFechaVencimiento() != null) {
+        clave = clave + "|" + bien.getFechaVencimiento();
+      }
+
+      bienesPorSubcategoria.computeIfAbsent(clave, claveNueva -> new ArrayList<>()).add(bien);
+
+    }
+
+    List<Donacion> donacionesSegmentadas = new ArrayList();
+
+    for (List<Bien> grupo : bienesPorSubcategoria.values()) {
+      Donacion nuevaDonacion = new Donacion(grupo);
+      nuevaDonacion.setDescripcion(this.descripcion);
+      donacionesSegmentadas.add(nuevaDonacion);
+    }
+    return donacionesSegmentadas;
+  }
+
+  public Persona getPersona() {
+    return persona;
+  }
+
+  public String getDescripcion() {
+    return descripcion;
+  }
+
+  public List<Bien> getBienes() {
+    return bienes;
+  }
+}
 
 
 
 
 
-  public List<Donacion> segmentarDonaciones(){
+
+/*  public List<Donacion> segmentarDonaciones(){
 
     List<Donacion> donacionesSegmentadas = new ArrayList<>();
 
@@ -46,3 +81,4 @@ public class Formulario {
 
 
 }
+*/
