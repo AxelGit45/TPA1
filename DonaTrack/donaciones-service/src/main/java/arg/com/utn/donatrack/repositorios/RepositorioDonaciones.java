@@ -49,6 +49,19 @@ public class RepositorioDonaciones {
         .getResultList();
   }
 
+  public List<Donacion> listarAsignadasAEntidad(EntityManager em, Long entidadId) {
+    if (entidadId == null) {
+      return List.of();
+    }
+    String sql = "select distinct d.* from donacion d "
+        + "join estadodonacion e on e.donacion_id = d.id "
+        + "where e.tipo_estado = 'ASIGNACION_REALIZADA' "
+        + "and e.entidad_beneficiaria_id = :entidadId";
+
+    return em.createNativeQuery(sql, Donacion.class)
+        .setParameter("entidadId", entidadId)
+        .getResultList();
+  }
 
   public List<Donacion> listarPorDonante(EntityManager em, Long personaId, String estado, Long categoriaId, Long subcategoriaId) {
     String sql = "select distinct d.* from donacion d "

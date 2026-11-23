@@ -118,7 +118,11 @@ public class EntidadController {
     EntityManager em = Persistencia.crearEntityManager();
     try {
 
-      List<Donacion> donacionesDb = repoDonaciones.listarTodas(em);
+      Long usuarioId = ctx.sessionAttribute("usuarioId");
+      EntidadBeneficiaria entidad = repoEntidades.buscarPorUsuarioId(em, usuarioId);
+      List<Donacion> donacionesDb = (entidad != null)
+          ? repoDonaciones.listarAsignadasAEntidad(em, entidad.getId())
+          : new ArrayList<>();
 
       List<Map<String, Object>> donacionesParaVista = new ArrayList<>();
       for (Donacion d : donacionesDb) {

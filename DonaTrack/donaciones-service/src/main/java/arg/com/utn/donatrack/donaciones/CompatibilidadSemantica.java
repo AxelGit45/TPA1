@@ -12,6 +12,7 @@ public class CompatibilidadSemantica implements Algoritmo {
 //comparar por subcategoria
     //LA ENTIDAD BENEFICIARIA ES QUIEN DEBE SABER SI NECESITA O NO ESA DONACION
     //PUEDO CREAR DIRECTAMENTE RESULTADO ALGORITMO PARA CONTENER EL RESULTADO Y CON QUE ALGORITMO SE OBTUVO
+    //entidades.get(0).getNecesidades().get(0);
 
     List<MatchEntidad> ranking = entidades.stream()
         .map(entidad -> new MatchEntidad(entidad, entidad.cuantoNecesita(donacion)) )
