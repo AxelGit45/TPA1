@@ -175,67 +175,52 @@ public class EntidadController {
   }
 
   public void confirmarRecepcion(Context ctx) {
-    String idStr = ctx.pathParam("id");
-    Long donacionId = Long.parseLong(idStr);
+    Long donacionId = Long.parseLong(ctx.pathParam("id"));
     EntityManager em = Persistencia.crearEntityManager();
     try {
-      em.getTransaction().begin();
-
+      Long usuarioId = ctx.sessionAttribute("usuarioId");
+      EntidadBeneficiaria entidad = repoEntidades.buscarPorUsuarioId(em, usuarioId);
       Donacion donacion = repoDonaciones.buscarPorId(em, donacionId);
-      if (donacion == null) {
+
+      // Solo puede confirmar una donación que le fue asignada a ella
+      if (entidad == null || donacion == null
+              || repoDonaciones.listarAsignadasAEntidad(em, entidad.getId()).stream()
+              .noneMatch(asignada -> asignada.getId().equals(donacionId))) {
         ctx.status(404).result("Donación no encontrada.");
         return;
       }
 
-      Long usuarioId = ctx.sessionAttribute("usuarioId");
-      EntidadBeneficiaria entidad = null;
-      if (usuarioId != null) {
-        entidad = repoEntidades.buscarPorUsuarioId(em, usuarioId);
-      }
-      if (entidad == null && !repoEntidades.listarTodas(em).isEmpty()) {
-        entidad = repoEntidades.listarTodas(em).get(0);
-      }
-
       var archivos = ctx.uploadedFiles("fotos");
-      String urlFoto = "/img/sin-foto.png";
-      if (!archivos.isEmpty()) {
-        var fotoSubida = archivos.get(0);
-
-        String nombreArchivo = System.currentTimeMillis() + "_" + fotoSubida.filename().replaceAll("\\s+", "_");
-
-        java.io.File directorio = new java.io.File("src/main/resources/public/uploads");
-        if (!directorio.exists()) {
-          directorio.mkdirs();
-        }
-
-        java.io.File archivoDestino = new java.io.File(directorio, nombreArchivo);
-        try (var input = fotoSubida.content();
-             var output = new java.io.FileOutputStream(archivoDestino)) {
-          input.transferTo(output);
-        }
-
-        urlFoto = "/uploads/" + nombreArchivo;
+      if (archivos.isEmpty()) {
+        ctx.status(400).result("Tenés que subir al menos una foto de la donación recibida.");
+        return;
       }
+
+      // Se guarda la primera foto en la carpeta externa "uploads"
+      var fotoSubida = archivos.get(0);
+      String nombreArchivo = System.currentTimeMillis() + "_" + fotoSubida.filename().replaceAll("\\s+", "_");
+      java.io.File archivoDestino = new java.io.File("uploads", nombreArchivo);
+      try (var input = fotoSubida.content();
+           var output = new java.io.FileOutputStream(archivoDestino)) {
+        input.transferTo(output);
+      }
+      String urlFoto = "/uploads/" + nombreArchivo;
 
       Entregada entregada = new Entregada();
       entregada.setEntidadBeneficiaria(entidad);
       donacion.cambiarEstado(entregada);
+      donacion.getBienes().forEach(bien -> bien.setFoto(urlFoto));
 
-      if (donacion.getBienes() != null && !donacion.getBienes().isEmpty()) {
-        donacion.getBienes().get(0).setFoto(urlFoto);
-      }
-      em.merge(donacion);
-      em.getTransaction().commit();
+      repoDonaciones.actualizar(em, donacion);
+
       Map<String, Object> modelo = new HashMap<>();
-      modelo.put("donacionId", idStr);
+      modelo.put("donacionId", donacionId);
       modelo.put("exito", true);
+      modelo.put("urlFoto", urlFoto);
       ctx.render("beneficiaria-confirmar.html.hbs", modelo);
-    } catch (Exception e) {
-      if (em.getTransaction().isActive()) {
-        em.getTransaction().rollback();
-      }
+    } catch (java.io.IOException e) {
       e.printStackTrace();
-      ctx.status(500).result("Error al confirmar la recepción: " + e.getMessage());
+      ctx.status(500).result("No se pudo guardar la foto: " + e.getMessage());
     } finally {
       em.close();
     }

@@ -14,6 +14,7 @@ import io.javalin.Javalin;
 import io.javalin.http.ForbiddenResponse;
 import javax.persistence.EntityManager;
 import java.util.Map;
+import io.javalin.http.staticfiles.Location;
 
 public class Main {
 
@@ -54,11 +55,16 @@ public class Main {
     JavalinRenderer renderer = new JavalinRenderer()
         .register("hbs", new JavalinHandlebars());
 
+    new java.io.File("uploads").mkdirs();
     Javalin app = Javalin.create(config -> {
       config.fileRenderer(renderer);
       config.staticFiles.add("/public");
+      config.staticFiles.add(staticFiles -> {
+        staticFiles.hostedPath = "/uploads";
+        staticFiles.directory = "uploads";
+        staticFiles.location = Location.EXTERNAL;
+      });
     }).start(PUERTO_WEB);
-//------------fin-inicio-server---------------
     app.exception(ForbiddenResponse.class, (e, ctx) -> {
       ctx.status(403)
           .contentType("text/plain; charset=utf-8")

@@ -7,9 +7,12 @@
 
 {{#if exito}}
     <p>Recepción confirmada con éxito! Las fotos fueron registradas.</p>
-{{/if}}
+    {{#if urlFoto}}
+        <p><img src="{{urlFoto}}" alt="Foto de la donación" width="300"></p>
+    {{/if}}
+{{else}}
 
-<form method="POST" action="/entidad/confirmar/{{donacionID}}" enctype="multipart/forma-data">
+<form method="POST" action="/entidad/confirmar/{{donacionId}}" enctype="multipart/form-data">
 
     <p>
         <label for="fechaRecepcion">Fecha de Recepción:</label><br>
@@ -42,5 +45,7 @@ el camión o el contenido..."></textarea>
     </p>
 
 </form>
+
+{{/if}}
 
 {{> partials/footer}}
