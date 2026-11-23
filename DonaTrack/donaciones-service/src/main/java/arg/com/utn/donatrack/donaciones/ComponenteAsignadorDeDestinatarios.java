@@ -33,11 +33,28 @@ public class ComponenteAsignadorDeDestinatarios {
     // ResultadoComponenteAsignador resultadoComponente = new ResultadoComponenteAsignador(List<entidad>, donacion);
     // return resultadoComponente;
     List<ResultadoAlgoritmo> resultadosAlgoritmos = resultado.getResultadosMatchmaking();
-    ResultadoAlgoritmo unResultadoAlgoritmo = resultadosAlgoritmos.get(1);
-    List<EntidadBeneficiaria> listaEntidades = unResultadoAlgoritmo.getResultadosAlgoritmo().stream().map(matchEntidad -> matchEntidad.getEntidad()).toList();
 
-    List<EntidadBeneficiaria> entidades = new ArrayList<>();
-    entidades.add(listaEntidades.get(0));
+    // Entidades de cada algoritmo, en el orden de su ranking
+    List<List<EntidadBeneficiaria>> rankings = resultadosAlgoritmos.stream()
+        .map(unResultado -> unResultado.getResultadosAlgoritmo().stream().map(MatchEntidad::getEntidad).toList())
+        .toList();
+
+    if (rankings.isEmpty()) {
+      return null;
+    }
+    List<EntidadBeneficiaria> entidades = new ArrayList<>(rankings.get(0));
+    rankings.forEach(entidades::retainAll);
+
+
+    if (entidades.isEmpty()) {
+      rankings.forEach(ranking -> ranking.stream()
+          .filter(entidad -> !entidades.contains(entidad))
+          .forEach(entidades::add));
+    }
+
+    if (entidades.isEmpty()) {
+      return null;
+    }
 
     return new ResultadoComponenteAsignador(entidades, resultado.getDonacion());
   }

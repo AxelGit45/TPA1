@@ -34,13 +34,19 @@ public abstract class Necesidad {
 
   }
 
+  public boolean esSatisfechaPor(Bien bien){
+    return !Boolean.TRUE.equals(satisfecha) && necesidad != null && necesidad.equals(bien.getSubcategoria());
+  }
+
+  public abstract void recibir(Integer recibido);
+
   /*public boolean esSatisfechaPor(Bien bien){
     return necesidad == bien.getSubcategoria();
   }*/
 
-  public boolean esSatisfechaPor(Bien bien){
+  /*public boolean esSatisfechaPor(Bien bien){
     return necesidad != null && necesidad.equals(bien.getSubcategoria());
-  }
+  }*/
 
   public Long getId() {
     return id;

@@ -4,10 +4,12 @@ import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.donaciones.EstadoUso;
 import arg.com.utn.donatrack.donaciones.Formulario;
+import arg.com.utn.donatrack.donaciones.ResultadoComponenteAsignador;
 import arg.com.utn.donatrack.donaciones.ResultadoMatchmaking;
 import arg.com.utn.donatrack.donaciones.Subcategoria;
 import arg.com.utn.donatrack.donaciones.Unidad;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
+import arg.com.utn.donatrack.estados.AsignacionRealizada;
 import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.estados.Vencida;
 import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
@@ -18,6 +20,7 @@ import arg.com.utn.donatrack.personas.contactos.Contacto;
 import arg.com.utn.donatrack.personas.contactos.Mail;
 import arg.com.utn.donatrack.personas.contactos.Telefono;
 import arg.com.utn.donatrack.personas.contactos.WhatsApp;
+import arg.com.utn.donatrack.repositorios.RepositorioComponenteExterno;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
 import arg.com.utn.donatrack.repositorios.RepositorioEntidadesBeneficiarias;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
@@ -94,7 +97,7 @@ public class AdminController {
 
   //GET /admin/recepcion/{id}/bienes
   public void mostrarCargaBienes(Context ctx) {
-   // Long donacionId = Long.parseLong(ctx.pathParam("id"));
+    // Long donacionId = Long.parseLong(ctx.pathParam("id"));
     // String donanteId = ctx.queryParam("donanteId");
     EntityManager em = Persistencia.crearEntityManager();
     Formulario donacionEnCurso = ctx.sessionAttribute(DONACION_EN_CURSO);
@@ -155,8 +158,8 @@ public class AdminController {
     Long subcategoriaId = Long.parseLong(ctx.formParam("subcategoriaId"));
 
 
-   // RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
-   // RepositorioPersonas repoPersonas = new RepositorioPersonas();
+    // RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+    // RepositorioPersonas repoPersonas = new RepositorioPersonas();
     RepositorioSubcategorias repoSubcategorias = new RepositorioSubcategorias();
     //Donacion donacion = repoDonaciones.buscarPorId(donacionId);
     //Persona donante = repoPersonas.buscarPorId(donanteId);
@@ -409,7 +412,71 @@ public class AdminController {
   }
 
   public void mostrarMatchmaking(Context ctx) {
-    ctx.render("admin-matchmaking.html.hbs", Map.of());
+    EntityManager em = Persistencia.crearEntityManager();
+    try {
+      RepositorioComponenteExterno repositorioComponente = new RepositorioComponenteExterno();
+      RepositorioEntidadesBeneficiarias repositorioEntidadesBeneficiarias = new RepositorioEntidadesBeneficiarias();
+
+      List<Map<String, Object>> pendientes = new ArrayList<>();
+      for (ResultadoComponenteAsignador resultado : repositorioComponente.obtenerResultados(em)) {
+        List<EntidadBeneficiaria> candidatas = resultado.getEntidadesCandidatasIds().stream()
+            .map(entidadId -> repositorioEntidadesBeneficiarias.buscarPorId(em, entidadId))
+            .filter(entidad -> entidad != null)
+            .toList();
+
+        Map<String, Object> fila = new HashMap<>();
+        fila.put("id", resultado.getId());
+        fila.put("donacion", resultado.getDonacion());
+        fila.put("candidatas", candidatas);
+        pendientes.add(fila);
+      }
+
+      Map<String, Object> modelo = new HashMap<>();
+      modelo.put("pendientes", pendientes);
+      modelo.put("confirmada", ctx.queryParam("confirmada"));
+      ctx.render("admin-matchmaking.html.hbs", modelo);
+    } finally {
+      em.close();
+    }
+  }
+
+  public void confirmarAsignacion(Context ctx) {
+    Long resultadoId = Long.parseLong(ctx.pathParam("id"));
+    String entidadElegida = ctx.formParam("entidadId");
+    if (entidadElegida == null || entidadElegida.isBlank()) {
+      ctx.status(400).result("Tenés que elegir una entidad beneficiaria.");
+      return;
+    }
+    Long entidadId = Long.parseLong(entidadElegida);
+
+    EntityManager em = Persistencia.crearEntityManager();
+    try {
+      RepositorioComponenteExterno repositorioComponente = new RepositorioComponenteExterno();
+      RepositorioEntidadesBeneficiarias repositorioEntidadesBeneficiarias = new RepositorioEntidadesBeneficiarias();
+      RepositorioDonaciones repoDonaciones = new RepositorioDonaciones();
+
+      ResultadoComponenteAsignador resultado = repositorioComponente.buscarPorId(em, resultadoId);
+      EntidadBeneficiaria entidad = repositorioEntidadesBeneficiarias.buscarPorId(em, entidadId);
+
+      if (resultado == null || entidad == null
+          || !resultado.getEntidadesCandidatasIds().contains(entidadId)
+          || !(resultado.getDonacion().getEstado() instanceof EnDeposito)) {
+        ctx.status(400).result("La asignación no es válida o la donación ya fue asignada.");
+        return;
+      }
+
+      Donacion donacion = resultado.getDonacion();
+      resultado.setEntidad(entidad);
+      donacion.cambiarEstado(new AsignacionRealizada(entidad, donacion));
+      entidad.recibirDonacion(donacion);
+
+      repositorioComponente.actualizar(em, resultado);
+      repoDonaciones.actualizar(em, donacion);
+
+      ctx.redirect("/admin/matchmaking?confirmada=" + donacion.getId());
+    } finally {
+      em.close();
+    }
   }
 
   public void mostrarCamiones(Context ctx) {

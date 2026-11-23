@@ -6,7 +6,45 @@
 
 <p>Ejecución de algoritmos para emparejar donaciones en almacén con necesidades de entidades.</p>
 
+<p><a href="/admin">Volver al panel</a></p>
+
 <form method="POST" action="/admin/matchmaking">
     <button type="submit"> Ejecutar Algoritmos </button>
 </form>
+
+{{#if confirmada}}
+    <p>La donación #{{confirmada}} quedó asignada.</p>
+{{/if}}
+
+<h3>Donaciones pendientes de asignación</h3>
+
+{{#if pendientes}}
+    {{#each pendientes}}
+        <fieldset>
+            <legend>Donación #{{donacion.id}} — {{donacion.descripcion}}</legend>
+
+            <ul>
+                {{#each donacion.bienes}}
+                    <li>{{cantidad}} {{unidad}} — {{descripcion}} ({{subcategoria.nombre}})</li>
+                {{/each}}
+            </ul>
+
+            <form method="POST" action="/admin/matchmaking/{{id}}/confirmar">
+                <p>Entidades candidatas:</p>
+                {{#each candidatas}}
+                    <label>
+                        <input type="radio" name="entidadId" value="{{id}}" required>
+                        {{razonSocial}} — {{direccion}}
+                    </label>
+                    <br>
+                {{/each}}
+                <button type="submit">Confirmar destino</button>
+            </form>
+        </fieldset>
+        <br>
+    {{/each}}
+{{else}}
+    <p>No hay donaciones pendientes de asignación.</p>
+{{/if}}
+
 {{> partials/footer}}
