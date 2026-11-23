@@ -9,12 +9,14 @@ public class LandingController {
   public void mostrar(Context ctx) {
     Long id = ctx.sessionAttribute("usuarioId");
     String rol = ctx.sessionAttribute("rol");
-
     if (id == null) {
       ctx.redirect("/login");
       return;
     }
-
-    ctx.render("landingusuario.html.hbs", Map.of("id", id, "rol", rol));
+    if ("ENTIDAD_BENEFICIARIA".equals(rol)) {
+      ctx.render("entidad-home.html.hbs", Map.of("id", id, "rol", rol));
+    } else {
+      ctx.render("landingusuario.html.hbs", Map.of("id", id, "rol", rol));
+    }
   }
 }

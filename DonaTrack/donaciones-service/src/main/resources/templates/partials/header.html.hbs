@@ -1,128 +1,113 @@
 <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>DonaTrack</title>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>DonaTrack</title>
 
-        <style>
+    <style>
+        body {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+            font-family: sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-            body {
-                background-color: #f1f5f9;
-                color: #1e293b;
-            }
+        .navbar {
+            background-color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 25px;
+        }
 
-            .navbar {
-                background-color: #1e3a8a;
-                display: flex;
-                align-items: center;
-            }
+        .navbar a, .navbar a:visited {
+            color: #ffffff !important;
+            text-decoration: none;
+        }
 
-            .navbar a, .navbar a:visited {
-                color: #ffffff !important;
-                text-decoration: none;
-            }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
 
-            .navbar-brand {}
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
 
-            .navbar-brand img {
-                height: 40px;
-                margin-right: 12px;
-                border-radius: 6px;
-            }
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 12px;
+            border-radius: 6px;
+        }
 
-            .navbar-links a {
-                color: #ffffff;
-                text-decoration: none;
-                margin-right: 12px;
-                font-size: 15px;
-            }
+        .navbar-center a {
+            margin: 0 15px;
+            font-size: 15px;
+        }
 
-            .navbar-links a:hover {
-                text-decoration: underline;
-            }
+        .navbar-right a, .navbar-right button {
+            font-size: 15px;
+        }
 
-            main {
-                margin: 30px;
-                background-color: #ffffff;
-                text-align: center;
-            }
+        main {
+            margin: 30px;
+            background-color: #ffffff;
+            text-align: center;
+            flex: 1;
+        }
 
-            ul {
-                list-style-position: inside;
-            }
+        .formulario {
+            max-width: 480px;
+            margin: 0 auto;
+            text-align: left;
+        }
 
-            .formulario {
-                max-width: 480px;
-                margin: 0 auto;
-                text-align: left;
-            }
+        .campo {
+            margin-bottom: 12px;
+        }
 
-            .formulario fieldset {
-                margin: 0 0 16px;
-            }
+        .campo label {
+            display: block;
+            margin-bottom: 4px;
+        }
 
-            .campo {
-                margin-bottom: 12px;
-            }
-
-            .campo label {
-                display: block;
-                margin-bottom: 4px;
-            }
-
-            .campo input,
-            .campo select {
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .ayuda {
-                margin: 4px 0 0;
-                font-size: 0.9em;
-            }
-
-            .opciones {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 16px;
-                margin: 16px 0;
-            }
-
-            .opcion {
-                width: 220px;
-                border: 1px solid #ccc;
-                padding: 16px;
-            }
-
-        </style>
-
-    </head>
-    <body>
-    <header class="navbar">
+        .campo input, .campo select {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<header class="navbar">
+    <div class="navbar-left">
         <a href="/" class="navbar-brand">
             <img src="/logo.jpg" alt="Logo DonaTrack">
             <span>DonaTrack</span>
         </a>
-        <nav class="navbar-links">
-            <a href="/">Inicio</a>
-            <a href="/mapa-entregas">Mapa de Entregas</a>
-            {{#if logueado}}
-                <!--para tener un boton para ver mis donaciones una vez loggeado-->
-                {{#if esDonante}}
-                    <a href="/donante/donaciones" class="btn-donaciones">Mis donaciones</a>
-                {{/if}}
-                {{#if esEntidadBeneficiaria}}
-                    <a href="/entidad/donaciones" class="btn-donaciones">Donaciones Asignadas</a>
-                {{/if}}
-                <!--para tener un boton para ver mis donaciones una vez loggeado-->
-                <form method="POST" action="/logout" style="display:inline; margin:0";>
-                    <button type="submit" class="btn-logout">Cerrar sesión</button>
-                </form>
-            {{else}}
-                <a href="/login">Iniciar Sesión/Registrarse</a>
-            {{/if}}
-        </nav>
-    </header>
+    </div>
 
-    <main>
+    <nav class="navbar-center">
+        <a href="/">⌂ Inicio</a>
+        <a href="/mapa-entregas">⚐ Mapa de Entregas</a>
+        {{#if logueado}}
+            <a href="/panel">☰ Panel de Acciones</a>
+        {{/if}}
+    </nav>
+
+    <div class="navbar-right">
+        {{#if logueado}}
+            <form method="POST" action="/logout" style="display:inline; margin:0;">
+                <button type="submit" style="background: none; border: 1px solid white; color: white; padding: 5px 12px; border-radius: 4px; cursor: pointer;">Cerrar sesión</button>
+            </form>
+        {{else}}
+            <a href="/login">Iniciar Sesión / Registrarse</a>
+        {{/if}}
+    </div>
+</header>
+
+<main>

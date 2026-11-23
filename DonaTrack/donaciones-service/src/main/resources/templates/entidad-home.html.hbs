@@ -1,0 +1,41 @@
+{{> partials/header}}
+
+<style>
+    .tarjeta {
+        display: inline-block;
+        width: 260px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 10px;
+        text-decoration: none;
+        color: black;
+        vertical-align: top;
+    }
+</style>
+
+<h1>Panel de Entidad Beneficiaria - DonaTrack</h1>
+<p>Bienvenido. Seleccioná una opción para gestionar tu comedor u organización:</p>
+
+<nav>
+    <a href="/entidad/necesidades/nueva" class="tarjeta">
+        <h3>1. Registrar Necesidad</h3>
+        <p>Declarar alimentos o insumos requeridos (recurrentes o extraordinarios).</p>
+    </a>
+
+    <a href="/entidad/donaciones" class="tarjeta">
+        <h3>2. Donaciones Asignadas</h3>
+        <p>Consultar aportes asignados a tu sede y confirmar recepción con fotos.</p>
+    </a>
+
+    <a href="/entidad/notificaciones" class="tarjeta">
+        <h3>3. Notificaciones</h3>
+        <p>Bandeja de avisos del sistema sobre donaciones en camino y estados.</p>
+    </a>
+
+    <a href="/entidad/seguimiento" class="tarjeta">
+        <h3>4. Seguimiento en Mapa</h3>
+        <p>Monitorear la ubicación de los camiones con donaciones en viaje.</p>
+    </a>
+</nav>
+
+{{> partials/footer}}

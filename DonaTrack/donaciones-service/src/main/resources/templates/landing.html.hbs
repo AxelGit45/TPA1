@@ -1,31 +1,54 @@
 {{> partials/header}}
 
-<p>
-    <img src="/logo.jpg" alt="Logo de Donatrack" width="280">
-</p>
+<style>
+    .contenedor-landing {
+        max-width: 850px;
+        margin: 30px auto;
+        text-align: left;
+        padding: 0 15px;
+    }
 
-<h1>Bienvenido a Donatrack</h1>
+    .centrado {
+        text-align: center;
+    }
 
-<h2>Propósito del Sistema</h2>
-<p>
-    Donatrack es una plataforma transparente diseñada para intermediar, gestionar y realizar el seguimiento en tiempo
-    real de donaciones de bienes hacia comedores, hogares y entidades comunitarias.
-</p>
+    .fila-tarjetas {
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+    }
 
-<h2>Nuestros Objetivos</h2>
-<ul>
-    <li>Trazabilidad total desde que la donación ingresa hasta que llega a destino</li>
-    <li>Asignación inteligente y transparente según las necesidades reales de cada comunidad.</li>
-    <li>Acceso abierto para que cualquier persona pueda verificar las entregas realizadas.</li>
-</ul>
+    .tarjeta-info {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 20px;
+    }
+</style>
 
-<hr>
+<div class="contenedor-landing">
+    <div class="centrado">
+        <img src="/logo.jpg" alt="Logo de Donatrack" width="220">
+        <h1>Bienvenido a DonaTrack</h1>
+    </div>
 
-<h2>Accesos Rápidos</h2>
-<ul>
-    <li><a href="/mapa-entregas">Ver fotos y donaciones ya entregadas</a></li>
-    <li><a href="/login">Iniciar Sesión</a></li>
-    <li><a href="/legal">Información Legal y Políticas de Privacidad</a></li>
-</ul>
+    <div class="fila-tarjetas">
+        <div class="tarjeta-info">
+            <h3>Propósito del Sistema</h3>
+            <p>
+                DonaTrack es una plataforma transparente diseñada para intermediar, gestionar y realizar el seguimiento en tiempo
+                real de donaciones de bienes hacia comedores, hogares y entidades comunitarias.
+            </p>
+        </div>
+
+        <div class="tarjeta-info">
+            <h3>Nuestros Objetivos</h3>
+            <ul>
+                <li>Trazabilidad total desde el ingreso hasta el destino.</li>
+                <li>Asignación inteligente según necesidades reales.</li>
+                <li>Acceso abierto para verificar entregas públicas.</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 {{> partials/footer}}

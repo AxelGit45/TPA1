@@ -1,17 +1,47 @@
 {{> partials/header}}
 
+<style>
+
+    .tarjeta {
+        display: inline-block;
+        width: 260px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin: 10px;
+        text-decoration: none;
+        color: black;
+        vertical-align: top;
+    }
+
+</style>
+
 <h1>Panel de Administración - DonaTrack</h1>
 
 <nav>
-    <ul>
-        <li><a href="/admin/donantes/nuevo">1. Alta de Persona Donante</a></li>
-        <li><a href="/admin/recepcion">2. Recepción de Donaciones en Almacén</a></li>
-        <li><a href="/admin/vencidas">3. Control de Donaciones Vencidas</a></li>
-        <li><a href="/admin/matchmaking">4. Asignación Inteligente (Matchmaking)</a></li>
-        <li><a href="/admin/camiones">5. Gestión de Flota de Camiones</a></li>
-        <li><a href="/admin/importar-csv">6. Carga Masiva de Donantes (CSV)</a></li>
-        <li><a href="/mapa-entregas">Ver Mapa Público de Entregas</a></li>
-    </ul>
+    <a href="/admin/donantes/nuevo" class="tarjeta">
+        <h3>1. Alta de Donante</h3>
+        <p>Registrar donante desde depósito.</p>
+    </a>
+    <a href="/admin/recepcion" class="tarjeta">
+        <h3>2. Recepción en Almacén</h3>
+        <p>Cargar y segmentar donaciones.</p>
+    </a>
+    <a href="/admin/vencidas" class="tarjeta">
+        <h3>3. Control de Vencidas</h3>
+        <p>Monitoreo de perecederos vencidos.</p>
+    </a>
+    <a href="/admin/matchmaking" class="tarjeta">
+        <h3>4. Matchmaking</h3>
+        <p>Asignación inteligente a entidades.</p>
+    </a>
+    <a href="/admin/camiones" class="tarjeta">
+        <h3>5. Gestión de Flota</h3>
+        <p>Camiones y logística.</p>
+    </a>
+    <a href="/admin/importar-csv" class="tarjeta">
+        <h3>6. Carga Masiva (CSV)</h3>
+        <p>Importar padrón de donantes.</p>
+    </a>
 </nav>
 
 {{> partials/footer}}

@@ -115,6 +115,18 @@ app.before(ctx -> {
     app.get("/mapa-entregas", home::mostrarMapaEntregas);
     app.get("/legal", home::mostrarLegal);
     app.get("/dev", ctx -> ctx.render("dev.html.hbs", Map.of()));
+    app.get("/panel", ctx -> {
+      String rol = ctx.sessionAttribute("rol");
+      if ("ADMINISTRADOR".equals(rol)) {
+        ctx.redirect("/admin");
+      } else if ("ENTIDAD_BENEFICIARIA".equals(rol)) {
+        ctx.redirect("/entidad");
+      } else if ("DONANTE".equals(rol)) {
+        ctx.redirect("/donante");
+      } else {
+        ctx.redirect("/login");
+      }
+    });
 
     // Landings por rol
     app.get("/donante", landing::mostrar);

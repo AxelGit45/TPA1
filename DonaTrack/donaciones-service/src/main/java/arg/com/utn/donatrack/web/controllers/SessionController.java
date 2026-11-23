@@ -49,8 +49,8 @@ public class SessionController {
     ctx.sessionAttribute("rol", usuario.getRol().name());
 
     switch (usuario.getRol()) {
-      case DONANTE -> ctx.redirect("/donante/donaciones");
-      case ENTIDAD_BENEFICIARIA -> ctx.redirect("/entidad/donaciones");
+      case DONANTE -> ctx.redirect("/donante");
+      case ENTIDAD_BENEFICIARIA -> ctx.redirect("/entidad");
       case ADMINISTRADOR -> ctx.redirect("/admin");
     }
   }
