@@ -295,6 +295,7 @@ public class AdminController {
       donacion.cambiarEstado(new Vencida());
       repoDonaciones.actualizar(em, donacion);
 
+
       ctx.redirect("/admin/vencidas?actualizada=" + donacionId);
     } finally {
       em.close();
@@ -472,6 +473,7 @@ public class AdminController {
 
       repositorioComponente.actualizar(em, resultado);
       repoDonaciones.actualizar(em, donacion);
+      donacion.getEstado().notificar();
 
       ctx.redirect("/admin/matchmaking?confirmada=" + donacion.getId());
     } finally {
