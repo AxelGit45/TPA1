@@ -10,7 +10,7 @@
 <p>Error: {{error}}</p>
 {{/if}}
 
-<form method="POST" action="/admin/importar-csv" enctype="multipart/form-data">
+<form method="POST" action="/entidad/confirmar/{{donacionId}}" enctype="multipart/form-data">
     <label for="archivoCsv">Seleccionar archivo CSV:</label>
     <input type="file" id="archivoCsv" name="archivoCsv" accept=".csv" required>
 
