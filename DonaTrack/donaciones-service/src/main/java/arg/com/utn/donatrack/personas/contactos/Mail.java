@@ -1,6 +1,6 @@
 package arg.com.utn.donatrack.personas.contactos;
 
-// import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
+import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -23,7 +23,7 @@ public class Mail extends Contacto {
   @Override
   public void contactar(String mensaje){
 
-    //EmailAdapter.getInstancia().enviarCorreo(this.direccion, "Notificación de DonaTrack", mensaje);
+    EmailAdapter.getInstancia().enviarCorreo(this.direccion, "Notificación de DonaTrack", mensaje);
 
   }
 
