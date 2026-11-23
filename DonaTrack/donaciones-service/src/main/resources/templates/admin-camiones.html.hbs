@@ -1,7 +1,82 @@
 {{> partials/header}}
 
-<h1>Administración de Flota y Camiones</h1>
+<h1>Administración de Flota de Camiones</h1>
+<p>Gestión y registro de los camiones de transporte para la logística de entregas.</p>
 
-<p>Listado de camiones disponibles y asignación a rutas de entrega.</p>
+<p><a href="/admin">Volver al panel de administración</a></p>
+
+{{#if exito}}
+    <p>Éxito: {{mensaje}}</p>
+{{/if}}
+
+{{#if error}}
+    <p>Error:{{error}}</p>
+{{/if}}
+
+<h2>Camiones en la Flota</h2>
+
+{{#if camiones}}
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Patente</th>
+            <th>Capacidad (kg)</th>
+            <th>Volumen (m³)</th>
+            <th>Altura (m)</th>
+            <th>Dispositivo GPS</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each camiones}}
+            <tr>
+                <td>{{id}}</td>
+                <td><strong>{{patente}}</strong></td>
+                <td>{{capacidadDeCarga}} kg</td>
+                <td>{{volumen}} m³</td>
+                <td>{{altura}} m</td>
+                <td>{{#if idGps}}{{idGps}}{{else}}Sin GPS{{/if}}</td>
+                <td>{{#if estado}}{{estado}}{{else}}Disponible{{/if}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+{{else}}
+    <p>Actualmente no hay camiones registrados en la flota.</p>
+{{/if}}
+
+<hr>
+
+<h2>Dar de Alta Nuevo Camión</h2>
+
+<form method="POST" action="/admin/camiones">
+    <p>
+        <label for="patente">Patente del vehículo:</label><br>
+        <input type="text" id="patente" name="patente" placeholder="Ej: AB123CD" required>
+    </p>
+
+    <p>
+        <label for="capacidadDeCarga">Capacidad de carga máxima (kg):</label><br>
+        <input type="number" id="capacidadDeCarga" name="capacidadDeCarga" min="1" placeholder="Ej: 3500" required>
+    </p>
+
+    <p>
+        <label for="volumen">Volumen útil (m³):</label><br>
+        <input type="number" id="volumen" name="volumen" min="1" placeholder="Ej: 15" required>
+    </p>
+
+    <p>
+        <label for="altura">Altura del vehículo (metros):</label><br>
+        <input type="number" step="0.1" id="altura" name="altura" min="0.5" placeholder="Ej: 2.5" required>
+    </p>
+
+    <p>
+        <label for="idGps">Identificador GPS / Rastreador (opcional):</label><br>
+        <input type="text" id="idGps" name="idGps" placeholder="Ej: GPS-CAMION-01">
+    </p>
+
+    <button type="submit">Registrar Camión</button>
+</form>
 
 {{> partials/footer}}

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Main {
 
-  public static final int PUERTO_WEB = 9000;
+  public static final int PUERTO_WEB = Integer.parseInt(System.getenv().getOrDefault("PORT", "9000"));
 
   public static void main(String[] args) {
     Persistencia.factory();
