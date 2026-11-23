@@ -40,7 +40,8 @@ public class RepositorioEntidadesBeneficiarias {
   }
 
   public List<EntidadBeneficiaria> listarTodas(EntityManager em) {
-    return em.createQuery("select e from EntidadBeneficiaria e", EntidadBeneficiaria.class)
+    // return em.createQuery("select e from EntidadBeneficiaria e", EntidadBeneficiaria.class)
+    return em.createQuery("select e from EntidadBeneficiaria e order by e.id asc", EntidadBeneficiaria.class)
         .getResultList();
   }
 

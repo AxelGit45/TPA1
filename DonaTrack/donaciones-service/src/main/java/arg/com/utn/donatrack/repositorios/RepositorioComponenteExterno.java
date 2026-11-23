@@ -11,6 +11,8 @@ public class RepositorioComponenteExterno {
   }
 
   public void guardarResultadosDeComponenteExterno(EntityManager em, List<ResultadoComponenteAsignador> resultadosComponenteAsignador) {
+    em.getTransaction().begin();
     resultadosComponenteAsignador.forEach( resultadoComponenteAsignador -> em.persist(resultadoComponenteAsignador));
+    em.getTransaction().commit();
   }
 }
