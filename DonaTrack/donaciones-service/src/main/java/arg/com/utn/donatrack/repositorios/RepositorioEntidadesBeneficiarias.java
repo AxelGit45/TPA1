@@ -5,7 +5,9 @@ import arg.com.utn.donatrack.persistencia.Persistencia;
 import arg.com.utn.donatrack.usuarios.Usuario;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.util.List;
+import java.time.LocalDate;
 
 public class RepositorioEntidadesBeneficiarias {
 
@@ -58,6 +60,16 @@ public class RepositorioEntidadesBeneficiarias {
     return em.createQuery(
             "select e from EntidadBeneficiaria e where e.necesidades is not empty", EntidadBeneficiaria.class)
         .getResultList();
+  }
+
+  public int contarDonacionesRecibidasDesde(EntityManager em, Long entidadId, LocalDate desde) {
+    Long cantidad = em.createQuery(
+            "select count(e) from AsignacionRealizada e "
+                + "where e.entidadBeneficiaria.id = :entidadId and e.fechaDeAsignacion >= :desde", Long.class)
+        .setParameter("entidadId", entidadId)
+        .setParameter("desde", desde)
+        .getSingleResult();
+    return cantidad.intValue();
   }
 
 }

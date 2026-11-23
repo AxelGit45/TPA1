@@ -8,6 +8,8 @@ import arg.com.utn.donatrack.usuarios.Usuario;
 import arg.com.utn.donatrack.web.controllers.*;
 import arg.com.utn.donatrack.web.templates.JavalinHandlebars;
 import arg.com.utn.donatrack.web.templates.JavalinRenderer;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import io.javalin.Javalin;
 import io.javalin.http.ForbiddenResponse;
 import java.util.Map;
@@ -19,7 +21,16 @@ public class Main {
   public static void main(String[] args) {
     Persistencia.factory();
     //inicializarAdmin();
+
+    //Conectar al host y puerto donde levantaste LogisticaServices
+    ManagedChannel channel = ManagedChannelBuilder
+        .forAddress("localhost", 50051)
+        .usePlaintext()
+        .build();
+
     Javalin web = levantarWeb();
+
+
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
       web.stop();
@@ -30,7 +41,7 @@ public class Main {
   // Podés llamar a este método en Main.java antes de levantar Javalin
   /*private static void inicializarAdmin() {
     RepositorioUsuarios repoUsuarios = new RepositorioUsuarios();
-    String emailAdmin = "admin@donatrack.com";
+    String emailAdmin = "admin@.com";
 
     // Verifica si ya existe para no duplicarlo cada vez que reiniciás el servidor
     if (repoUsuarios.buscarUsuarioPorEmail(emailAdmin) == null) {
@@ -140,7 +151,7 @@ app.before(ctx -> {
     app.get("/admin/camiones", admin::mostrarCamiones);
     app.get("/admin/importar-csv", admin::mostrarImportarCsv);
     app.post("/admin/importar-csv", admin::importarCsv);
-    app.post("/admin/matchmaking", externo::guardarResultadosDeComponenteExterno);
+
 
     /*Rutas para cargar una donacion*/
     // Recepción de donaciones en almacén (Paso 1: crear donación / Paso 2: cargar bienes)
@@ -154,6 +165,9 @@ app.before(ctx -> {
     app.get("/admin/recepcion/bienes", admin::mostrarCargaBienes);
     app.post("/admin/recepcion/bienes", admin::agregarBien);
     app.post("/admin/recepcion/finalizar", admin::finalizarDonacion);
+
+    app.post("/admin/matchmaking", externo::guardarResultadosDeComponenteExterno);
+    app.post("/admin/matchmaking/{id}/confirmar", admin::confirmarAsignacion);
 
     System.out.println("[DONACIONES-SERVICE] Web (Javalin) levantada en http://localhost:" + PUERTO_WEB);
     return app;

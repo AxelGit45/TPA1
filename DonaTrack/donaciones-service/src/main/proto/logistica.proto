@@ -86,6 +86,18 @@ message UbicacionCamionResponse {
 // SERVICIO
 // ============================================================
 
+/*
+message PlanificarRutas {
+  int64 donacion_id = 1;
+  string direccion_destino = 2;
+}
+
+message PlanificarRutasRequest {
+  repeated DonacionPlanificableProto donaciones = 1;
+}
+
+*/
+
 service LogisticaService {
   rpc PlanificarRutas (PlanificarRutasRequest) returns (PlanificacionResponse);
   rpc IniciarRuta (IniciarRutaRequest) returns (IniciarRutaResponse);

@@ -5,7 +5,11 @@ import arg.com.utn.donatrack.estados.EstadoDonacion;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table
@@ -24,12 +27,16 @@ public class ResultadoComponenteAsignador {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  // Destino final: queda en null hasta que la administradora confirme
   @ManyToOne  //--> Warning
   @JoinColumn(name = "entidad_id")
   private EntidadBeneficiaria entidad;
 
-  @Transient
-  private List<EntidadBeneficiaria> entidades = new ArrayList<>();
+  // Ids de todas las entidades candidatas que devolvió el componente
+  @ElementCollection
+  @CollectionTable(name = "resultado_entidades_candidatas", joinColumns = @JoinColumn(name = "resultado_id"))
+  @Column(name = "entidad_id")
+  private List<Long> entidadesCandidatasIds = new ArrayList<>();
 
   @ManyToOne
   @JoinColumn(name = "donacion_id")
@@ -40,32 +47,41 @@ public class ResultadoComponenteAsignador {
   }
 
   public ResultadoComponenteAsignador(List<EntidadBeneficiaria> entidades, Donacion donacion){
-    this.entidad = entidades.get(0);
     this.donacion = donacion;
-    //this.entidades = entidades;
+    this.entidadesCandidatasIds = new ArrayList<>(entidades.stream().map(EntidadBeneficiaria::getId).toList());
   }
 
   public Long getId() {
     return id;
   }
 
-  public List<EntidadBeneficiaria> getEntidades() {
-    return entidades;
+  public EntidadBeneficiaria getEntidad() {
+    return entidad;
+  }
+
+  public List<Long> getEntidadesCandidatasIds() {
+    return entidadesCandidatasIds;
   }
 
   public Donacion getDonacion() {
     return donacion;
   }
 
+  public void setEntidad(EntidadBeneficiaria entidad) {
+    this.entidad = entidad;
+  }
+
   public void setId(Long id) {
     this.id = id;
   }
 
-  public void setEntidades(List<EntidadBeneficiaria> entidades) {
-    this.entidades = entidades;
+  public void setEntidadesCandidatasIds(List<Long> entidadesCandidatasIds) {
+    this.entidadesCandidatasIds = entidadesCandidatasIds;
   }
 
   public void setDonacion(Donacion donacion) {
     this.donacion = donacion;
   }
+
+
 }

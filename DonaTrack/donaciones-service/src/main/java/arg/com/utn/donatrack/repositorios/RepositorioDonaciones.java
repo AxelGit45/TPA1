@@ -107,13 +107,13 @@ public class RepositorioDonaciones {
 
   public List<Donacion> listarEntregadas(EntityManager em) {
     return em.createQuery(
-            "select distinct d from Donacion d where TYPE(d.estadoDonacion) = Entregada", Donacion.class)
+            "select distinct d from Donacion d join d.estadoDonacion e where TYPE(e) = Entregada", Donacion.class)
         .getResultList();
   }
 
   public List<Donacion> listarEnDeposito(EntityManager em) {
     return em.createQuery(
-            "select distinct d from Donacion d where TYPE(d.estadoDonacion) = EnDeposito", Donacion.class)
+            "select distinct d from Donacion d join d.estadoDonacion e where TYPE(e) = EnDeposito", Donacion.class)
         .getResultList();
   }
 
@@ -130,7 +130,7 @@ public class RepositorioDonaciones {
 
   public List<Donacion> listarEnTraslado(EntityManager em) {
     return em.createQuery(
-            "select distinct d from Donacion d where TYPE(d.estadoDonacion) = EnTraslado", Donacion.class)
+            "select distinct d from Donacion d join d.estadoDonacion e where TYPE(e) = EnTraslado", Donacion.class)
         .getResultList();
   }
 }

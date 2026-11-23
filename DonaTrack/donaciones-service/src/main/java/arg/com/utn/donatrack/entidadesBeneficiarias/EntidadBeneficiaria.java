@@ -1,5 +1,6 @@
 package arg.com.utn.donatrack.entidadesBeneficiarias;
 
+import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.personas.contactos.Contacto;
 
@@ -103,6 +104,14 @@ public class EntidadBeneficiaria {
   }
 
 
+  public void recibirDonacion(Donacion donacion) {
+    for (Bien bien : donacion.getBienes()) {
+      necesidades.stream()
+          .filter(necesidad -> necesidad.esSatisfechaPor(bien))
+          .findFirst()
+          .ifPresent(necesidad -> necesidad.recibir(bien.getCantidad()));
+    }
+  }
 
   public List<Contacto> getContactos() { return contactos; }
   public void setContactos(List<Contacto> contactos) { this.contactos = contactos; }

@@ -5,6 +5,39 @@ import io.grpc.stub.StreamObserver;
 
 public class LogisticaGrpcServiceImpl extends LogisticaServiceGrpc.LogisticaServiceImplBase{
 
+
+  @Override
+  public void planificarRutas(PlanificarRutasRequest request, StreamObserver<PlanificacionResponse> responseObserver) {
+    System.out.println("Recibidas " + request.getDonacionesCount() + " donaciones para planificar.");
+
+    // 1. Armar una entrega de prueba usando la primera donación recibida
+    DonacionPlanificableProto primeraDonacion = request.getDonaciones(0);
+
+    EntregaRutaProto entrega = EntregaRutaProto.newBuilder()
+        .setEntregaId(100L)
+        .addDonacionIds(primeraDonacion.getDonacionId()) // Para campos repeated se usa add...
+        .setDireccionDestino(primeraDonacion.getDireccionDestino())
+        .setOrden(1)
+        .build();
+
+    // 2. Armar la ruta que contiene esa entrega
+    RutaResponse ruta = RutaResponse.newBuilder()
+        .setRutaId(1L)
+        .setCamionId(50L)
+        .setPatenteCamion("AB123CD")
+        .setLinkMapa("https://google.com")
+        .addEntregas(entrega)
+        .build();
+
+    // 3. Armar la respuesta final (PlanificacionResponse)
+    PlanificacionResponse response = PlanificacionResponse.newBuilder()
+        .addRutas(ruta)
+        .build();
+
+    // 4. Enviar la respuesta al cliente y cerrar la llamada
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
   /*@Override
   public void planificarRutas(PlanificarRutasRequest request, StreamObserver<PlanificacionResponse> responseObserver) {
     // 1. LEER LOS DATOS ENVIADOS POR EL CLIENTE (donaciones-service)
