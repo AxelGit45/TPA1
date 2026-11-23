@@ -10,6 +10,7 @@ import arg.com.utn.donatrack.web.templates.JavalinHandlebars;
 import arg.com.utn.donatrack.web.templates.JavalinRenderer;
 import io.javalin.Javalin;
 import io.javalin.http.ForbiddenResponse;
+import javax.persistence.EntityManager;
 import java.util.Map;
 
 public class Main {
@@ -18,7 +19,7 @@ public class Main {
 
   public static void main(String[] args) {
     Persistencia.factory();
-    //inicializarAdmin();
+    inicializarAdmin();
     Javalin web = levantarWeb();
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -28,18 +29,18 @@ public class Main {
 
 
   // Podés llamar a este método en Main.java antes de levantar Javalin
-  /*private static void inicializarAdmin() {
+  private static void inicializarAdmin() {
+    EntityManager em = Persistencia.crearEntityManager();
     RepositorioUsuarios repoUsuarios = new RepositorioUsuarios();
     String emailAdmin = "admin@donatrack.com";
-
     // Verifica si ya existe para no duplicarlo cada vez que reiniciás el servidor
-    if (repoUsuarios.buscarUsuarioPorEmail(emailAdmin) == null) {
+    if (repoUsuarios.buscarUsuarioPorEmail(em, emailAdmin) == null) {
       String passwordHasheada = SeguridadPassword.hashear("admin123");
       Usuario admin = new Usuario(emailAdmin, passwordHasheada, Rol.ADMINISTRADOR);
-      repoUsuarios.guardarUsuario(admin);
+      repoUsuarios.guardarUsuario(em, admin);
       System.out.println("Usuario administrador creado: " + emailAdmin);
     }
-  }*/
+  }
 
   private static Javalin levantarWeb() {
     JavalinRenderer renderer = new JavalinRenderer()
@@ -54,6 +55,9 @@ public class Main {
       ctx.status(403)
           .contentType("text/plain; charset=utf-8")
           .result(e.getMessage());
+    });
+    app.error(404, ctx -> {
+      ctx.render("404.html.hbs", Map.of());
     });
 
 
@@ -76,8 +80,8 @@ app.before(ctx -> {
   }
 
   String rol = ctx.sessionAttribute("rol");
-  if (!rol.equals(rolRequerido)) {
-    ctx.status(404).result("Not Found");
+  if (rol == null || !rol.equals(rolRequerido)) {
+    ctx.status(404).render("404.html.hbs", Map.of());
     ctx.skipRemainingHandlers();
   }
 });
@@ -110,6 +114,7 @@ app.before(ctx -> {
     app.get("/", home::index);
     app.get("/mapa-entregas", home::mostrarMapaEntregas);
     app.get("/legal", home::mostrarLegal);
+    app.get("/dev", ctx -> ctx.render("dev.html.hbs", Map.of()));
 
     // Landings por rol
     app.get("/donante", landing::mostrar);
