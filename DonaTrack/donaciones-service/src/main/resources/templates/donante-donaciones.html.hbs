@@ -33,8 +33,6 @@
            {{/each}}
        </select>
 
-
-
     <button type="submit">Filtrar</button>
     <a href="/donante/donaciones">Limpiar</a>
 </form>
@@ -71,5 +69,11 @@
 {{else}}
     <p>No se encontraron donaciones registradas.</p>
 {{/if}}
+
+<script>
+  document.getElementById("estado").value = "{{filtroEstado}}";
+  document.getElementById("categoriaId").value = "{{filtroCategoriaId}}";
+  document.getElementById("subcategoriaId").value = "{{filtroSubcategoriaId}}";
+</script>
 
 {{> partials/footer}}

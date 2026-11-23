@@ -15,6 +15,12 @@ public class EnDeposito extends EstadoDonacion{
 
   @Transient
   public List<Algoritmo> algoritmos = new ArrayList<>();
+
+  @Transient
+  private CompatibilidadSemantica compatibilidadSemantica = new CompatibilidadSemantica();
+  @Transient
+  private PrioridadASubAtendidos prioridadASubAtendidos = new PrioridadASubAtendidos();
+
   @Transient
   public ComponenteAsignadorDeDestinatarios componenteExterno = new ComponenteAsignadorDeDestinatarios();
 
@@ -22,11 +28,14 @@ public class EnDeposito extends EstadoDonacion{
 
   @Override
   public ResultadoMatchmaking asignacionDonaciones(List<EntidadBeneficiaria> entidades, Donacion donacion){
+      algoritmos.add(compatibilidadSemantica);
+      algoritmos.add(prioridadASubAtendidos);
 
       List<ResultadoAlgoritmo> resultadosDeAlgoritmos = algoritmos.stream().map(algoritmo -> algoritmo.ejecutar(donacion,entidades)).toList();
 
       ResultadoMatchmaking ranking = new ResultadoMatchmaking(donacion, resultadosDeAlgoritmos);
-      return ranking;
+      return ranking; // Resultado de la ejecución de NUESTROS algoritmos
+
     //EntidadBeneficiaria entidad = componenteExterno.obtenerResultadoDeAlgoritmosPorDonacion(ranking);
                         // Entidad/ NULL
     //Si hay concincidencias con la entiad

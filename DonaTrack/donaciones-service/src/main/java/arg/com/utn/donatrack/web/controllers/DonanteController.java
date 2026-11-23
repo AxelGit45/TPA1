@@ -5,34 +5,43 @@ import arg.com.utn.donatrack.donaciones.Bien;
 import arg.com.utn.donatrack.donaciones.Donacion;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.persistencia.Persistencia;
+import arg.com.utn.donatrack.personas.Persona;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
 import arg.com.utn.donatrack.repositorios.RepositorioEntidadesBeneficiarias;
+import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
+import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
 import io.javalin.http.Context;
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
-import arg.com.utn.donatrack.personas.Persona;
-import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
-import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
 
 public class DonanteController {
 
   private final RepositorioDonaciones repositorioDonaciones = new RepositorioDonaciones();
   private final RepositorioEntidadesBeneficiarias repositorioEntidades = new RepositorioEntidadesBeneficiarias();
+  private final RepositorioPersonas repositorioPersonas = new RepositorioPersonas();
   private final RepositorioSubcategorias repositorioSubcategorias = new RepositorioSubcategorias();
   // private final LogisticaClient logisticaClient = new LogisticaClient();
 
   public void listarDonaciones(Context ctx) {
 
     String filtroEstado = ctx.queryParam("estado");
-    String filtroCategoria = ctx.queryParam("categoria");
+    String filtroCategoria = ctx.queryParam("categoriaId");
+    String filtroSubcategoria = ctx.queryParam("subcategoriaId");
+    Long categoriaId = (filtroCategoria == null || filtroCategoria.isBlank()) ? null : Long.parseLong(filtroCategoria);
+    Long subcategoriaId = (filtroSubcategoria == null || filtroSubcategoria.isBlank()) ? null : Long.parseLong(filtroSubcategoria);
 
     EntityManager em = Persistencia.crearEntityManager();
     try {
-      List<Donacion> donacionesDb = repositorioDonaciones.listarTodas(em);
+      // Solo las donaciones de la persona logueada, ya filtradas por el repo
+      Long usuarioId = ctx.sessionAttribute("usuarioId");
+      Persona donante = repositorioPersonas.buscarPorUsuarioId(em, usuarioId);
+      List<Donacion> donacionesDb = donante != null
+          ? repositorioDonaciones.listarPorDonante(em, donante.getId(), filtroEstado, categoriaId, subcategoriaId)
+          : List.of();
+
       List<Map<String, Object>> donacionesParaVista = new ArrayList<>();
       for (Donacion d : donacionesDb) {
         String estado = d.getEstado() != null ? d.getEstado().getClass().getSimpleName().toUpperCase() : "DESCONOCIDO";
@@ -51,31 +60,30 @@ public class DonanteController {
         String fecha = d.getEstado() != null && d.getEstado().getFechaDeAsignacion() != null
             ? d.getEstado().getFechaDeAsignacion().toString()
             : "-";
-        boolean coincideEstado = filtroEstado == null || filtroEstado.isBlank() || estado.equalsIgnoreCase(filtroEstado);
-        boolean coincideCategoria = filtroCategoria == null || filtroCategoria.isBlank() || categoria.equalsIgnoreCase(filtroCategoria);
-        if (coincideEstado && coincideCategoria) {
-          Map<String, Object> fila = new HashMap<>();
-          fila.put("id", d.getId());
-          fila.put("fecha", fecha);
-          fila.put("descripcion", descripcion);
-          fila.put("categoria", categoria);
-          fila.put("entidadDestino", "-");
-          fila.put("estado", estado);
-          donacionesParaVista.add(fila);
-        }
+        Map<String, Object> fila = new HashMap<>();
+        fila.put("id", d.getId());
+        fila.put("fecha", fecha);
+        fila.put("descripcion", descripcion);
+        fila.put("categoria", categoria);
+        fila.put("entidadDestino", "-");
+        fila.put("estado", estado);
+        donacionesParaVista.add(fila);
       }
 
       Map<String, Object> modelo = new HashMap<>();
-
       modelo.put("donaciones", donacionesParaVista);
       modelo.put("categorias", repositorioSubcategorias.listarCategorias(em));
       modelo.put("subcategorias", repositorioSubcategorias.listarSubcategorias(em));
-
+      modelo.put("filtroEstado", filtroEstado);
+      modelo.put("filtroCategoriaId", filtroCategoria);
+      modelo.put("filtroSubcategoriaId", filtroSubcategoria);
       ctx.render("donante-donaciones.html.hbs", modelo);
     } finally {
       em.close();
     }
   }
+
+
 
   public void listarEntidades(Context ctx) {
     EntityManager em = Persistencia.crearEntityManager();

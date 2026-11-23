@@ -10,15 +10,27 @@ import arg.com.utn.donatrack.donaciones.Unidad;
 import arg.com.utn.donatrack.entidadesBeneficiarias.EntidadBeneficiaria;
 import arg.com.utn.donatrack.estados.EnDeposito;
 import arg.com.utn.donatrack.estados.Vencida;
+import arg.com.utn.donatrack.notificaciones.adapters.EmailAdapter;
 import arg.com.utn.donatrack.persistencia.Persistencia;
 import arg.com.utn.donatrack.personas.Persona;
+import arg.com.utn.donatrack.personas.PersonaHumana;
+import arg.com.utn.donatrack.personas.contactos.Contacto;
+import arg.com.utn.donatrack.personas.contactos.Mail;
+import arg.com.utn.donatrack.personas.contactos.Telefono;
+import arg.com.utn.donatrack.personas.contactos.WhatsApp;
 import arg.com.utn.donatrack.repositorios.RepositorioDonaciones;
 import arg.com.utn.donatrack.repositorios.RepositorioEntidadesBeneficiarias;
 import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
 import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
+import arg.com.utn.donatrack.repositorios.RepositorioUsuarios;
+import arg.com.utn.donatrack.seguridad.SeguridadPassword;
 import arg.com.utn.donatrack.tareas.ImportadorCsv;
+import arg.com.utn.donatrack.usuarios.Rol;
+import arg.com.utn.donatrack.usuarios.Usuario;
 import io.javalin.http.Context;
 import io.javalin.http.UploadedFile;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -286,6 +298,112 @@ public class AdminController {
     }
   }
 
+  public void crearDonante(Context ctx) {
+    String nombre = texto(ctx, "nombre");
+    String apellido = texto(ctx, "apellido");
+    Integer edad = pasarAEntero(texto(ctx, "edad"));
+    Integer documento = pasarAEntero(texto(ctx, "numeroDeDocumento"));
+    String genero = texto(ctx, "genero");
+    String direccion = texto(ctx, "direccion");
+    String email = texto(ctx, "email");
+    String telefono = texto(ctx, "telefono");
+    String whatsapp = texto(ctx, "whatsapp");
+    String predeterminado = texto(ctx, "predeterminado");
+
+    List<String> errores = new ArrayList<>();
+    if (nombre.isEmpty()) {errores.add("El campo 'Nombre' es obligatorio.");}
+    if (apellido.isEmpty()) {errores.add("El campo 'Apellido' es obligatorio.");}
+    if (edad == null || edad <= 0) {errores.add("El campo 'Edad' es obligatorio y debe ser un número positivo.");}
+    if (predeterminado.equals("TELEFONO") && telefono.isEmpty()) {errores.add("Se eligió el teléfono como medio de contacto pero no se cargó ningún teléfono.");}
+    if (predeterminado.equals("WHATSAPP") && whatsapp.isEmpty()) {errores.add("Se eligió WhatsApp como medio de contacto pero no se cargó ningún número de WhatsApp.");}
+    if (direccion.isEmpty()) {errores.add("El campo 'Dirección' es obligatorio.");}
+    if (email.isEmpty()) {errores.add("El campo 'Email' es obligatorio.");}
+
+    EntityManager em = Persistencia.crearEntityManager();
+    try {
+      RepositorioUsuarios repoUsuarios = new RepositorioUsuarios();
+      if (!email.isEmpty() && repoUsuarios.buscarUsuarioPorEmail(em, email) != null) {
+        errores.add("Ya existe un usuario con ese email.");
+      }
+
+      if (!errores.isEmpty()) {
+        Map<String, Object> model = new HashMap<>();
+        model.put("errores", errores);
+        model.put("nombre", nombre);
+        model.put("apellido", apellido);
+        model.put("edad", texto(ctx, "edad"));
+        model.put("numeroDeDocumento", texto(ctx, "numeroDeDocumento"));
+        model.put("direccion", direccion);
+        model.put("email", email);
+        model.put("telefono", telefono);
+        model.put("whatsapp", whatsapp);
+        ctx.status(400).render("admin-alta-donante.html.hbs.html.hbs", model);
+        return;
+      }
+
+
+      // La persona no eligió contraseña: todos arrancan con la misma y les llega por mail
+      String contraseniaTemporal = "1234";
+      Usuario usuario = new Usuario(email, SeguridadPassword.hashear(contraseniaTemporal), Rol.DONANTE);
+      repoUsuarios.guardarUsuario(em, usuario);
+
+      Mail mail = new Mail(email);
+      Contacto contactoPredeterminado = mail;
+
+      Telefono tel = null;
+      if (!telefono.isEmpty()) {
+        tel = new Telefono(telefono);
+      }
+      if (predeterminado.equals("TELEFONO") && tel != null) {
+        contactoPredeterminado = tel;
+      }
+
+      WhatsApp whatsApp = null;
+      if (!whatsapp.isEmpty()) {
+        whatsApp = new WhatsApp(whatsapp);
+      }
+      if (predeterminado.equals("WHATSAPP") && whatsApp != null) {
+        contactoPredeterminado = whatsApp;
+      }
+
+      PersonaHumana persona = new PersonaHumana(nombre, apellido, edad, documento, genero, direccion, new ArrayList<>(), contactoPredeterminado);
+      persona.agregarContacto(mail);
+      if (tel != null) {
+        persona.agregarContacto(tel);
+      }
+      if (whatsApp != null) {
+        persona.agregarContacto(whatsApp);
+      }
+      persona.setUsuarioId(usuario.getId());
+      new RepositorioPersonas().guardarPersona(em, persona);
+
+      boolean mailEnviado = enviarBienvenida(ctx, nombre, email, contraseniaTemporal);
+
+      ctx.redirect("/admin/donantes/nuevo?creado=" + URLEncoder.encode(email, StandardCharsets.UTF_8)
+          + "&mail=" + mailEnviado);
+    } finally {
+      em.close();
+    }
+  }
+
+  private boolean enviarBienvenida(Context ctx, String nombre, String email, String contrasenia) {
+    String cuerpo = "¡Hola " + nombre + "!\n\n"
+        + "Te registramos en DonaTrack desde el depósito. En tu primer acceso usá estos datos:\n\n"
+        + "Usuario: " + email + "\n"
+        + "Contraseña temporal: " + contrasenia + "\n\n"
+        + "Ingresá en http://localhost:9000/login\n\n"
+        + "¡Gracias por donar!\n"
+        + "El equipo de DonaTrack";
+    try {
+      EmailAdapter.getInstancia().enviarCorreo(email, "Bienvenida a DonaTrack", cuerpo);
+      return true;
+    } catch (Exception e) {
+      // Si falla el mail la persona igual queda registrada; la pantalla avisa que no se envió
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public void mostrarHome(Context ctx) {
     ctx.render("admin-home.html.hbs", Map.of());
   }
@@ -301,4 +419,25 @@ public class AdminController {
   public void mostrarImportarCsv(Context ctx) {
     ctx.render("admin-importar-csv.html.hbs", Map.of());
   }
+
+  private String texto(Context ctx, String nombreCampo) {
+    String valor = ctx.formParam(nombreCampo);
+    return valor == null ? "" : valor.trim();
+  }
+
+  private Integer pasarAEntero(String texto) {
+    try {
+      return Integer.parseInt(texto);
+    } catch (NumberFormatException e) {
+      return null;
+    }
+  }
+
+  public void mostrarAltaDonante(Context ctx) {
+    Map<String, Object> model = new HashMap<>();
+    model.put("creado", ctx.queryParam("creado"));
+    model.put("mailEnviado", "true".equals(ctx.queryParam("mail")));
+    ctx.render("admin-alta-donante.html.hbs.html.hbs", model);
+  }
+
 }

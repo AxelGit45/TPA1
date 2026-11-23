@@ -49,6 +49,39 @@ public class RepositorioDonaciones {
         .getResultList();
   }
 
+
+  public List<Donacion> listarPorDonante(EntityManager em, Long personaId, String estado, Long categoriaId, Long subcategoriaId) {
+    String sql = "select distinct d.* from donacion d "
+        + "join estadodonacion e on e.id = d.estado_actual_id "
+        + "join bien b on b.donacion_id = d.id "
+        + "join subcategoria s on s.id = b.subcategoria_id "
+        + "where b.persona_id = :personaId";
+
+    if (estado != null && !estado.isBlank()) {
+      sql += " and e.tipo_estado = :estado";
+    }
+    if (categoriaId != null) {
+      sql += " and s.categoria_id = :categoriaId";
+    }
+    if (subcategoriaId != null) {
+      sql += " and s.id = :subcategoriaId";
+    }
+
+    var query = em.createNativeQuery(sql, Donacion.class)
+        .setParameter("personaId", personaId);
+    if (estado != null && !estado.isBlank()) {
+      query.setParameter("estado", estado);
+    }
+    if (categoriaId != null) {
+      query.setParameter("categoriaId", categoriaId);
+    }
+    if (subcategoriaId != null) {
+      query.setParameter("subcategoriaId", subcategoriaId);
+    }
+    return query.getResultList();
+  }
+
+
   public List<Donacion> listarPorDonante(EntityManager em, Long personaId) {
     if (personaId == null) {
       return List.of();
