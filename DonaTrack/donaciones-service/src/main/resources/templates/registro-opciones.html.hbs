@@ -1,24 +1,59 @@
 {{> partials/header}}
 
+<style>
+    .opciones {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        max-width: 850px;
+        margin: 30px auto;
+    }
+
+    .opcion {
+        flex: 1;
+        border: 1px solid #ccc;
+        padding: 25px 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .icono-opcion {
+        font-size: 38px;
+        margin-bottom: 10px;
+    }
+</style>
+
 <h1>Crear una cuenta</h1>
 <p>Elegí cómo te querés registrar.</p>
 
 <div class="opciones">
-  <div class="opcion">
-    <h3>Persona</h3>
-    <p> Donaciones personales </p>
-    <a href="/registro/humana">Registrarme como persona</a>
-  </div>
-  <div class="opcion">
-    <h3>Persona jurídica</h3>
-    <p>Donás en nombre de una empresa, ONG, institución u organismo.</p>
-    <a href="/registro/juridica">Registrar una organización</a>
-  </div>
-  <div class="opcion">
-    <h3>Entidad beneficiaria</h3>
-    <p>Tu organización recibe donaciones </p>
-    <a href="/registro/entidad">Registrar una entidad</a>
-  </div>
+    <div class="opcion">
+        <div>
+            <div class="icono-opcion">👤</div>
+            <h3>Persona</h3>
+            <p>Donaciones personales y particulares.</p>
+        </div>
+        <a href="/registro/humana">Registrarme como persona</a>
+    </div>
+
+    <div class="opcion">
+        <div>
+            <div class="icono-opcion">🏢</div>
+            <h3>Persona jurídica</h3>
+            <p>Donás en nombre de una empresa, ONG u organismo.</p>
+        </div>
+        <a href="/registro/juridica">Registrar una organización</a>
+    </div>
+
+    <div class="opcion">
+        <div>
+            <div class="icono-opcion">🤝</div>
+            <h3>Entidad beneficiaria</h3>
+            <p>Comedores, hogares y organizaciones receptoras.</p>
+        </div>
+        <a href="/registro/entidad">Registrar una entidad</a>
+    </div>
 </div>
 
 <p>¿Ya tenés cuenta? <a href="/login">Iniciá sesión</a></p>
