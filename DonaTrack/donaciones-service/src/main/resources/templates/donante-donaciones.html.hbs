@@ -10,18 +10,30 @@
     <label for="estado">Estado:</label>
     <select id="estado" name="estado">
         <option value="">Todos</option>
-        <option value="EN_DEPOSITO">En Depósito</option>
-        <option value="EN_TRASLADO">En Traslado</option>
-        <option value="ENTREGADA">Entregada</option>
+         <option value="EN_DEPOSITO">En Depósito</option>
+         <option value="ASIGNACION_REALIZADA">Asignada</option>
+         <option value="EN_TRASLADO">En Traslado</option>
+         <option value="ENTREGADA">Entregada</option>
+         <option value="VENCIDA">Vencida</option>
     </select>
 
-    <label for="categoria">Categoría:</label>
-    <select id="categoria" name="categoria">
-        <option value="">Todas</option>
-        <option value="Alimentos">Alimentos</option>
-        <option value="Ropa">Ropa</option>
-        <option value="Medicamentos">Medicamentos</option>
-    </select>
+       <label for="categoriaId">Categoría:</label>
+       <select id="categoriaId" name="categoriaId">
+           <option value="">Todas</option>
+           {{#each categorias}}
+               <option value="{{id}}">{{nombre}}</option>
+           {{/each}}
+       </select>
+
+       <label for="subcategoriaId">Subcategoría:</label>
+       <select id="subcategoriaId" name="subcategoriaId">
+           <option value="">Todas</option>
+           {{#each subcategorias}}
+               <option value="{{id}}">{{nombre}}</option>
+           {{/each}}
+       </select>
+
+
 
     <button type="submit">Filtrar</button>
     <a href="/donante/donaciones">Limpiar</a>

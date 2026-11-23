@@ -1,15 +1,18 @@
 package arg.com.utn.donatrack.notificaciones.adapters;
-/*
-import org.glassfish.grizzly.http.server.Session;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class EmailAdapter {
-*/
- /* private static EmailAdapter instancia = null;
+
+  private static EmailAdapter instancia = null;
 
   private static final String CORREO_REMITENTE = "donatrackk3053@gmail.com";
   private static final String PASSWORD_APLICACION = "syvmylxaqvwnverj";
@@ -48,13 +51,13 @@ public class EmailAdapter {
       message.setFrom(new InternetAddress(CORREO_REMITENTE));
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(correoDestinatario));
 
-      message.setSubject(asunto);
-      message.setText(cuerpoMensaje);
+      ((MimeMessage) message).setSubject(asunto, "UTF-8");
+      ((MimeMessage) message).setText(cuerpoMensaje, "UTF-8");
 
       Transport.send(message);
     } catch (MessagingException e) {
       throw new RuntimeException(e);
     }
 
-  } */
-//}
+  }
+}

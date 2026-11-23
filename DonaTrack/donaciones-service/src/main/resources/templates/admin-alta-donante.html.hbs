@@ -1,0 +1,95 @@
+{{> partials/header}}
+
+<div class="formulario">
+  <p><a href="/admin">&larr; Volver al panel</a></p>
+  <h1>Alta de persona donante</h1>
+
+  {{#if creado}}
+    <div role="status">
+      <p><strong>Se registró a {{creado}}.</strong></p>
+      {{#if mailEnviado}}
+        <p>Le enviamos un correo de bienvenida con su contraseña temporal para el primer acceso.</p>
+      {{else}}
+        <p style="color: red;">La persona quedó registrada, pero no se pudo enviar el correo de bienvenida.</p>
+      {{/if}}
+      <p><a href="/admin/recepcion">Registrar una donación de esta persona</a></p>
+    </div>
+  {{/if}}
+
+  {{#if errores}}
+    <div role="alert" style="color: red;">
+      <p>Revisá estos datos:</p>
+      <ul>
+        {{#each errores}}
+          <li>{{this}}</li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+
+  <form method="POST" action="/admin/donantes">
+    <fieldset>
+      <legend>Datos personales</legend>
+      <div class="campo">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" value="{{nombre}}" required>
+      </div>
+      <div class="campo">
+        <label for="apellido">Apellido</label>
+        <input type="text" id="apellido" name="apellido" value="{{apellido}}" required>
+      </div>
+      <div class="campo">
+        <label for="edad">Edad</label>
+        <input type="number" id="edad" name="edad" value="{{edad}}" min="1" required>
+      </div>
+      <div class="campo">
+        <label for="numeroDeDocumento">Número de documento</label>
+        <input type="text" id="numeroDeDocumento" name="numeroDeDocumento" value="{{numeroDeDocumento}}"
+               inputmode="numeric" required>
+        <p class="ayuda">Solo números, sin puntos.</p>
+      </div>
+      <div class="campo">
+        <label for="genero">Género</label>
+        <select id="genero" name="genero" required>
+          <option value="Femenino">Femenino</option>
+          <option value="Masculino">Masculino</option>
+          <option value="No binario">No binario</option>
+          <option value="Otro">Otro</option>
+          <option value="Prefiero no decir">Prefiero no decir</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion" name="direccion" value="{{direccion}}" required>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Contacto</legend>
+      <div class="campo">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{email}}" required>
+        <p class="ayuda">A este correo le llega la bienvenida con la contraseña temporal.</p>
+      </div>
+      <div class="campo">
+        <label for="telefono">Teléfono (opcional)</label>
+        <input type="tel" id="telefono" name="telefono" value="{{telefono}}">
+      </div>
+      <div class="campo">
+        <label for="whatsapp">WhatsApp (opcional)</label>
+        <input type="tel" id="whatsapp" name="whatsapp" value="{{whatsapp}}">
+      </div>
+      <fieldset>
+        <legend>¿Por dónde quiere recibir las notificaciones?</legend>
+        <label><input type="radio" name="predeterminado" value="EMAIL" checked> Email</label><br>
+        <label><input type="radio" name="predeterminado" value="TELEFONO"> Teléfono</label><br>
+        <label><input type="radio" name="predeterminado" value="WHATSAPP"> WhatsApp</label><br>
+        <p class="ayuda">Si elige un medio que no se cargó, se le avisa por email.</p>
+      </fieldset>
+    </fieldset>
+
+    <button type="submit">Registrar y enviar bienvenida</button>
+  </form>
+</div>
+
+{{> partials/footer}}

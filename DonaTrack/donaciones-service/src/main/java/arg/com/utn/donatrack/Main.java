@@ -90,6 +90,7 @@ app.before(ctx -> {
     AdminController admin = new AdminController();
     RegistroController registro = new RegistroController();
     SessionController sesion = new SessionController();
+    ComponenteAsignadorController externo = new ComponenteAsignadorController();
 
     //Registros
     app.get("/registro/juridica", registro::registroJuridica);
@@ -130,6 +131,8 @@ app.before(ctx -> {
     app.get("/entidad/seguimiento", entidad::seguirEntregas);
 
     // Rutas Admin
+    app.get("/admin/donantes/nuevo", admin::mostrarAltaDonante);
+    app.post("/admin/donantes", admin::crearDonante);
     app.get("/admin/recepcion", admin::mostrarRecepcion);
     app.get("/admin/vencidas", admin::mostrarVencidas);
     app.post("/admin/vencidas/{id}", admin::marcarVencida);
@@ -137,6 +140,7 @@ app.before(ctx -> {
     app.get("/admin/camiones", admin::mostrarCamiones);
     app.get("/admin/importar-csv", admin::mostrarImportarCsv);
     app.post("/admin/importar-csv", admin::importarCsv);
+    app.post("/admin/matchmaking", externo::guardarResultadosDeComponenteExterno);
 
     /*Rutas para cargar una donacion*/
     // Recepción de donaciones en almacén (Paso 1: crear donación / Paso 2: cargar bienes)

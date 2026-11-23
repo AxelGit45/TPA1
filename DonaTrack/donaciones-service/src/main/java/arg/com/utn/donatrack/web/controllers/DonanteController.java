@@ -13,11 +13,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
+import arg.com.utn.donatrack.personas.Persona;
+import arg.com.utn.donatrack.repositorios.RepositorioPersonas;
+import arg.com.utn.donatrack.repositorios.RepositorioSubcategorias;
 
 public class DonanteController {
 
   private final RepositorioDonaciones repositorioDonaciones = new RepositorioDonaciones();
   private final RepositorioEntidadesBeneficiarias repositorioEntidades = new RepositorioEntidadesBeneficiarias();
+  private final RepositorioSubcategorias repositorioSubcategorias = new RepositorioSubcategorias();
   // private final LogisticaClient logisticaClient = new LogisticaClient();
 
   public void listarDonaciones(Context ctx) {
@@ -61,7 +66,11 @@ public class DonanteController {
       }
 
       Map<String, Object> modelo = new HashMap<>();
+
       modelo.put("donaciones", donacionesParaVista);
+      modelo.put("categorias", repositorioSubcategorias.listarCategorias(em));
+      modelo.put("subcategorias", repositorioSubcategorias.listarSubcategorias(em));
+
       ctx.render("donante-donaciones.html.hbs", modelo);
     } finally {
       em.close();
